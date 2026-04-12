@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey Map — Jason Miller | FitBridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #1A1A1A;
+    color: #D0D0D0;
+  }
+
+  .page {
+    width: 1440px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 52px 52px 72px;
+    position: relative;
+  }
+
+  /* ── WATERMARK ── */
+  .watermark {
+    position: absolute;
+    top: 44px;
+    right: 52px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 80px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    color: rgba(255,255,255,.05);
+    line-height: .95;
+    text-align: right;
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+
+  /* ── PERSONA HEADER ── */
+  .persona-header {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 44px;
+  }
+
+  .avatar {
+    width: 108px;
+    height: 108px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #4F46E5 0%, #0EA5E9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -.02em;
+    border: 2px solid rgba(255,255,255,.1);
+    flex-shrink: 0;
+  }
+
+  .persona-name-block h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    font-style: italic;
+    color: #FFFFFF;
+    letter-spacing: .01em;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .persona-name-block h1 span {
+    font-family: 'Inter', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    font-style: normal;
+    color: #888;
+  }
+
+  .persona-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,.07);
+    color: #888;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+
+  /* ── JOURNEY TABLE ── */
+  .journey-wrap {
+    border: 1px solid #303030;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .journey-table {
+    display: grid;
+    grid-template-columns: 48px repeat(5, 1fr);
+    width: 100%;
+  }
+
+  .cell {
+    border-right: 1px solid #2A2A2A;
+    border-bottom: 1px solid #2A2A2A;
+  }
+  .cell:nth-child(6n) { border-right: none; }
+
+  /* Row label */
+  .lbl {
+    background: #222;
+    border-right: 1px solid #303030 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: #555;
+    padding: 8px 0;
+  }
+
+  /* Phase header */
+  .phase-hdr {
+    background: #252525;
+    border-bottom: 2px solid #383838 !important;
+    padding: 16px 18px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #DCDCDC;
+  }
+  .ph-lbl { background: #252525; border-bottom: 2px solid #383838 !important; }
+
+  /* Actions */
+  .act-cell {
+    padding: 22px 18px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #B0B0B0;
+    background: #1E1E1E;
+  }
+
+  /* Touchpoints */
+  .tp-cell { padding: 16px 18px; background: #1C1C1C; }
+
+  .tp-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(129,140,248,.12);
+    color: #818CF8;
+    border: 1px solid rgba(129,140,248,.28);
+    margin: 3px 3px 3px 0;
+  }
+
+  .tp-chip-old {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(100,100,100,.1);
+    color: #666;
+    border: 1px solid rgba(100,100,100,.18);
+    margin: 3px 3px 3px 0;
+    text-decoration: line-through;
+    text-decoration-color: #4A4A4A;
+  }
+
+  /* Emotion row — full-width line chart */
+  .emo-row {
+    position: relative;
+    grid-column: 2 / 7;
+    height: 190px;
+    background: #1A1A1A;
+    overflow: visible;
+    border-right: none !important;
+  }
+  .emo-row svg.emo-chart {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .emo-emoji {
+    position: absolute;
+    font-size: 26px;
+    z-index: 2;
+    line-height: 1;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.8));
+  }
+
+  /* Thoughts */
+  .tht-cell {
+    padding: 22px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    font-style: italic;
+    color: #E0E0E0;
+    line-height: 1.6;
+    background: #1E1E1E;
+  }
+  .quote-mark {
+    display: block;
+    font-size: 32px;
+    color: #444;
+    line-height: .6;
+    margin-bottom: 8px;
+    font-style: normal;
+  }
+
+  /* Frictions */
+  .pain-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(239,68,68,.1);
+    color: #F87171;
+    border: 1px solid rgba(239,68,68,.2);
+    margin: 3px 3px 3px 0;
+  }
+
+  /* Opportunities */
+  .opp-cell {
+    padding: 22px 18px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #808080;
+    background: #1C1C1C;
+  }
+  .opp-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    background: rgba(129,140,248,.12);
+    color: #818CF8;
+    margin-bottom: 8px;
+  }
+
+  .no-bot { border-bottom: none !important; }
+
+  /* Highlight chip */
+  .feature-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(79,70,229,.18);
+    color: #A5B4FC;
+    border: 1px solid rgba(79,70,229,.3);
+    margin: 3px 3px 3px 0;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Watermark -->
+  <div class="watermark">JOURNEY<br>MAP 05</div>
+
+  <!-- Persona Header -->
+  <div class="persona-header">
+    <div class="avatar">JM</div>
+    <div class="persona-name-block">
+      <h1>JASON MILLER <span>The Irregular Gym User</span></h1>
+      <div class="persona-tags">
+        <span class="tag">Age 35</span>
+        <span class="tag">Sales Manager</span>
+        <span class="tag">Accountability Seeker</span>
+        <span class="tag">Motivation Driven</span>
+        <span class="tag">Irregular Gym User</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journey Table -->
+  <div class="journey-wrap">
+    <div class="journey-table">
+
+      <!-- ── ROW 1: PHASES ── -->
+      <div class="cell lbl ph-lbl">Phase</div>
+      <div class="cell phase-hdr">Missing Workouts</div>
+      <div class="cell phase-hdr">Discovering FitBridge</div>
+      <div class="cell phase-hdr">Setting Up Accountability</div>
+      <div class="cell phase-hdr">Following the Plan</div>
+      <div class="cell phase-hdr">Building Consistency</div>
+
+      <!-- ── ROW 2: ACTIONS ── -->
+      <div class="cell lbl">Actions</div>
+      <div class="cell act-cell">
+        Jason signs up for a gym membership but skips sessions within two weeks. He tells himself he'll start again Monday — but Monday comes and goes.
+      </div>
+      <div class="cell act-cell">
+        A coworker mentions FitBridge's built-in accountability features. Jason is skeptical but intrigued — the app promises simplicity and reminds him without nagging.
+      </div>
+      <div class="cell act-cell">
+        Jason sets up a basic three-session weekly plan and enables push reminders. He invites his coworker as an accountability partner in two taps.
+      </div>
+      <div class="cell act-cell">
+        His phone buzzes before each session. The plan is short and clear — no guesswork needed. He completes a full week of workouts for the first time in months.
+      </div>
+      <div class="cell act-cell">
+        Jason hits 10 consecutive check-ins. Streak alerts and his accountability partner's reactions keep him coming back. Missing now feels worse than going.
+      </div>
+
+      <!-- ── ROW 3: TOUCHPOINTS ── -->
+      <div class="cell lbl">Touch&shy;points</div>
+      <div class="cell tp-cell">
+        <span class="tp-chip-old">Gym Membership</span>
+        <span class="tp-chip-old">Calendar Events</span>
+        <span class="tp-chip-old">Self-promise</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="tp-chip">Word of Mouth</span>
+        <span class="tp-chip">App Store</span>
+        <span class="tp-chip">Onboarding Flow</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="feature-chip">👥 Partner Accountability</span>
+        <span class="tp-chip">Push Notifications</span>
+        <span class="tp-chip">Weekly Plan Setup</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="tp-chip">Daily Reminder</span>
+        <span class="tp-chip">Workout Plan</span>
+        <span class="tp-chip">Check-in Button</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="tp-chip">Streak Counter</span>
+        <span class="tp-chip">Progress Summary</span>
+        <span class="tp-chip">Partner Activity Feed</span>
+      </div>
+
+      <!-- ── ROW 4: EMOTION ── -->
+      <div class="cell lbl">Emotion</div>
+      <div class="cell emo-row"
+           data-levels="0.15,0.32,0.55,0.72,0.85"
+           data-emojis="😞,🤔,😏,💪,😄">
+        <svg class="emo-chart"></svg>
+      </div>
+
+      <!-- ── ROW 5: THOUGHTS ── -->
+      <div class="cell lbl">Thoughts</div>
+      <div class="cell tht-cell"><span class="quote-mark">"</span>"I keep saying I'll go tomorrow. Tomorrow never comes."</div>
+      <div class="cell tht-cell"><span class="quote-mark">"</span>"It keeps me accountable without being annoying? That's exactly what I need."</div>
+      <div class="cell tht-cell"><span class="quote-mark">"</span>"Three sessions a week. That's it? I can actually do that."</div>
+      <div class="cell tht-cell"><span class="quote-mark">"</span>"The reminder went off and I just… went. Didn't overthink it."</div>
+      <div class="cell tht-cell"><span class="quote-mark">"</span>"Ten check-ins straight. I've never done that before."</div>
+
+      <!-- ── ROW 6: FRICTIONS ── -->
+      <div class="cell lbl">Frictions</div>
+      <div class="cell tp-cell">
+        <span class="pain-chip">No structure</span>
+        <span class="pain-chip">Low motivation</span>
+        <span class="pain-chip">Too easy to skip</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="pain-chip">"Another app I'll forget"</span>
+        <span class="pain-chip">Skepticism</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="pain-chip">Setup friction</span>
+        <span class="pain-chip">Picking the right plan</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="pain-chip">Still tempted to skip</span>
+        <span class="pain-chip">Low-energy days</span>
+      </div>
+      <div class="cell tp-cell">
+        <span class="pain-chip">Goal drift</span>
+        <span class="pain-chip">Motivation plateau</span>
+      </div>
+
+      <!-- ── ROW 7: OPPORTUNITIES ── -->
+      <div class="cell lbl no-bot">Opport&shy;unities</div>
+      <div class="cell opp-cell no-bot">
+        <span class="opp-tag">Design Insight</span><br>
+        Lead with accountability: "Someone's counting on you." Show streak and partner activity before sign-up.
+      </div>
+      <div class="cell opp-cell no-bot">
+        <span class="opp-tag">Design Insight</span><br>
+        Reduce onboarding to one decision: pick your days. Everything else is preset — simplicity removes the excuse.
+      </div>
+      <div class="cell opp-cell no-bot">
+        <span class="opp-tag">Design Insight</span><br>
+        Partner accountability is the core differentiator. Make the invite flow feel social, not clinical — one tap, instant connection.
+      </div>
+      <div class="cell opp-cell no-bot">
+        <span class="opp-tag">Design Insight</span><br>
+        Smart reminders timed to past behavior: "You usually go at 7pm on Tuesdays." Reduce the decision to just showing up.
+      </div>
+      <div class="cell opp-cell no-bot">
+        <span class="opp-tag">Design Insight</span><br>
+        Celebrate milestones visibly. 10-session streak = shareable card + personal coach message. Make consistency feel like winning.
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const ACCENT = '#818CF8';
+  const PAD_X = 48, PAD_Y = 24;
+  const ns = 'http://www.w3.org/2000/svg';
+
+  document.querySelectorAll('.emo-row').forEach(row => {
+    const levels = row.dataset.levels.split(',').map(Number);
+    const emojis = row.dataset.emojis.split(',');
+    const svg    = row.querySelector('svg.emo-chart');
+    const H      = 190;
+
+    requestAnimationFrame(() => {
+      const W = row.offsetWidth || 1100;
+      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+      svg.setAttribute('preserveAspectRatio', 'none');
+
+      const n       = levels.length;
+      const stepX   = (W - PAD_X * 2) / (n - 1);
+      const usableH = H - PAD_Y * 2;
+      const pts     = levels.map((lv, i) => ({ x: PAD_X + i * stepX, y: PAD_Y + (1 - lv) * usableH }));
+
+      [0.25, 0.5, 0.75].forEach(t => {
+        const y = PAD_Y + (1 - t) * usableH;
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', 0); line.setAttribute('x2', W);
+        line.setAttribute('y1', y); line.setAttribute('y2', y);
+        line.setAttribute('stroke', 'rgba(255,255,255,0.05)');
+        line.setAttribute('stroke-width', '1');
+        svg.appendChild(line);
+      });
+
+      const areaD = `M ${pts[0].x} ${H} ` + pts.map(p => `L ${p.x} ${p.y}`).join(' ') + ` L ${pts[n-1].x} ${H} Z`;
+      const area = document.createElementNS(ns, 'path');
+      area.setAttribute('d', areaD);
+      area.setAttribute('fill', `${ACCENT}18`);
+      svg.appendChild(area);
+
+      let d = `M ${pts[0].x} ${pts[0].y}`;
+      for(let i = 0; i < n - 1; i++){
+        const p0 = pts[i > 0 ? i-1 : i], p1 = pts[i], p2 = pts[i+1], p3 = pts[i+2 < n ? i+2 : i+1];
+        const cp1x = p1.x + (p2.x - p0.x) / 6, cp1y = p1.y + (p2.y - p0.y) / 6;
+        const cp2x = p2.x - (p3.x - p1.x) / 6, cp2y = p2.y - (p3.y - p1.y) / 6;
+        d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x} ${p2.y}`;
+      }
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', ACCENT);
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(path);
+
+      pts.forEach((p, i) => {
+        const circle = document.createElementNS(ns, 'circle');
+        circle.setAttribute('cx', p.x); circle.setAttribute('cy', p.y);
+        circle.setAttribute('r', '5');
+        circle.setAttribute('fill', ACCENT);
+        circle.setAttribute('stroke', '#1A1A1A');
+        circle.setAttribute('stroke-width', '2');
+        svg.appendChild(circle);
+
+        const fo = document.createElementNS(ns, 'foreignObject');
+        fo.setAttribute('x', p.x - 16); fo.setAttribute('y', p.y - 46);
+        fo.setAttribute('width', '32'); fo.setAttribute('height', '32');
+        fo.innerHTML = `<span xmlns="http://www.w3.org/1999/xhtml" style="font-size:22px;line-height:1;display:block;text-align:center;filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))">${emojis[i]}</span>`;
+        svg.appendChild(fo);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

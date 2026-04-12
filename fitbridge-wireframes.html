@@ -1,0 +1,2674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBridge – Wireframes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4F5F7;
+    --frame: #1A1A1A;
+    --screen-bg: #FFFFFF;
+    --border: #C8CDD6;
+    --placeholder: #D0D4DC;
+    --placeholder-dark: #B0B6C2;
+    --text-primary: #1A1A2E;
+    --text-secondary: #6B7280;
+    --text-label: #9CA3AF;
+    --accent: #00C87A;
+    --accent-light: #E6FAF3;
+    --red-light: #FEE2E2;
+    --red: #EF4444;
+    --blue-light: #EFF6FF;
+    --blue: #3B82F6;
+    --nav-h: 56px;
+    --status-h: 36px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    padding: 40px 20px 80px;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .page-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: 48px 0 20px;
+    padding-left: 4px;
+    max-width: 1160px;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    max-width: 1160px;
+    margin: 0 auto 8px;
+  }
+
+  /* ── PHONE FRAME ── */
+  .phone-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .phone-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .phone {
+    width: 240px;
+    background: var(--frame);
+    border-radius: 36px;
+    padding: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  }
+  .phone-screen {
+    width: 100%;
+    background: var(--screen-bg);
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+    position: relative;
+  }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    height: var(--status-h);
+    background: var(--screen-bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .status-bar span { font-size: 10px; color: var(--text-secondary); font-weight: 500; }
+  .status-icons { display: flex; gap: 4px; align-items: center; }
+  .status-icons .bar { width: 3px; background: var(--text-primary); border-radius: 1px; }
+  .status-icons .bar:nth-child(1) { height: 4px; }
+  .status-icons .bar:nth-child(2) { height: 6px; }
+  .status-icons .bar:nth-child(3) { height: 8px; }
+  .status-icons .bar:nth-child(4) { height: 10px; }
+  .battery { width: 18px; height: 10px; border: 1.5px solid var(--text-primary); border-radius: 2px; margin-left: 4px; position: relative; }
+  .battery::after { content:''; position:absolute; top:50%; right:-4px; transform:translateY(-50%); width:3px; height:5px; background:var(--text-primary); border-radius:0 1px 1px 0; }
+  .battery-fill { width: 70%; height: 100%; background: var(--text-primary); border-radius: 1px; }
+
+  /* ── SCREEN CONTENT ── */
+  .screen-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    height: var(--nav-h);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    background: var(--screen-bg);
+    flex-shrink: 0;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 0;
+    cursor: pointer;
+  }
+  .nav-icon {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: var(--placeholder);
+  }
+  .nav-icon.active {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .nav-text {
+    font-size: 8px;
+    color: var(--text-label);
+  }
+  .nav-text.active {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── COMMON COMPONENTS ── */
+  .screen-header {
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .screen-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .screen-subtitle {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .placeholder-img {
+    background: var(--placeholder);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-label);
+    font-size: 9px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .placeholder-img.sm { width: 36px; height: 36px; border-radius: 50%; }
+  .placeholder-img.thumb { width: 100%; height: 72px; }
+  .placeholder-img.card-img { width: 60px; height: 48px; border-radius: 6px; }
+
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 8px;
+    font-weight: 600;
+  }
+  .pill.green { background: var(--accent-light); color: var(--accent); }
+  .pill.red { background: var(--red-light); color: var(--red); }
+  .pill.blue { background: var(--blue-light); color: var(--blue); }
+  .pill.gray { background: var(--placeholder); color: var(--text-secondary); }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.secondary { background: var(--placeholder); color: var(--text-primary); }
+  .btn.outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-primary); }
+
+  .input-field {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 10px;
+    color: var(--text-label);
+    background: var(--screen-bg);
+    width: 100%;
+  }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    background: var(--screen-bg);
+  }
+  .card.filled { background: var(--bg); }
+
+  .list-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .list-row:last-child { border-bottom: none; }
+
+  .row-text { flex: 1; }
+  .row-title { font-size: 10px; font-weight: 600; color: var(--text-primary); }
+  .row-sub { font-size: 9px; color: var(--text-secondary); margin-top: 1px; }
+
+  .stat-box {
+    flex: 1;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+  }
+  .stat-num { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .stat-label { font-size: 8px; color: var(--text-secondary); margin-top: 2px; }
+
+  .section-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 6px;
+  }
+  .section-row-title { font-size: 11px; font-weight: 600; color: var(--text-primary); }
+  .section-row-link { font-size: 9px; color: var(--accent); font-weight: 500; }
+
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 14px 10px;
+  }
+
+  .progress-bar-wrap {
+    width: 100%;
+    height: 5px;
+    background: var(--placeholder);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 99px;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 8px 0; }
+
+  .chevron {
+    width: 8px;
+    height: 8px;
+    border-right: 1.5px solid var(--text-label);
+    border-bottom: 1.5px solid var(--text-label);
+    transform: rotate(-45deg);
+    flex-shrink: 0;
+  }
+
+  /* ── BACK HEADER ── */
+  .back-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .back-arrow {
+    width: 8px;
+    height: 8px;
+    border-left: 2px solid var(--text-primary);
+    border-bottom: 2px solid var(--text-primary);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+  .back-header .screen-title { font-size: 14px; }
+
+  /* ── AVATAR HEADER ── */
+  .avatar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+  }
+  .avatar-left { display: flex; align-items: center; gap: 8px; }
+  .avatar-name { font-size: 12px; font-weight: 600; }
+  .avatar-role { font-size: 9px; color: var(--text-secondary); }
+  .notif-dot {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--placeholder);
+    position: relative;
+  }
+  .notif-dot::after {
+    content: '';
+    position: absolute;
+    top: 2px; right: 2px;
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    border: 1.5px solid var(--screen-bg);
+  }
+
+  /* ── CHART PLACEHOLDER ── */
+  .chart-placeholder {
+    width: 100%;
+    background: var(--bg);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    padding: 8px 8px 20px;
+  }
+  .chart-bar {
+    flex: 1;
+    background: var(--placeholder-dark);
+    border-radius: 3px 3px 0 0;
+    position: relative;
+  }
+  .chart-bar.highlight { background: var(--accent); }
+  .chart-x-labels {
+    position: absolute;
+    bottom: 4px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .chart-x-labels span { font-size: 7px; color: var(--text-label); }
+
+  .line-chart {
+    width: 100%;
+    height: 60px;
+    background: var(--bg);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .line-chart svg { width: 100%; height: 100%; }
+
+  /* ── ANNOTATION ── */
+  .annotation {
+    font-size: 9px;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  /* toggle */
+  .toggle-row {
+    display: flex;
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+    margin: 8px 14px;
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 5px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+  .toggle-btn.active {
+    background: var(--screen-bg);
+    color: var(--text-primary);
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow-section {
+    max-width: 1160px;
+    margin: 0 auto 40px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+  .flow-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+  }
+  .flow-grid {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 130px;
+    flex-shrink: 0;
+  }
+  .flow-col-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-label);
+    text-align: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .flow-node {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 10px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-primary);
+    position: relative;
+  }
+  .flow-node.accent { border-color: var(--accent); background: var(--accent-light); }
+  .flow-node.blue { border-color: #3B82F6; background: #EFF6FF; }
+  .flow-node.red { border-color: var(--red); background: var(--red-light); }
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    color: var(--text-label);
+    font-size: 16px;
+    padding-top: 28px;
+    flex-shrink: 0;
+  }
+
+  /* print hint */
+  @media print {
+    body { background: white; padding: 0; }
+    .phone { box-shadow: none; }
+    .section-label { break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>FitBridge — Paper Prototype Wireframes</h1>
+  <p>Low-fidelity screens · Part 2 submission · IXDS-720-N02</p>
+</div>
+
+<!-- ════════════════════════════════════════════
+     USER FLOW
+════════════════════════════════════════════ -->
+<div class="section-label">User Flow — Onboarding &amp; Auth</div>
+<div class="grid">
+
+  <!-- 1. Splash / Welcome -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content" style="padding:24px 20px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:16px;">
+          <div class="placeholder-img" style="width:72px;height:72px;border-radius:16px;font-size:10px;">LOGO</div>
+          <div style="text-align:center;">
+            <div style="font-size:18px;font-weight:700;">FitBridge</div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-top:4px;">Connect. Track. Achieve.</div>
+          </div>
+          <div style="width:100%;display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+            <button class="btn primary">Get Started</button>
+            <button class="btn outline">Log In</button>
+          </div>
+          <div style="font-size:9px;color:var(--text-label);text-align:center;margin-top:4px;">
+            Are you a trainer? <span style="color:var(--accent);font-weight:600;">Sign up here →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">1 · Welcome</div>
+  </div>
+
+  <!-- 1B. Sign In -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content" style="padding:24px 20px; display:flex; flex-direction:column; gap:16px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:4px;">
+            <div class="placeholder-img" style="width:48px;height:48px;border-radius:12px;font-size:9px;">LOGO</div>
+            <div style="font-size:15px;font-weight:700;">Welcome back</div>
+            <div style="font-size:10px;color:var(--text-secondary);">Sign in to your account</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
+              <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Email</div>
+              <input class="input-field" placeholder="you@email.com" readonly>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-size:9px;font-weight:600;color:var(--text-secondary);">Password</span>
+                <span style="font-size:9px;color:var(--accent);font-weight:500;">Forgot?</span>
+              </div>
+              <input class="input-field" placeholder="••••••••" readonly>
+            </div>
+          </div>
+          <!-- role toggle -->
+          <div>
+            <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Sign in as</div>
+            <div class="toggle-row" style="margin:0;">
+              <div class="toggle-btn active">Client</div>
+              <div class="toggle-btn">Trainer</div>
+            </div>
+          </div>
+          <button class="btn primary">Sign In</button>
+          <!-- divider -->
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="divider" style="flex:1;margin:0;"></div>
+            <span style="font-size:9px;color:var(--text-label);">or</span>
+            <div class="divider" style="flex:1;margin:0;"></div>
+          </div>
+          <button class="btn outline" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+            <div class="placeholder-img" style="width:14px;height:14px;border-radius:2px;flex-shrink:0;font-size:7px;"></div>
+            <span style="font-size:10px;">Continue with Google</span>
+          </button>
+          <div style="font-size:9px;color:var(--text-label);text-align:center;margin-top:-4px;">
+            No account? <span style="color:var(--accent);font-weight:600;">Sign up →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">1B · Sign In</div>
+  </div>
+
+  <!-- 2. Onboarding – Role Select -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content" style="padding:20px 16px; display:flex; flex-direction:column; gap:14px;">
+          <div>
+            <div style="font-size:13px;font-weight:700;">Who are you?</div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">We'll personalize your experience</div>
+          </div>
+          <div class="card" style="border:2px solid var(--accent);background:var(--accent-light);">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="placeholder-img" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:11px;font-weight:600;">Fitness Client</div>
+                <div style="font-size:9px;color:var(--text-secondary);">Track workouts, meals &amp; metrics</div>
+              </div>
+              <div style="margin-left:auto;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--accent);"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="placeholder-img" style="width:40px;height:40px;border-radius:10px;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:11px;font-weight:600;">Personal Trainer</div>
+                <div style="font-size:9px;color:var(--text-secondary);">Manage clients &amp; review data</div>
+              </div>
+              <div style="margin-left:auto;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border);"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:4px;">
+            <div style="font-size:10px;font-weight:600;margin-bottom:8px;">Create your profile</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <input class="input-field" placeholder="Full name" readonly>
+              <input class="input-field" placeholder="Email address" readonly>
+              <input class="input-field" placeholder="Password" readonly>
+            </div>
+          </div>
+          <button class="btn primary" style="margin-top:auto;">Continue →</button>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">2 · Role &amp; Sign Up</div>
+  </div>
+
+  <!-- 3. Onboarding – Goals -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content" style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+          <!-- progress -->
+          <div style="display:flex;gap:4px;">
+            <div style="flex:1;height:3px;background:var(--accent);border-radius:99px;"></div>
+            <div style="flex:1;height:3px;background:var(--accent);border-radius:99px;"></div>
+            <div style="flex:1;height:3px;background:var(--placeholder);border-radius:99px;"></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;">Set your goals</div>
+            <div style="font-size:9px;color:var(--text-secondary);margin-top:2px;">Select all that apply</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div class="card" style="border:1.5px solid var(--accent);background:var(--accent-light);display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:10px;font-weight:500;">Lose weight</span>
+              <span style="font-size:12px;color:var(--accent);">✓</span>
+            </div>
+            <div class="card" style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:10px;font-weight:500;">Build muscle</span>
+              <div style="width:12px;height:12px;border:1.5px solid var(--border);border-radius:3px;"></div>
+            </div>
+            <div class="card" style="border:1.5px solid var(--accent);background:var(--accent-light);display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:10px;font-weight:500;">Improve endurance</span>
+              <span style="font-size:12px;color:var(--accent);">✓</span>
+            </div>
+            <div class="card" style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:10px;font-weight:500;">Eat healthier</span>
+              <div style="width:12px;height:12px;border:1.5px solid var(--border);border-radius:3px;"></div>
+            </div>
+            <div class="card" style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:10px;font-weight:500;">Reduce stress</span>
+              <div style="width:12px;height:12px;border:1.5px solid var(--border);border-radius:3px;"></div>
+            </div>
+          </div>
+          <button class="btn primary" style="margin-top:auto;">Connect to Trainer →</button>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">3 · Goals</div>
+  </div>
+
+  <!-- 4. Connect Trainer -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content" style="padding:16px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex;gap:4px;">
+            <div style="flex:1;height:3px;background:var(--accent);border-radius:99px;"></div>
+            <div style="flex:1;height:3px;background:var(--accent);border-radius:99px;"></div>
+            <div style="flex:1;height:3px;background:var(--accent);border-radius:99px;"></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:700;">Connect your trainer</div>
+            <div style="font-size:9px;color:var(--text-secondary);margin-top:2px;">Enter the invite code they shared</div>
+          </div>
+          <div class="card" style="background:var(--bg);display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px;">
+            <div class="placeholder-img sm" style="width:56px;height:56px;font-size:8px;">QR</div>
+            <div style="font-size:9px;color:var(--text-secondary);">Scan trainer's QR code</div>
+            <div style="font-size:9px;color:var(--text-label);">— or —</div>
+            <input class="input-field" placeholder="Enter invite code (e.g. TRN-4829)" readonly style="text-align:center;">
+          </div>
+          <div class="card">
+            <div style="font-size:9px;color:var(--text-secondary);margin-bottom:8px;">Your trainer</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Marcus Reid</div>
+                <div class="row-sub">NASM Certified · 4.9 ★</div>
+              </div>
+              <span class="pill green">Connected</span>
+            </div>
+          </div>
+          <button class="btn primary" style="margin-top:auto;">Finish Setup</button>
+          <div style="font-size:9px;color:var(--text-label);text-align:center;">Skip for now</div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">4 · Connect Trainer</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     USER MAIN SCREENS
+════════════════════════════════════════════ -->
+<div class="section-label">User Flow — Main App</div>
+<div class="grid">
+
+  <!-- 5. User Home Dashboard -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <!-- avatar header -->
+          <div class="avatar-header">
+            <div class="avatar-left">
+              <div class="placeholder-img sm"></div>
+              <div>
+                <div class="avatar-name">Hey, Jordan 👋</div>
+                <div class="avatar-role">Week 4 of 12</div>
+              </div>
+            </div>
+            <div class="notif-dot"></div>
+          </div>
+          <div class="scroll-area" style="padding-top:4px;">
+            <!-- today card -->
+            <div class="card" style="background:var(--accent-light);border-color:var(--accent);margin-bottom:10px;">
+              <div style="font-size:9px;font-weight:600;color:var(--accent);margin-bottom:6px;">TODAY'S PLAN</div>
+              <div style="font-size:12px;font-weight:700;margin-bottom:4px;">Upper Body Strength</div>
+              <div style="font-size:9px;color:var(--text-secondary);margin-bottom:8px;">Assigned by Marcus · 45 min · 6 exercises</div>
+              <button class="btn primary" style="padding:7px;font-size:10px;">Start Workout</button>
+            </div>
+            <!-- quick stats -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">This Week</div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <div class="stat-box"><div class="stat-num">3</div><div class="stat-label">Workouts</div></div>
+              <div class="stat-box"><div class="stat-num">74%</div><div class="stat-label">Goal</div></div>
+              <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Streak 🔥</div></div>
+            </div>
+            <!-- metrics preview -->
+            <div class="section-row" style="padding:0 0 6px;">
+              <span class="section-row-title">Body Metrics</span>
+              <span class="section-row-link">See all</span>
+            </div>
+            <div class="chart-placeholder" style="height:64px;margin-bottom:10px;">
+              <div class="chart-bar" style="height:60%;"></div>
+              <div class="chart-bar highlight" style="height:80%;"></div>
+              <div class="chart-bar" style="height:65%;"></div>
+              <div class="chart-bar" style="height:70%;"></div>
+              <div class="chart-bar highlight" style="height:85%;"></div>
+              <div class="chart-bar" style="height:72%;"></div>
+              <div class="chart-bar highlight" style="height:90%;"></div>
+              <div class="chart-x-labels">
+                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+              </div>
+            </div>
+            <!-- trainer message -->
+            <div class="card filled">
+              <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">MESSAGE FROM TRAINER</div>
+              <div style="display:flex;gap:6px;align-items:flex-start;">
+                <div class="placeholder-img sm" style="width:24px;height:24px;flex-shrink:0;"></div>
+                <div style="font-size:9px;color:var(--text-primary);line-height:1.4;">"Great progress this week! Remember to log your meals before our check-in Friday."</div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Home</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Workouts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Meals</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Metrics</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">5 · User Dashboard</div>
+  </div>
+
+  <!-- 6. Active Workout -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="back-header">
+            <div class="back-arrow"></div>
+            <div class="screen-title">Upper Body Strength</div>
+            <span class="pill green" style="margin-left:auto;">Live</span>
+          </div>
+          <div style="padding:10px 14px;border-bottom:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:9px;color:var(--text-secondary);">Exercise 2 of 6</span>
+              <span style="font-size:9px;font-weight:600;">12:34</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:33%;"></div></div>
+          </div>
+          <div class="scroll-area" style="padding-top:10px;">
+            <!-- current exercise -->
+            <div class="placeholder-img thumb" style="height:100px;border-radius:10px;margin-bottom:10px;font-size:10px;">Video / Illustration</div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:2px;">Dumbbell Row</div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:10px;">3 sets × 12 reps · Rest 60s</div>
+            <!-- sets log -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Log Sets</div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px;">
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span style="font-size:9px;color:var(--text-label);width:32px;">Set 1</span>
+                <input class="input-field" style="width:60px;" placeholder="lbs" readonly>
+                <input class="input-field" style="width:60px;" placeholder="reps" readonly>
+                <span class="pill green">Done</span>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span style="font-size:9px;color:var(--text-label);width:32px;">Set 2</span>
+                <input class="input-field" style="width:60px;" placeholder="lbs" readonly>
+                <input class="input-field" style="width:60px;" placeholder="reps" readonly>
+                <span class="pill gray">—</span>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;">
+                <span style="font-size:9px;color:var(--text-label);width:32px;">Set 3</span>
+                <input class="input-field" style="width:60px;" placeholder="lbs" readonly>
+                <input class="input-field" style="width:60px;" placeholder="reps" readonly>
+                <span class="pill gray">—</span>
+              </div>
+            </div>
+            <button class="btn primary">Next Exercise →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">6 · Active Workout</div>
+  </div>
+
+  <!-- 7. Workout History -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div class="screen-title">Workout History</div>
+            <div class="screen-subtitle">All sessions · 14 logged</div>
+          </div>
+          <!-- mini calendar row -->
+          <div style="display:flex;gap:4px;padding:8px 14px;border-bottom:1px solid var(--border);overflow:hidden;">
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">M</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;background:var(--placeholder);">28</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">T</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;background:var(--accent);color:#fff;">29</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">W</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;background:var(--placeholder);">30</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">T</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;">31</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">F</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;background:var(--accent-light);color:var(--accent);">1</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">S</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;">2</div></div>
+            <div style="flex:1;text-align:center;"><div style="font-size:8px;color:var(--text-label);">S</div><div style="font-size:10px;font-weight:600;margin-top:2px;padding:4px 2px;border-radius:6px;">3</div></div>
+          </div>
+          <div class="scroll-area" style="padding-top:8px;">
+            <!-- history items -->
+            <div class="list-row">
+              <div class="placeholder-img" style="width:36px;height:36px;border-radius:8px;flex-shrink:0;"></div>
+              <div class="row-text">
+                <div class="row-title">Upper Body Strength</div>
+                <div class="row-sub">Mar 29 · 48 min · 6 exercises</div>
+              </div>
+              <div class="chevron"></div>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img" style="width:36px;height:36px;border-radius:8px;flex-shrink:0;"></div>
+              <div class="row-text">
+                <div class="row-title">Cardio &amp; Core</div>
+                <div class="row-sub">Mar 27 · 32 min · 4 exercises</div>
+              </div>
+              <div class="chevron"></div>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img" style="width:36px;height:36px;border-radius:8px;flex-shrink:0;"></div>
+              <div class="row-text">
+                <div class="row-title">Leg Day</div>
+                <div class="row-sub">Mar 25 · 55 min · 7 exercises</div>
+              </div>
+              <div class="chevron"></div>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img" style="width:36px;height:36px;border-radius:8px;flex-shrink:0;"></div>
+              <div class="row-text">
+                <div class="row-title">Full Body Circuit</div>
+                <div class="row-sub">Mar 23 · 40 min · 8 exercises</div>
+              </div>
+              <div class="chevron"></div>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img" style="width:36px;height:36px;border-radius:8px;flex-shrink:0;"></div>
+              <div class="row-text">
+                <div class="row-title">Mobility &amp; Stretch</div>
+                <div class="row-sub">Mar 21 · 25 min · 5 exercises</div>
+              </div>
+              <div class="chevron"></div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Workouts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Meals</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Metrics</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">7 · Workout History</div>
+  </div>
+
+  <!-- 8. Video Recommendations -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div class="screen-title">Video Library</div>
+            <div class="screen-subtitle">Curated by Marcus</div>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-btn active">All</div>
+            <div class="toggle-btn">Technique</div>
+            <div class="toggle-btn">Warmup</div>
+            <div class="toggle-btn">Recovery</div>
+          </div>
+          <div class="scroll-area">
+            <!-- featured -->
+            <div class="card" style="margin-bottom:8px;">
+              <div class="placeholder-img thumb" style="height:80px;border-radius:8px;margin-bottom:8px;font-size:10px;">▶ Video Thumbnail</div>
+              <div style="font-size:11px;font-weight:600;margin-bottom:2px;">Proper Dumbbell Row Form</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="font-size:9px;color:var(--text-secondary);">4:12 · Technique</div>
+                <span class="pill green">New</span>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <div class="placeholder-img card-img" style="font-size:9px;">▶</div>
+                <div style="flex:1;">
+                  <div style="font-size:10px;font-weight:600;margin-bottom:2px;">Dynamic Warmup Routine</div>
+                  <div style="font-size:9px;color:var(--text-secondary);">7:30 · Warmup</div>
+                  <div class="tag-row"><span class="pill gray">Mobility</span><span class="pill gray">Pre-workout</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <div class="placeholder-img card-img" style="font-size:9px;">▶</div>
+                <div style="flex:1;">
+                  <div style="font-size:10px;font-weight:600;margin-bottom:2px;">Foam Rolling for Recovery</div>
+                  <div style="font-size:9px;color:var(--text-secondary);">5:45 · Recovery</div>
+                  <div class="tag-row"><span class="pill gray">Post-workout</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <div class="placeholder-img card-img" style="font-size:9px;">▶</div>
+                <div style="flex:1;">
+                  <div style="font-size:10px;font-weight:600;margin-bottom:2px;">Squat Depth Fix</div>
+                  <div style="font-size:9px;color:var(--text-secondary);">3:20 · Technique</div>
+                  <div class="tag-row"><span class="pill gray">Lower body</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Workouts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Meals</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Metrics</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">8 · Video Library</div>
+  </div>
+
+  <!-- 9. Body Metrics -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div class="screen-title">Body Metrics</div>
+                <div class="screen-subtitle">Last updated today</div>
+              </div>
+              <button class="btn primary" style="width:auto;padding:5px 10px;font-size:9px;">+ Log</button>
+            </div>
+          </div>
+          <div class="scroll-area" style="padding-top:10px;">
+            <!-- weight card -->
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-size:11px;font-weight:600;">Weight</span>
+                <span style="font-size:16px;font-weight:700;">162 <span style="font-size:10px;font-weight:400;color:var(--text-secondary);">lbs</span></span>
+              </div>
+              <div class="line-chart">
+                <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+                  <polyline points="10,48 40,45 70,40 100,38 130,35 160,32 190,28"
+                    fill="none" stroke="#D0D4DC" stroke-width="2"/>
+                  <polyline points="10,48 40,45 70,40 100,38 130,35 160,32 190,28"
+                    fill="none" stroke="#00C87A" stroke-width="2" stroke-dasharray="200" stroke-dashoffset="0"/>
+                  <circle cx="190" cy="28" r="3" fill="#00C87A"/>
+                </svg>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:4px;">
+                <span style="font-size:8px;color:var(--text-label);">4 weeks ago</span>
+                <span style="font-size:8px;color:var(--accent);">↓ 4.2 lbs</span>
+                <span style="font-size:8px;color:var(--text-label);">Today</span>
+              </div>
+            </div>
+            <!-- metrics grid -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+              <div class="card">
+                <div style="font-size:9px;color:var(--text-secondary);">Body Fat %</div>
+                <div style="font-size:16px;font-weight:700;margin:2px 0;">21.4<span style="font-size:9px;font-weight:400;">%</span></div>
+                <div style="font-size:8px;color:var(--accent);">↓ 1.2%</div>
+              </div>
+              <div class="card">
+                <div style="font-size:9px;color:var(--text-secondary);">Muscle Mass</div>
+                <div style="font-size:16px;font-weight:700;margin:2px 0;">98.2<span style="font-size:9px;font-weight:400;">lbs</span></div>
+                <div style="font-size:8px;color:var(--accent);">↑ 0.8 lbs</div>
+              </div>
+              <div class="card">
+                <div style="font-size:9px;color:var(--text-secondary);">Waist</div>
+                <div style="font-size:16px;font-weight:700;margin:2px 0;">32<span style="font-size:9px;font-weight:400;">"</span></div>
+                <div style="font-size:8px;color:var(--accent);">↓ 0.5"</div>
+              </div>
+              <div class="card">
+                <div style="font-size:9px;color:var(--text-secondary);">Resting HR</div>
+                <div style="font-size:16px;font-weight:700;margin:2px 0;">68<span style="font-size:9px;font-weight:400;">bpm</span></div>
+                <div style="font-size:8px;color:var(--text-label);">No change</div>
+              </div>
+            </div>
+            <!-- log new entry -->
+            <div class="card filled">
+              <div style="font-size:10px;font-weight:600;margin-bottom:8px;">Log Today's Entry</div>
+              <div style="display:flex;flex-direction:column;gap:5px;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="font-size:9px;color:var(--text-secondary);width:64px;">Weight (lbs)</span>
+                  <input class="input-field" placeholder="0.0" readonly style="flex:1;">
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="font-size:9px;color:var(--text-secondary);width:64px;">Notes</span>
+                  <input class="input-field" placeholder="Optional" readonly style="flex:1;">
+                </div>
+              </div>
+              <button class="btn primary" style="margin-top:8px;padding:7px;font-size:10px;">Save Entry</button>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Workouts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Meals</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Metrics</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">9 · Body Metrics</div>
+  </div>
+
+  <!-- 10. Meal Logging -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div class="screen-title">Meal Log</div>
+                <div class="screen-subtitle">Today, Apr 2</div>
+              </div>
+              <button class="btn primary" style="width:auto;padding:5px 10px;font-size:9px;">+ Add</button>
+            </div>
+          </div>
+          <div class="scroll-area" style="padding-top:8px;">
+            <!-- calorie ring placeholder -->
+            <div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+              <div class="placeholder-img" style="width:56px;height:56px;border-radius:50%;border:4px solid var(--accent);font-size:8px;background:var(--accent-light);">Ring</div>
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:700;">1,420 <span style="font-size:10px;font-weight:400;color:var(--text-secondary);">/ 2,000 kcal</span></div>
+                <div style="display:flex;gap:10px;margin-top:6px;">
+                  <div><div style="font-size:9px;color:var(--text-secondary);">Protein</div><div style="font-size:10px;font-weight:600;">88g</div></div>
+                  <div><div style="font-size:9px;color:var(--text-secondary);">Carbs</div><div style="font-size:10px;font-weight:600;">140g</div></div>
+                  <div><div style="font-size:9px;color:var(--text-secondary);">Fat</div><div style="font-size:10px;font-weight:600;">42g</div></div>
+                </div>
+              </div>
+            </div>
+            <!-- meals -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:4px;">Breakfast</div>
+            <div class="card filled" style="margin-bottom:8px;">
+              <div class="list-row" style="padding:4px 0;">
+                <div class="row-text"><div class="row-title">Greek Yogurt + Berries</div><div class="row-sub">280 kcal · 18g protein</div></div>
+                <div class="chevron"></div>
+              </div>
+              <div class="list-row" style="padding:4px 0;border:none;">
+                <div class="row-text"><div class="row-title">Oatmeal w/ Honey</div><div class="row-sub">310 kcal · 7g protein</div></div>
+                <div class="chevron"></div>
+              </div>
+            </div>
+            <div style="font-size:10px;font-weight:600;margin-bottom:4px;">Lunch</div>
+            <div class="card filled" style="margin-bottom:8px;">
+              <div class="list-row" style="padding:4px 0;border:none;">
+                <div class="row-text"><div class="row-title">Grilled Chicken Salad</div><div class="row-sub">420 kcal · 38g protein</div></div>
+                <div class="chevron"></div>
+              </div>
+            </div>
+            <div style="font-size:10px;font-weight:600;margin-bottom:4px;">Dinner</div>
+            <div class="card" style="border-style:dashed;">
+              <div style="font-size:10px;color:var(--text-label);text-align:center;padding:8px 0;">+ Log dinner</div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Workouts</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Meals</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Metrics</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">10 · Meal Log</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     TRAINER FLOW
+════════════════════════════════════════════ -->
+<div class="section-label">Trainer Flow — Main App</div>
+<div class="grid">
+
+  <!-- 11. Trainer Dashboard -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="avatar-header">
+            <div class="avatar-left">
+              <div class="placeholder-img sm"></div>
+              <div>
+                <div class="avatar-name">Marcus Reid</div>
+                <div class="avatar-role">Personal Trainer</div>
+              </div>
+            </div>
+            <div class="notif-dot"></div>
+          </div>
+          <div class="scroll-area" style="padding-top:4px;">
+            <!-- summary stats -->
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <div class="stat-box"><div class="stat-num">8</div><div class="stat-label">Clients</div></div>
+              <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Active Today</div></div>
+              <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Check-ins</div></div>
+            </div>
+            <!-- alerts -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Needs Attention</div>
+            <div class="card" style="border-color:var(--red);background:var(--red-light);margin-bottom:6px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="placeholder-img sm"></div>
+                <div class="row-text">
+                  <div class="row-title">Jordan Kim</div>
+                  <div class="row-sub" style="color:var(--red);">No workout logged in 3 days</div>
+                </div>
+                <div class="chevron"></div>
+              </div>
+            </div>
+            <div class="card" style="border-color:#F59E0B;background:#FFFBEB;margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="placeholder-img sm"></div>
+                <div class="row-text">
+                  <div class="row-title">Sam Park</div>
+                  <div class="row-sub" style="color:#B45309;">Metrics not updated this week</div>
+                </div>
+                <div class="chevron"></div>
+              </div>
+            </div>
+            <!-- client list preview -->
+            <div class="section-row" style="padding:0 0 6px;">
+              <span class="section-row-title">All Clients</span>
+              <span class="section-row-link">Manage →</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text"><div class="row-title">Alex Torres</div><div class="row-sub">Last active: Today</div></div>
+              <span class="pill green">On track</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text"><div class="row-title">Dana Lee</div><div class="row-sub">Last active: Yesterday</div></div>
+              <span class="pill green">On track</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text"><div class="row-title">Jordan Kim</div><div class="row-sub">Last active: 3 days ago</div></div>
+              <span class="pill red">Behind</span>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Dashboard</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Clients</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Programs</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">11 · Trainer Dashboard</div>
+  </div>
+
+  <!-- 12. Client Detail -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="back-header">
+            <div class="back-arrow"></div>
+            <div class="screen-title">Jordan Kim</div>
+          </div>
+          <!-- profile strip -->
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);">
+            <div class="placeholder-img" style="width:44px;height:44px;border-radius:50%;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div style="font-size:12px;font-weight:600;">Jordan Kim</div>
+              <div style="font-size:9px;color:var(--text-secondary);">Goal: Lose weight · Week 4</div>
+              <div class="tag-row"><span class="pill red">3 days inactive</span></div>
+            </div>
+            <button class="btn outline" style="width:auto;padding:5px 8px;font-size:9px;">Message</button>
+          </div>
+          <div class="toggle-row" style="margin:8px 14px;">
+            <div class="toggle-btn active">Overview</div>
+            <div class="toggle-btn">Workouts</div>
+            <div class="toggle-btn">Meals</div>
+            <div class="toggle-btn">Metrics</div>
+          </div>
+          <div class="scroll-area" style="padding-top:4px;">
+            <!-- stats -->
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <div class="stat-box"><div class="stat-num">11</div><div class="stat-label">Sessions</div></div>
+              <div class="stat-box"><div class="stat-num">-4.2</div><div class="stat-label">lbs lost</div></div>
+              <div class="stat-box"><div class="stat-num">68%</div><div class="stat-label">Adherence</div></div>
+            </div>
+            <!-- weight chart -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Weight Trend</div>
+            <div class="line-chart" style="margin-bottom:10px;">
+              <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+                <polyline points="10,50 40,46 70,42 100,40 130,36 160,33 190,28"
+                  fill="none" stroke="#00C87A" stroke-width="2"/>
+                <circle cx="190" cy="28" r="3" fill="#00C87A"/>
+              </svg>
+            </div>
+            <!-- recent workouts -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Recent Workouts</div>
+            <div class="list-row">
+              <div class="row-text"><div class="row-title">Upper Body Strength</div><div class="row-sub">Mar 29 · Completed</div></div>
+              <span class="pill green">Done</span>
+            </div>
+            <div class="list-row">
+              <div class="row-text"><div class="row-title">Cardio Session</div><div class="row-sub">Mar 27 · Completed</div></div>
+              <span class="pill green">Done</span>
+            </div>
+            <div class="list-row">
+              <div class="row-text"><div class="row-title">Leg Day</div><div class="row-sub">Apr 1 · Scheduled</div></div>
+              <span class="pill red">Missed</span>
+            </div>
+            <button class="btn primary" style="margin-top:10px;">Assign New Workout</button>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Dashboard</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Clients</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Programs</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">12 · Client Detail</div>
+  </div>
+
+  <!-- 13. Assign Workout -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="back-header">
+            <div class="back-arrow"></div>
+            <div class="screen-title">Assign Workout</div>
+          </div>
+          <div class="scroll-area" style="padding-top:10px;">
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Client</div>
+            <div class="card filled" style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="placeholder-img sm"></div>
+                <div class="row-text"><div class="row-title">Jordan Kim</div><div class="row-sub">Goal: Lose weight</div></div>
+                <div class="chevron"></div>
+              </div>
+            </div>
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Select Template</div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px;">
+              <div class="card" style="border:2px solid var(--accent);background:var(--accent-light);">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <div style="font-size:10px;font-weight:600;">Upper Body Strength</div>
+                    <div style="font-size:9px;color:var(--text-secondary);">6 exercises · 45 min</div>
+                  </div>
+                  <div style="width:14px;height:14px;border-radius:50%;background:var(--accent);"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <div style="font-size:10px;font-weight:600;">Cardio &amp; Core</div>
+                    <div style="font-size:9px;color:var(--text-secondary);">5 exercises · 30 min</div>
+                  </div>
+                  <div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border);"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <div style="font-size:10px;font-weight:600;">Custom Program</div>
+                    <div style="font-size:9px;color:var(--text-secondary);">Build from scratch</div>
+                  </div>
+                  <div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border);"></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Schedule</div>
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="font-size:9px;color:var(--text-secondary);width:48px;">Date</span>
+                  <input class="input-field" placeholder="Apr 3, 2026" readonly style="flex:1;">
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span style="font-size:9px;color:var(--text-secondary);width:48px;">Notes</span>
+                  <input class="input-field" placeholder="Add coaching notes..." readonly style="flex:1;">
+                </div>
+              </div>
+            </div>
+            <button class="btn primary">Assign to Jordan →</button>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Dashboard</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Clients</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Programs</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">13 · Assign Workout</div>
+  </div>
+
+  <!-- 14. Client Data Review -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="back-header">
+            <div class="back-arrow"></div>
+            <div class="screen-title">Jordan · Metrics Review</div>
+          </div>
+          <div class="toggle-row" style="margin:8px 14px;">
+            <div class="toggle-btn active">4 weeks</div>
+            <div class="toggle-btn">8 weeks</div>
+            <div class="toggle-btn">All time</div>
+          </div>
+          <div class="scroll-area" style="padding-top:4px;">
+            <!-- weight -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Weight</div>
+            <div class="chart-placeholder" style="height:72px;margin-bottom:10px;">
+              <div class="chart-bar" style="height:95%;"></div>
+              <div class="chart-bar" style="height:90%;"></div>
+              <div class="chart-bar" style="height:85%;"></div>
+              <div class="chart-bar" style="height:83%;"></div>
+              <div class="chart-bar highlight" style="height:78%;"></div>
+              <div class="chart-bar highlight" style="height:74%;"></div>
+              <div class="chart-bar highlight" style="height:70%;"></div>
+              <div class="chart-x-labels">
+                <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span>
+              </div>
+            </div>
+            <!-- workout adherence -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Workout Adherence</div>
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-size:9px;color:var(--text-secondary);">Completed</span>
+                <span style="font-size:9px;font-weight:600;">68%</span>
+              </div>
+              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:68%;"></div></div>
+              <div style="font-size:9px;color:var(--text-label);margin-top:4px;">11 of 16 assigned workouts</div>
+            </div>
+            <!-- meal logging -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Meal Logging Rate</div>
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span style="font-size:9px;color:var(--text-secondary);">Days logged</span>
+                <span style="font-size:9px;font-weight:600;">54%</span>
+              </div>
+              <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:54%;background:#F59E0B;"></div></div>
+              <div style="font-size:9px;color:var(--text-label);margin-top:4px;">15 of 28 days logged</div>
+            </div>
+            <!-- trainer note -->
+            <div class="card filled">
+              <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Add Note to Client</div>
+              <input class="input-field" placeholder="Write a note or recommendation..." readonly>
+              <button class="btn primary" style="margin-top:8px;padding:7px;font-size:10px;">Send Note</button>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Dashboard</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Clients</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Programs</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">14 · Client Data Review</div>
+  </div>
+
+  <!-- 19. Client List -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header" style="padding-bottom:8px;">
+            <div class="screen-title">My Clients</div>
+            <div class="screen-subtitle">8 clients · 5 active this week</div>
+          </div>
+          <!-- search -->
+          <div style="padding:8px 14px 4px;">
+            <input class="input-field" placeholder="🔍  Search clients..." readonly>
+          </div>
+          <!-- filter pills -->
+          <div style="display:flex;gap:6px;padding:4px 14px 8px;">
+            <span class="pill green" style="padding:3px 10px;">All</span>
+            <span class="pill red" style="padding:3px 10px;">At Risk</span>
+            <span class="pill gray" style="padding:3px 10px;">Inactive</span>
+          </div>
+          <div class="scroll-area" style="padding-top:0;">
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Alex Torres</div>
+                <div class="row-sub">Last active: Today · 3 workouts this week</div>
+              </div>
+              <span class="pill green">On track</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Dana Lee</div>
+                <div class="row-sub">Last active: Yesterday</div>
+              </div>
+              <span class="pill green">On track</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Jordan Kim</div>
+                <div class="row-sub">Last active: 3 days ago</div>
+              </div>
+              <span class="pill red">Behind</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Sam Park</div>
+                <div class="row-sub">No metrics this week</div>
+              </div>
+              <span class="pill" style="background:#FEF3C7;color:#B45309;">Warning</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Chris Wang</div>
+                <div class="row-sub">Last active: Today</div>
+              </div>
+              <span class="pill green">On track</span>
+            </div>
+            <div class="list-row">
+              <div class="placeholder-img sm"></div>
+              <div class="row-text">
+                <div class="row-title">Maya Patel</div>
+                <div class="row-sub">Last active: 5 days ago</div>
+              </div>
+              <span class="pill red">Behind</span>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Dashboard</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Clients</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Programs</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">19 · Client List</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     PROFILE & SETTINGS
+════════════════════════════════════════════ -->
+<div class="section-label">Profile &amp; Settings — User &amp; Trainer</div>
+<div class="grid">
+
+  <!-- 15. User Profile -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div class="screen-title">My Profile</div>
+              <button class="btn outline" style="width:auto;padding:5px 10px;font-size:9px;">Edit</button>
+            </div>
+          </div>
+          <div class="scroll-area" style="padding-top:12px;">
+            <!-- avatar + name -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px;">
+              <div class="placeholder-img" style="width:64px;height:64px;border-radius:50%;position:relative;">
+                <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #fff;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:9px;color:#fff;">✎</span>
+                </div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-weight:700;">Jordan Kim</div>
+                <div style="font-size:10px;color:var(--text-secondary);">Client · Member since Jan 2026</div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <span class="pill green">Week 4 of 12</span>
+                <span class="pill gray">Lose weight</span>
+              </div>
+            </div>
+            <!-- my trainer -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">My Trainer</div>
+            <div class="card" style="margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="placeholder-img sm"></div>
+                <div class="row-text">
+                  <div class="row-title">Marcus Reid</div>
+                  <div class="row-sub">NASM Certified · 4.9 ★</div>
+                </div>
+                <span class="pill green">Connected</span>
+              </div>
+            </div>
+            <!-- stats row -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Stats</div>
+            <div style="display:flex;gap:6px;margin-bottom:12px;">
+              <div class="stat-box"><div class="stat-num">14</div><div class="stat-label">Workouts</div></div>
+              <div class="stat-box"><div class="stat-num">-4.2</div><div class="stat-label">lbs lost</div></div>
+              <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Streak</div></div>
+            </div>
+            <!-- settings list -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Settings</div>
+            <div class="card filled">
+              <div class="list-row">
+                <div class="row-text"><div class="row-title">Notifications</div></div>
+                <div class="chevron"></div>
+              </div>
+              <div class="list-row">
+                <div class="row-text"><div class="row-title">Privacy &amp; Data</div></div>
+                <div class="chevron"></div>
+              </div>
+              <div class="list-row">
+                <div class="row-text"><div class="row-title">Units (lbs / kg)</div></div>
+                <div class="chevron"></div>
+              </div>
+              <div class="list-row" style="border:none;">
+                <div class="row-text"><div class="row-title" style="color:var(--red);">Sign Out</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Workouts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Meals</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Metrics</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">15 · User Profile</div>
+  </div>
+
+  <!-- 16. Edit User Profile -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="back-header">
+            <div class="back-arrow"></div>
+            <div class="screen-title">Edit Profile</div>
+            <button class="btn primary" style="width:auto;padding:4px 10px;font-size:9px;margin-left:auto;">Save</button>
+          </div>
+          <div class="scroll-area" style="padding-top:12px;">
+            <!-- avatar edit -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px;">
+              <div style="position:relative;">
+                <div class="placeholder-img" style="width:60px;height:60px;border-radius:50%;"></div>
+                <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #fff;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:9px;color:#fff;">✎</span>
+                </div>
+              </div>
+              <span style="font-size:9px;color:var(--accent);font-weight:500;">Change photo</span>
+            </div>
+            <!-- form fields -->
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Full Name</div>
+                <input class="input-field" placeholder="Jordan Kim" readonly style="border-color:var(--accent);">
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Email</div>
+                <input class="input-field" placeholder="jordan@email.com" readonly>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Date of Birth</div>
+                <input class="input-field" placeholder="Mar 15, 1998" readonly>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <div style="flex:1;">
+                  <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Height</div>
+                  <input class="input-field" placeholder='5\'8"' readonly>
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Weight</div>
+                  <input class="input-field" placeholder="162 lbs" readonly>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Fitness Goal</div>
+                <div class="card filled" style="padding:8px 10px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:10px;">Lose weight</span>
+                    <div class="chevron"></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Bio / Notes</div>
+                <div class="input-field" style="height:48px;display:flex;align-items:flex-start;padding-top:8px;color:var(--text-label);">Short bio for your trainer…</div>
+              </div>
+              <div class="divider"></div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Change Password</div>
+                <input class="input-field" placeholder="Current password" readonly style="margin-bottom:6px;">
+                <input class="input-field" placeholder="New password" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">16 · Edit User Profile</div>
+  </div>
+
+  <!-- 17. Trainer Profile -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div class="screen-title">My Profile</div>
+              <button class="btn outline" style="width:auto;padding:5px 10px;font-size:9px;">Edit</button>
+            </div>
+          </div>
+          <div class="scroll-area" style="padding-top:12px;">
+            <!-- avatar + name -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px;">
+              <div class="placeholder-img" style="width:64px;height:64px;border-radius:50%;position:relative;">
+                <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-radius:50%;background:var(--blue);border:2px solid #fff;"></div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:14px;font-weight:700;">Marcus Reid</div>
+                <div style="font-size:10px;color:var(--text-secondary);">Personal Trainer · NASM Certified</div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <span class="pill blue">8 Clients</span>
+                <span class="pill gray">4.9 ★</span>
+              </div>
+            </div>
+            <!-- specialties -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Specialties</div>
+            <div class="tag-row" style="margin-bottom:12px;">
+              <span class="pill gray">Strength</span>
+              <span class="pill gray">Weight Loss</span>
+              <span class="pill gray">HIIT</span>
+              <span class="pill gray">Mobility</span>
+            </div>
+            <!-- stats -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">This Month</div>
+            <div style="display:flex;gap:6px;margin-bottom:12px;">
+              <div class="stat-box"><div class="stat-num">8</div><div class="stat-label">Clients</div></div>
+              <div class="stat-box"><div class="stat-num">42</div><div class="stat-label">Sessions</div></div>
+              <div class="stat-box"><div class="stat-num">96%</div><div class="stat-label">Retention</div></div>
+            </div>
+            <!-- invite clients -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Invite Clients</div>
+            <div class="card" style="margin-bottom:12px;text-align:center;">
+              <div class="placeholder-img" style="width:56px;height:56px;border-radius:8px;margin:0 auto 6px;font-size:9px;">QR</div>
+              <div style="font-size:10px;font-weight:600;margin-bottom:2px;">TRN-4829</div>
+              <div style="font-size:9px;color:var(--text-secondary);">Share code or QR with new clients</div>
+              <button class="btn outline" style="margin-top:8px;padding:6px;font-size:9px;">Copy Code</button>
+            </div>
+            <!-- settings -->
+            <div style="font-size:10px;font-weight:600;margin-bottom:6px;">Settings</div>
+            <div class="card filled">
+              <div class="list-row">
+                <div class="row-text"><div class="row-title">Notifications</div></div>
+                <div class="chevron"></div>
+              </div>
+              <div class="list-row">
+                <div class="row-text"><div class="row-title">Billing &amp; Plan</div></div>
+                <div class="chevron"></div>
+              </div>
+              <div class="list-row" style="border:none;">
+                <div class="row-text"><div class="row-title" style="color:var(--red);">Sign Out</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Dashboard</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Clients</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Programs</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">17 · Trainer Profile</div>
+  </div>
+
+  <!-- 18. Edit Trainer Profile -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="back-header">
+            <div class="back-arrow"></div>
+            <div class="screen-title">Edit Profile</div>
+            <button class="btn primary" style="width:auto;padding:4px 10px;font-size:9px;margin-left:auto;">Save</button>
+          </div>
+          <div class="scroll-area" style="padding-top:12px;">
+            <!-- avatar edit -->
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px;">
+              <div style="position:relative;">
+                <div class="placeholder-img" style="width:60px;height:60px;border-radius:50%;"></div>
+                <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-radius:50%;background:var(--blue);border:2px solid #fff;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:9px;color:#fff;">✎</span>
+                </div>
+              </div>
+              <span style="font-size:9px;color:var(--blue);font-weight:500;">Change photo</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Full Name</div>
+                <input class="input-field" placeholder="Marcus Reid" readonly style="border-color:var(--blue);">
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Email</div>
+                <input class="input-field" placeholder="marcus@fitbridge.com" readonly>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Certification</div>
+                <input class="input-field" placeholder="NASM Certified Personal Trainer" readonly>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Years of Experience</div>
+                <input class="input-field" placeholder="6 years" readonly>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Bio</div>
+                <div class="input-field" style="height:52px;display:flex;align-items:flex-start;padding-top:8px;color:var(--text-label);">I specialize in weight loss and functional strength…</div>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">Specialties</div>
+                <div class="tag-row" style="margin-bottom:6px;">
+                  <span class="pill green">Strength ×</span>
+                  <span class="pill green">Weight Loss ×</span>
+                  <span class="pill green">HIIT ×</span>
+                  <span class="pill gray">+ Add</span>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Max Clients</div>
+                <input class="input-field" placeholder="10 clients" readonly>
+              </div>
+              <div>
+                <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">Change Password</div>
+                <input class="input-field" placeholder="Current password" readonly style="margin-bottom:6px;">
+                <input class="input-field" placeholder="New password" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">18 · Edit Trainer Profile</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     MESSAGES & NOTIFICATIONS
+════════════════════════════════════════════ -->
+<div class="section-label">Messages &amp; Notifications — Shared</div>
+<div class="grid">
+
+  <!-- 20. Notifications -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div class="screen-title">Notifications</div>
+          </div>
+          <!-- tab row -->
+          <div class="toggle-row">
+            <div class="toggle-btn active">All</div>
+            <div class="toggle-btn">Unread <span style="background:var(--red);color:#fff;border-radius:99px;padding:1px 6px;font-size:7px;margin-left:4px;">3</span></div>
+          </div>
+          <div class="scroll-area" style="padding-top:4px;">
+            <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">Today</div>
+            <!-- unread -->
+            <div class="card" style="margin-bottom:6px;background:#F0FDF8;border-color:var(--accent);display:flex;gap:8px;align-items:flex-start;">
+              <div class="placeholder-img" style="width:28px;height:28px;border-radius:8px;flex-shrink:0;background:#D1FAE5;font-size:8px;">💪</div>
+              <div style="flex:1;">
+                <div style="font-size:10px;font-weight:600;">Workout Today!</div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:1px;">Upper Body Power is scheduled for today.</div>
+                <div style="font-size:8px;color:var(--text-label);margin-top:3px;">6:00 AM</div>
+              </div>
+              <div style="width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:3px;"></div>
+            </div>
+            <div class="card" style="margin-bottom:6px;background:#F0FDF8;border-color:var(--accent);display:flex;gap:8px;align-items:flex-start;">
+              <div class="placeholder-img" style="width:28px;height:28px;border-radius:8px;flex-shrink:0;background:#D1FAE5;font-size:8px;">📝</div>
+              <div style="flex:1;">
+                <div style="font-size:10px;font-weight:600;">New Note from Marcus</div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:1px;">Marcus left feedback on your last session.</div>
+                <div style="font-size:8px;color:var(--text-label);margin-top:3px;">9:05 AM</div>
+              </div>
+              <div style="width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:3px;"></div>
+            </div>
+            <div class="card" style="margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;">
+              <div class="placeholder-img" style="width:28px;height:28px;border-radius:8px;flex-shrink:0;font-size:8px;">🔥</div>
+              <div style="flex:1;">
+                <div style="font-size:10px;font-weight:600;">7-Day Streak!</div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:1px;">You completed 7 workouts in a row.</div>
+                <div style="font-size:8px;color:var(--text-label);margin-top:3px;">8:00 AM</div>
+              </div>
+            </div>
+            <div style="font-size:9px;font-weight:600;color:var(--text-secondary);margin-bottom:6px;">Yesterday</div>
+            <div class="card" style="margin-bottom:6px;display:flex;gap:8px;align-items:flex-start;">
+              <div class="placeholder-img" style="width:28px;height:28px;border-radius:8px;flex-shrink:0;font-size:8px;">📋</div>
+              <div style="flex:1;">
+                <div style="font-size:10px;font-weight:600;">Plan Updated</div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:1px;">Marcus updated your weekly workout plan.</div>
+                <div style="font-size:8px;color:var(--text-label);margin-top:3px;">3:30 PM</div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Workout</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Log</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Alerts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">20 · Notifications</div>
+  </div>
+
+  <!-- 21. Messages List -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <div class="screen-header">
+            <div class="screen-title">Messages</div>
+          </div>
+          <div style="padding:8px 14px 4px;">
+            <input class="input-field" placeholder="🔍  Search conversations..." readonly>
+          </div>
+          <div class="scroll-area" style="padding-top:6px;">
+            <!-- unread thread -->
+            <div class="list-row" style="padding:10px 0;align-items:flex-start;background:#F9FFFE;border-radius:8px;padding:8px 6px;border-bottom:none;margin-bottom:6px;border:1px solid var(--border);">
+              <div style="position:relative;flex-shrink:0;">
+                <div class="placeholder-img sm"></div>
+                <div style="position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--accent);border:1.5px solid #fff;"></div>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <div style="font-size:10px;font-weight:700;">Marcus Reid</div>
+                  <div style="font-size:8px;color:var(--text-label);">9:05 AM</div>
+                </div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Great session! Your squat depth has really improved…</div>
+                <div style="display:flex;gap:4px;margin-top:4px;">
+                  <span class="pill green" style="font-size:7px;padding:1px 6px;">Trainer</span>
+                </div>
+              </div>
+            </div>
+            <div class="list-row" style="padding:8px 6px;border-radius:8px;border-bottom:none;margin-bottom:6px;border:1px solid var(--border);">
+              <div class="placeholder-img sm" style="flex-shrink:0;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <div style="font-size:10px;font-weight:600;">Priya Sharma</div>
+                  <div style="font-size:8px;color:var(--text-label);">Yesterday</div>
+                </div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Don't forget to log your meals today 🥗</div>
+                <div style="display:flex;gap:4px;margin-top:4px;">
+                  <span class="pill blue" style="font-size:7px;padding:1px 6px;">Nutritionist</span>
+                </div>
+              </div>
+            </div>
+            <div class="list-row" style="padding:8px 6px;border-radius:8px;border-bottom:none;margin-bottom:6px;border:1px solid var(--border);">
+              <div class="placeholder-img sm" style="flex-shrink:0;background:#E0F2FE;"></div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <div style="font-size:10px;font-weight:600;">FitBridge Support</div>
+                  <div style="font-size:8px;color:var(--text-label);">Mon</div>
+                </div>
+                <div style="font-size:9px;color:var(--text-secondary);margin-top:2px;">Welcome to FitBridge! Here's how to get started.</div>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-nav">
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Home</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Workout</div></div>
+            <div class="nav-item"><div class="nav-icon active"></div><div class="nav-text active">Messages</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Alerts</div></div>
+            <div class="nav-item"><div class="nav-icon"></div><div class="nav-text">Profile</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">21 · Messages List</div>
+  </div>
+
+  <!-- 22. Message Thread -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div>
+            <div class="battery"><div class="battery-fill"></div></div>
+          </div>
+        </div>
+        <div class="screen-content">
+          <!-- chat header -->
+          <div class="back-header" style="padding:8px 12px;">
+            <div class="back-arrow"></div>
+            <div class="placeholder-img sm" style="width:28px;height:28px;flex-shrink:0;"></div>
+            <div style="flex:1;">
+              <div style="font-size:12px;font-weight:700;">Marcus Reid</div>
+              <div style="font-size:8px;color:var(--accent);">● Online</div>
+            </div>
+            <div class="placeholder-img" style="width:24px;height:24px;border-radius:6px;font-size:8px;flex-shrink:0;"></div>
+          </div>
+          <!-- messages -->
+          <div class="scroll-area" style="display:flex;flex-direction:column;gap:8px;padding:10px 12px;">
+            <div style="font-size:8px;color:var(--text-label);text-align:center;">Today · 9:05 AM</div>
+            <!-- received -->
+            <div style="display:flex;gap:6px;align-items:flex-end;">
+              <div class="placeholder-img sm" style="width:22px;height:22px;flex-shrink:0;"></div>
+              <div style="max-width:72%;background:var(--bg);border-radius:12px 12px 12px 2px;padding:7px 10px;">
+                <div style="font-size:9px;color:var(--text-primary);">Great session today Jordan! Your squat depth has really improved.</div>
+              </div>
+            </div>
+            <!-- received with workout card -->
+            <div style="display:flex;gap:6px;align-items:flex-end;">
+              <div class="placeholder-img sm" style="width:22px;height:22px;flex-shrink:0;"></div>
+              <div style="max-width:80%;background:var(--bg);border-radius:12px 12px 12px 2px;padding:7px 10px;">
+                <div style="font-size:9px;color:var(--text-primary);margin-bottom:6px;">I've updated next week's plan. Check it out:</div>
+                <div class="card" style="background:#fff;padding:7px;border-color:var(--accent);">
+                  <div style="font-size:8px;font-weight:700;color:var(--accent);">📋 Leg Day Fundamentals</div>
+                  <div style="font-size:8px;color:var(--text-secondary);margin-top:2px;">5 exercises · 50 min · Intermediate</div>
+                </div>
+              </div>
+            </div>
+            <!-- sent -->
+            <div style="display:flex;justify-content:flex-end;">
+              <div style="max-width:72%;background:var(--accent);border-radius:12px 12px 2px 12px;padding:7px 10px;">
+                <div style="font-size:9px;color:#fff;">Thanks! I'll check it out. Should I add extra warm-up sets?</div>
+              </div>
+            </div>
+            <!-- received -->
+            <div style="display:flex;gap:6px;align-items:flex-end;">
+              <div class="placeholder-img sm" style="width:22px;height:22px;flex-shrink:0;"></div>
+              <div style="max-width:72%;background:var(--bg);border-radius:12px 12px 12px 2px;padding:7px 10px;">
+                <div style="font-size:9px;color:var(--text-primary);">Yes, 2 sets of goblet squats at 40% weight. 🔥</div>
+              </div>
+            </div>
+          </div>
+          <!-- composer -->
+          <div style="padding:8px 10px;border-top:1px solid var(--border);display:flex;gap:6px;align-items:center;background:#fff;flex-shrink:0;">
+            <div class="placeholder-img" style="width:26px;height:26px;border-radius:8px;flex-shrink:0;font-size:8px;">+</div>
+            <input class="input-field" placeholder="Message Marcus..." readonly style="flex:1;border-radius:20px;padding:6px 12px;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <div style="width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:8px solid #fff;margin-left:2px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">22 · Message Thread</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     NUTRITION — MEAL LOGGING
+════════════════════════════════════════════ -->
+<div class="section-label">Nutrition — Meal Logging</div>
+<div class="grid">
+
+  <!-- 23. Add Meal Entry -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+      <div class="nav-bar">
+        <span class="back-btn">‹</span>
+        <span class="nav-title">Log Breakfast</span>
+        <span style="font-size:12px;font-weight:600;color:var(--accent);margin-left:auto;padding-right:4px;">Save</span>
+      </div>
+
+      <!-- Photo zone -->
+      <div style="margin:10px 12px 0;background:var(--placeholder);border:1.5px dashed var(--border);border-radius:12px;height:136px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:#E6FAF3;display:flex;align-items:center;justify-content:center;font-size:22px;">📷</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text-secondary);">Add Meal Photo</div>
+        <div style="font-size:10px;color:var(--text-label);">Take a photo or choose from library</div>
+      </div>
+
+      <!-- Photo source buttons -->
+      <div style="display:flex;gap:8px;margin:10px 12px 0;">
+        <div style="flex:1;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--placeholder);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-secondary);">📷 Take Photo</div>
+        <div style="flex:1;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--placeholder);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--text-secondary);">🖼 Choose Library</div>
+      </div>
+
+      <!-- Calorie summary bar -->
+      <div style="margin:10px 12px 0;background:#E6FAF3;border:1px solid var(--accent);border-radius:10px;padding:8px 12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;color:var(--text-secondary);">Estimated Calories</span>
+          <span style="font-size:16px;font-weight:700;color:var(--accent);">420 kcal</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:4px;">
+          <span style="font-size:10px;color:var(--text-label);">P: 28g</span>
+          <span style="font-size:10px;color:var(--text-label);">C: 48g</span>
+          <span style="font-size:10px;color:var(--text-label);">F: 12g</span>
+        </div>
+      </div>
+
+      <!-- Food search -->
+      <div style="margin:10px 12px 0 12px;font-size:12px;font-weight:600;color:var(--text-primary);">Food Items</div>
+      <div style="margin:6px 12px 0;background:var(--placeholder);border:1px solid var(--border);border-radius:10px;height:40px;display:flex;align-items:center;padding:0 12px;font-size:12px;color:var(--text-label);">🔍 Search food or scan barcode…</div>
+
+      <!-- Food list -->
+      <div style="margin:8px 12px 0;display:flex;flex-direction:column;gap:4px;">
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Oatmeal (1 cup)</div>
+            <div style="font-size:10px;color:var(--text-label);">Serving: 1 cup</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;color:var(--text-secondary);">150 kcal</span>
+            <div style="width:20px;height:20px;border-radius:10px;background:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--red);">✕</div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Banana (1 medium)</div>
+            <div style="font-size:10px;color:var(--text-label);">Serving: 1 medium</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;color:var(--text-secondary);">105 kcal</span>
+            <div style="width:20px;height:20px;border-radius:10px;background:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--red);">✕</div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Almond Milk (1 cup)</div>
+            <div style="font-size:10px;color:var(--text-label);">Serving: 1 cup</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;color:var(--text-secondary);">60 kcal</span>
+            <div style="width:20px;height:20px;border-radius:10px;background:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--red);">✕</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div style="margin:10px 12px 0;font-size:12px;font-weight:600;color:var(--text-primary);">Notes</div>
+      <div style="margin:6px 12px 0;background:var(--placeholder);border:1px solid var(--border);border-radius:10px;height:52px;padding:10px 12px;font-size:12px;color:var(--text-label);">Add a note about this meal…</div>
+
+      <!-- CTA -->
+      <div style="margin:10px 12px 0;height:44px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;">Add to Log</div>
+
+      <div class="bottom-nav">
+        <div class="nav-item">Home</div>
+        <div class="nav-item">Workout</div>
+        <div class="nav-item active">Nutrition</div>
+        <div class="nav-item">Profile</div>
+      </div>
+    </div>
+    <div class="phone-label">23 · Add Meal Entry</div>
+  </div>
+
+  <!-- 24. Photo Nutrition Analysis -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+      <div class="nav-bar">
+        <span class="back-btn">‹</span>
+        <span class="nav-title">Nutrition Analysis</span>
+      </div>
+
+      <!-- Meal photo preview -->
+      <div style="margin:10px 12px 0;background:#D5DDD0;border-radius:12px;height:180px;position:relative;display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:12px;color:var(--text-secondary);">[ Meal Photo Preview ]</span>
+        <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:var(--accent);border-radius:10px;padding:4px 14px;font-size:10px;font-weight:600;color:#fff;white-space:nowrap;">AI Scan Complete ✓</div>
+      </div>
+
+      <!-- Detected foods -->
+      <div style="margin:10px 12px 0;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="font-size:12px;font-weight:600;">Detected Foods</span>
+        <span style="font-size:10px;color:var(--text-label);">Tap to edit quantity</span>
+      </div>
+
+      <!-- Detected rows -->
+      <div style="margin:6px 12px 0;display:flex;flex-direction:column;gap:4px;">
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Oatmeal</div>
+            <div style="font-size:10px;color:var(--text-label);">1 cup</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;background:#E6FAF3;border-radius:8px;padding:2px 6px;color:var(--accent);">95%</span>
+            <span style="font-size:12px;font-weight:500;color:var(--accent);">150 kcal</span>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Banana</div>
+            <div style="font-size:10px;color:var(--text-label);">1 medium</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;background:#E6FAF3;border-radius:8px;padding:2px 6px;color:var(--accent);">98%</span>
+            <span style="font-size:12px;font-weight:500;color:var(--accent);">105 kcal</span>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Almond Milk</div>
+            <div style="font-size:10px;color:var(--text-label);">1 cup</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;background:#E6FAF3;border-radius:8px;padding:2px 6px;color:var(--accent);">88%</span>
+            <span style="font-size:12px;font-weight:500;color:var(--accent);">60 kcal</span>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:12px;font-weight:500;">Honey</div>
+            <div style="font-size:10px;color:var(--text-label);">1 tsp</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:10px;background:#FEF9C3;border-radius:8px;padding:2px 6px;color:#B45309;">72%</span>
+            <span style="font-size:12px;font-weight:500;color:var(--accent);">21 kcal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total nutrition summary -->
+      <div style="margin:10px 12px 0;background:#E6FAF3;border:1px solid var(--accent);border-radius:10px;padding:10px 12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:12px;font-weight:600;">Total Nutrition</span>
+          <span style="font-size:18px;font-weight:700;color:var(--accent);">336 kcal</span>
+        </div>
+        <div style="display:flex;gap:20px;margin-top:6px;">
+          <span style="font-size:10px;color:var(--text-secondary);">Protein: 28g</span>
+          <span style="font-size:10px;color:var(--text-secondary);">Carbs: 48g</span>
+          <span style="font-size:10px;color:var(--text-secondary);">Fat: 12g</span>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div style="margin:10px 12px 0;height:44px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;">Confirm &amp; Add to Log</div>
+      <div style="margin:8px 12px 0;height:44px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;color:var(--text-primary);">Edit Items</div>
+
+      <div class="bottom-nav">
+        <div class="nav-item">Home</div>
+        <div class="nav-item">Workout</div>
+        <div class="nav-item active">Nutrition</div>
+        <div class="nav-item">Profile</div>
+      </div>
+    </div>
+    <div class="phone-label">24 · Photo Nutrition Analysis</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════
+     USER FLOW MAP
+════════════════════════════════════════════ -->
+<div class="section-label">User Flow Map</div>
+<div style="overflow-x:auto;background:#fff;border-radius:16px;padding:28px 24px 20px;box-shadow:0 2px 12px rgba(0,0,0,.08);max-width:1160px;margin:0 auto 48px;">
+  <svg id="fm" viewBox="-10 70 3540 1020" style="display:block;width:3530px;height:auto;min-width:600px;"></svg>
+  <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:14px;font-size:12px;font-family:Inter,sans-serif;color:#555;">
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:14px;border-radius:7px;background:#6B44DB;"></span>Start</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#3B82C4;"></span>User Screen</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#10B777;"></span>Action / Result</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:14px;transform:rotate(45deg);background:#F59E0B;margin:2px;"></span>Decision</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#B81E1E;"></span>App Hub</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:#0E74D0;"></span>Trainer Screen</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:30px;height:2px;background:#10B777;position:relative;top:1px;"></span>Yes / Success</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:30px;height:2px;background:#EF4444;position:relative;top:1px;"></span>No / Error</span>
+  </div>
+</div>
+<script>
+(function(){
+  const svg = document.getElementById('fm');
+  const NS  = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, text){
+    const e = document.createElementNS(NS, tag);
+    for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+    if(text !== undefined) e.textContent = text;
+    return e;
+  }
+  const C = {
+    start:   {bg:'#6B44DB',tc:'#fff'},
+    screen:  {bg:'#3B82C4',tc:'#fff'},
+    action:  {bg:'#10B777',tc:'#fff'},
+    decision:{bg:'#F59E0B',tc:'#111'},
+    hub:     {bg:'#B81E1E',tc:'#fff'},
+    trainer: {bg:'#0E74D0',tc:'#fff'},
+  };
+  const AC = {gray:'#909090',green:'#10B777',red:'#EF4444',blue:'#3B82F6',teal:'#0E74D0'};
+
+  // Arrow markers
+  const defs = el('defs',{});
+  for(const [n,c] of Object.entries(AC)){
+    const mk = el('marker',{id:'a-'+n,markerWidth:'8',markerHeight:'6',refX:'7',refY:'3',orient:'auto'});
+    mk.appendChild(el('polygon',{points:'0 0,8 3,0 6',fill:c}));
+    defs.appendChild(mk);
+  }
+  svg.appendChild(defs);
+
+  const N = {
+    start:    {l:'Start',             cx:100, cy:500,t:'start',   w:130,h:46},
+    onboard:  {l:'Onboarding',        cx:295, cy:500,t:'screen',  w:158,h:44},
+    dnewuser: {l:'New User?',          cx:500, cy:500,t:'decision',w:150,h:84},
+    signup:   {l:'Sign Up',            cx:705, cy:380,t:'screen',  w:128,h:44},
+    login:    {l:'Log In',             cx:705, cy:500,t:'screen',  w:128,h:44},
+    logindet: {l:'Login Details',      cx:920, cy:500,t:'screen',  w:156,h:44},
+    dloginok: {l:'Login OK?',          cx:1140,cy:500,t:'decision',w:150,h:84},
+    forgotpw: {l:'Forgot Password',    cx:1140,cy:665,t:'screen',  w:160,h:44},
+    demailsent:{l:'Email Sent?',       cx:1140,cy:810,t:'decision',w:150,h:84},
+    resetpw:  {l:'Reset Password',     cx:1365,cy:810,t:'screen',  w:160,h:44},
+    dpwok:    {l:'Password OK?',       cx:1595,cy:810,t:'decision',w:150,h:84},
+    home:     {l:'Home Screen',        cx:1830,cy:500,t:'hub',     w:160,h:50},
+    drole:    {l:'User Role?',         cx:2048,cy:500,t:'decision',w:150,h:84},
+    userdash: {l:'User Dashboard',     cx:2270,cy:375,t:'screen',  w:168,h:46},
+    traindash:{l:'Trainer Dashboard',  cx:2270,cy:645,t:'trainer', w:178,h:46},
+    actwkt:   {l:'Active Workout',     cx:2450,cy:205,t:'screen',  w:158,h:44},
+    dsetcmp:  {l:'Set Complete?',      cx:2680,cy:205,t:'decision',w:150,h:84},
+    wkthist:  {l:'Workout History',    cx:2906,cy:170,t:'screen',  w:162,h:44},
+    vidlib:   {l:'Video Library',      cx:2906,cy:240,t:'screen',  w:146,h:44},
+    nutlog:   {l:'Nutrition Log',      cx:2450,cy:315,t:'screen',  w:158,h:44},
+    daddmeal: {l:'Add Meal?',          cx:2680,cy:315,t:'decision',w:140,h:80},
+    addmeal:  {l:'Add Meal Entry',     cx:2906,cy:285,t:'action',  w:158,h:44},
+    dphoto:   {l:'Photo?',             cx:3108,cy:285,t:'decision',w:108,h:76},
+    photoan:  {l:'Photo Analysis',     cx:3290,cy:255,t:'action',  w:158,h:44},
+    addlog:   {l:'Add to Log',         cx:3290,cy:315,t:'action',  w:124,h:44},
+    msglist:  {l:'Messages List',      cx:2450,cy:405,t:'screen',  w:158,h:44},
+    msgthrd:  {l:'Message Thread',     cx:2680,cy:405,t:'screen',  w:158,h:44},
+    notifs:   {l:'Notifications',      cx:2450,cy:475,t:'screen',  w:158,h:44},
+    userprof: {l:'User Profile',       cx:2450,cy:558,t:'screen',  w:158,h:44},
+    dproact:  {l:'Profile Action?',    cx:2680,cy:558,t:'decision',w:150,h:84},
+    trprofpub:{l:'Trainer Profile',    cx:2915,cy:526,t:'screen',  w:158,h:44},
+    bodmet:   {l:'Body Metrics',       cx:2915,cy:592,t:'screen',  w:140,h:44},
+    clilist:  {l:'Client List',        cx:2450,cy:758,t:'trainer', w:140,h:44},
+    clidat:   {l:'Client Data Review', cx:2690,cy:758,t:'trainer', w:178,h:44},
+    crtwkt:   {l:'Create Workout',     cx:2450,cy:838,t:'trainer', w:155,h:44},
+    asswkt:   {l:'Assign Workout',     cx:2690,cy:838,t:'trainer', w:155,h:44},
+    trprof:   {l:'Trainer Profile',    cx:2450,cy:918,t:'trainer', w:155,h:44},
+    dtpact:   {l:'T.Profile Action?',  cx:2690,cy:918,t:'decision',w:160,h:84},
+    vidup:    {l:'Video Upload',       cx:2930,cy:886,t:'trainer', w:138,h:44},
+    trnotif:  {l:'T. Notifications',   cx:2930,cy:952,t:'trainer', w:158,h:44},
+  };
+
+  const E = [
+    ['start','onboard','gray'],['onboard','dnewuser','gray'],
+    ['dnewuser','signup','green'],['dnewuser','login','red'],
+    ['signup','logindet','green'],['login','logindet','gray'],
+    ['logindet','dloginok','gray'],
+    ['dloginok','home','green'],['dloginok','forgotpw','red'],
+    ['forgotpw','demailsent','gray'],['demailsent','resetpw','green'],
+    ['resetpw','dpwok','gray'],['dpwok','logindet','green'],['dpwok','forgotpw','red'],
+    ['home','drole','gray'],['drole','userdash','green'],['drole','traindash','teal'],
+    ['userdash','actwkt','gray'],['userdash','nutlog','gray'],['userdash','msglist','gray'],
+    ['userdash','notifs','gray'],['userdash','userprof','gray'],
+    ['actwkt','dsetcmp','gray'],['dsetcmp','wkthist','green'],['dsetcmp','vidlib','red'],
+    ['nutlog','daddmeal','gray'],['daddmeal','addmeal','green'],['addmeal','dphoto','gray'],
+    ['dphoto','photoan','green'],['dphoto','addlog','red'],['photoan','addlog','green'],
+    ['msglist','msgthrd','gray'],['userprof','dproact','gray'],
+    ['dproact','trprofpub','blue'],['dproact','bodmet','blue'],
+    ['traindash','clilist','teal'],['traindash','crtwkt','teal'],['traindash','trprof','teal'],
+    ['clilist','clidat','teal'],['crtwkt','asswkt','teal'],
+    ['trprof','dtpact','gray'],['dtpact','vidup','teal'],['dtpact','trnotif','teal'],
+  ];
+
+  function rectEdge(cx,cy,w,h,tx,ty){
+    const dx=tx-cx,dy=ty-cy;
+    if(!dx&&!dy) return{x:cx,y:cy};
+    const sx=dx?(w/2)/Math.abs(dx):1e9, sy=dy?(h/2)/Math.abs(dy):1e9;
+    const s=Math.min(sx,sy);
+    return{x:cx+dx*s,y:cy+dy*s};
+  }
+  function diamondEdge(cx,cy,w,h,tx,ty){
+    const dx=tx-cx,dy=ty-cy,len=Math.sqrt(dx*dx+dy*dy);
+    if(!len) return{x:cx,y:cy};
+    const nx=dx/len,ny=dy/len;
+    const s=1/(Math.abs(nx)/(w/2)+Math.abs(ny)/(h/2));
+    return{x:cx+nx*s,y:cy+ny*s};
+  }
+  function edge(n,tx,ty){
+    return n.t==='decision'?diamondEdge(n.cx,n.cy,n.w,n.h,tx,ty):rectEdge(n.cx,n.cy,n.w,n.h,tx,ty);
+  }
+
+  // Section backgrounds
+  for(const [lbl,x,y,w,h,bg] of [
+    ['AUTH',      -10,300,1740,590,'#F8F4FF'],
+    ['HOME HUB', 1750,300, 590,390,'#FFF4F4'],
+    ['USER APP', 2360, 90,1070,560,'#F0F7FF'],
+    ['TRAINER APP',2360,680, 720,330,'#F0FAFF'],
+  ]){
+    svg.appendChild(el('rect',{x,y,width:w,height:h,rx:'12',fill:bg,opacity:'.8'}));
+    svg.appendChild(el('text',{x:x+14,y:y+26,'font-size':'15','font-weight':'700',fill:'#555','font-family':'Inter,sans-serif'},lbl));
+  }
+
+  // Arrows
+  const aLayer=el('g',{});
+  for(const [fId,tId,col] of E){
+    const a=N[fId],b=N[tId];
+    if(!a||!b) continue;
+    const p1=edge(a,b.cx,b.cy), p2=edge(b,a.cx,a.cy);
+    const dx=p2.x-p1.x,dy=p2.y-p1.y,len=Math.sqrt(dx*dx+dy*dy);
+    const ex=len>4?p2.x-dx/len*2:p2.x, ey=len>4?p2.y-dy/len*2:p2.y;
+    aLayer.appendChild(el('line',{x1:p1.x,y1:p1.y,x2:ex,y2:ey,
+      stroke:AC[col],'stroke-width':'2','marker-end':'url(#a-'+col+')'}));
+  }
+  svg.appendChild(aLayer);
+
+  // Nodes
+  const nLayer=el('g',{});
+  for(const [,n] of Object.entries(N)){
+    const cc=C[n.t], g=el('g',{});
+    if(n.t==='decision'){
+      const hw=n.w/2,hh=n.h/2;
+      g.appendChild(el('polygon',{points:`${n.cx},${n.cy-hh} ${n.cx+hw},${n.cy} ${n.cx},${n.cy+hh} ${n.cx-hw},${n.cy}`,fill:cc.bg}));
+    } else if(n.t==='start'){
+      g.appendChild(el('rect',{x:n.cx-n.w/2,y:n.cy-n.h/2,width:n.w,height:n.h,rx:n.h/2,fill:cc.bg}));
+    } else {
+      g.appendChild(el('rect',{x:n.cx-n.w/2,y:n.cy-n.h/2,width:n.w,height:n.h,rx:'8',fill:cc.bg}));
+    }
+    g.appendChild(el('text',{x:n.cx,y:n.cy,'text-anchor':'middle','dominant-baseline':'central',
+      'font-size':'12','font-family':'Inter,sans-serif',fill:cc.tc,'font-weight':'500'},n.l));
+    nLayer.appendChild(g);
+  }
+  svg.appendChild(nLayer);
+})();
+</script>
+
+<!-- ════════════════════════════════════════════
+     NAVIGATION FLOW DIAGRAM
+════════════════════════════════════════════ -->
+<div class="section-label">Navigation Flow Diagram</div>
+<div class="flow-section">
+  <div class="flow-title">FitBridge — Screen Navigation Map</div>
+  <div class="flow-grid">
+
+    <!-- Col 1: Entry -->
+    <div class="flow-col">
+      <div class="flow-col-label">Entry</div>
+      <div class="flow-node accent">1 · Welcome</div>
+      <div class="flow-node accent">1B · Sign In</div>
+      <div class="flow-node accent">2 · Role &amp; Sign Up</div>
+      <div class="flow-node accent">3 · Goals</div>
+      <div class="flow-node accent">4 · Connect Trainer</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- Col 2: User Main -->
+    <div class="flow-col">
+      <div class="flow-col-label">User App</div>
+      <div class="flow-node">5 · Dashboard</div>
+      <div class="flow-node">7 · Workout History</div>
+      <div class="flow-node">9 · Body Metrics</div>
+      <div class="flow-node">10 · Meal Log</div>
+      <div class="flow-node">15 · Profile</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- Col 3: User Detail -->
+    <div class="flow-col">
+      <div class="flow-col-label">User Detail</div>
+      <div class="flow-node">6 · Active Workout</div>
+      <div class="flow-node">8 · Video Library</div>
+      <div class="flow-node">18 · Body Metrics</div>
+      <div class="flow-node" style="background:#ECFDF5;border:1px solid var(--accent);color:#065F46;">23 · Add Meal Entry</div>
+      <div class="flow-node" style="background:#ECFDF5;border:1px solid var(--accent);color:#065F46;">24 · Photo Analysis</div>
+      <div class="flow-node">17 · Trainer Profile</div>
+    </div>
+    <div class="flow-arrow" style="opacity:.2;">|</div>
+
+    <!-- Col 4: Trainer Main -->
+    <div class="flow-col">
+      <div class="flow-col-label">Trainer App</div>
+      <div class="flow-node blue">11 · Dashboard</div>
+      <div class="flow-node blue">19 · Client List</div>
+      <div class="flow-node blue">Program Library</div>
+      <div class="flow-node blue">17 · Profile</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- Col 5: Trainer Detail -->
+    <div class="flow-col">
+      <div class="flow-col-label">Trainer Detail</div>
+      <div class="flow-node blue">12 · Client Detail</div>
+      <div class="flow-node blue">13 · Assign Workout</div>
+      <div class="flow-node blue">14 · Data Review</div>
+      <div class="flow-node blue">18 · Edit Profile</div>
+      <div class="flow-node red">Alerts &amp; Flags</div>
+    </div>
+    <div class="flow-arrow" style="opacity:.2;">|</div>
+
+    <!-- Col 6: Shared -->
+    <div class="flow-col">
+      <div class="flow-col-label">Shared</div>
+      <div class="flow-node" style="background:#F5F3FF;border:1px solid #8B5CF6;color:#6D28D9;">20 · Notifications</div>
+      <div class="flow-node" style="background:#F5F3FF;border:1px solid #8B5CF6;color:#6D28D9;">21 · Messages List</div>
+      <div class="flow-node" style="background:#F5F3FF;border:1px solid #8B5CF6;color:#6D28D9;">22 · Message Thread</div>
+    </div>
+
+  </div>
+  <div style="margin-top:20px;font-size:11px;color:var(--text-secondary);display:flex;gap:16px;flex-wrap:wrap;">
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--accent-light);border:1px solid var(--accent);"></span>Onboarding</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--bg);border:1px solid var(--border);"></span>User screens</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#EFF6FF;border:1px solid #3B82F6;"></span>Trainer screens</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--red-light);border:1px solid var(--red);"></span>Alert / risk state</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#F5F3FF;border:1px solid #8B5CF6;"></span>Shared (User &amp; Trainer)</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#ECFDF5;border:1px solid #00C87A;"></span>Nutrition / Meal Logging</span>
+  </div>
+</div>
+
+</body>
+</html>

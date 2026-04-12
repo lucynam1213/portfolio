@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBridge – CMS & Data Outline</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4F5F7;
+    --white: #FFFFFF;
+    --border: #E2E6ED;
+    --text-primary: #1A1A2E;
+    --text-secondary: #6B7280;
+    --text-label: #9CA3AF;
+
+    --green: #00C87A;
+    --green-light: #E6FAF3;
+    --green-dark: #00956B;
+
+    --blue: #3B82F6;
+    --blue-light: #EFF6FF;
+    --blue-dark: #1D4ED8;
+
+    --orange: #F59E0B;
+    --orange-light: #FFFBEB;
+    --orange-dark: #B45309;
+
+    --purple: #8B5CF6;
+    --purple-light: #F5F3FF;
+    --purple-dark: #6D28D9;
+
+    --gray-light: #F9FAFB;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    padding: 48px 24px 100px;
+  }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .page-header .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .page-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .page-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 1160px;
+    margin: 0 auto 64px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* ── ENTITY CARDS GRID ── */
+  .entities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  .entity-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    border: 1px solid var(--border);
+  }
+  .entity-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .entity-icon {
+    font-size: 18px;
+  }
+  .entity-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .entity-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+  .entity-badge {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 99px;
+  }
+
+  .entity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .entity-table thead tr {
+    background: var(--gray-light);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .entity-table thead th {
+    padding: 6px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .entity-table tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .entity-table tbody tr:last-child { border-bottom: none; }
+  .entity-table tbody tr:hover { background: var(--gray-light); }
+  .entity-table td {
+    padding: 7px 12px;
+    vertical-align: top;
+    color: var(--text-primary);
+  }
+  .field-name {
+    font-family: 'Courier New', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .field-type {
+    font-size: 10px;
+    color: var(--blue);
+    font-weight: 500;
+  }
+  .field-fk {
+    font-size: 10px;
+    color: var(--purple);
+    font-weight: 500;
+  }
+  .field-pk {
+    font-size: 10px;
+    color: var(--green-dark);
+    font-weight: 600;
+  }
+  .req-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-top: 3px;
+  }
+  .req-dot.yes { background: var(--green); }
+  .req-dot.no  { background: var(--border); }
+  .field-example {
+    font-size: 10px;
+    color: var(--text-label);
+    font-style: italic;
+  }
+
+  /* color themes per category */
+  .cat-green .entity-header { background: var(--green-light); border-bottom: 2px solid var(--green); }
+  .cat-green .entity-badge  { background: var(--green-light); color: var(--green-dark); }
+  .cat-blue  .entity-header { background: var(--blue-light); border-bottom: 2px solid var(--blue); }
+  .cat-blue  .entity-badge  { background: var(--blue-light); color: var(--blue-dark); }
+  .cat-orange .entity-header { background: var(--orange-light); border-bottom: 2px solid var(--orange); }
+  .cat-orange .entity-badge  { background: var(--orange-light); color: var(--orange-dark); }
+  .cat-purple .entity-header { background: var(--purple-light); border-bottom: 2px solid var(--purple); }
+  .cat-purple .entity-badge  { background: var(--purple-light); color: var(--purple-dark); }
+
+  /* ── RELATIONSHIP MAP ── */
+  .rel-canvas {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    padding: 32px;
+    overflow-x: auto;
+  }
+
+  .rel-diagram {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    min-width: 860px;
+  }
+
+  .rel-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .rel-col-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-label);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  .rel-node {
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: 1.5px solid;
+    min-width: 130px;
+    position: relative;
+    line-height: 1.3;
+  }
+  .rel-node .node-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+  .rel-node.green  { background: var(--green-light);  border-color: var(--green);  color: var(--green-dark); }
+  .rel-node.blue   { background: var(--blue-light);   border-color: var(--blue);   color: var(--blue-dark); }
+  .rel-node.orange { background: var(--orange-light); border-color: var(--orange); color: var(--orange-dark); }
+  .rel-node.purple { background: var(--purple-light); border-color: var(--purple); color: var(--purple-dark); }
+  .rel-node.gray   { background: var(--gray-light);   border-color: var(--border); color: var(--text-secondary); }
+
+  .rel-connector {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+  .rel-line-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+  }
+  .rel-arrow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+  .rel-arrow .line {
+    height: 1.5px;
+    background: var(--border);
+    flex: 1;
+    min-width: 30px;
+  }
+  .rel-arrow .arrowhead {
+    width: 0; height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid var(--border);
+  }
+  .rel-label {
+    font-size: 8.5px;
+    color: var(--text-label);
+    text-align: center;
+    max-width: 76px;
+    line-height: 1.3;
+  }
+  .rel-cardinality {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── RELATIONSHIP TABLE ── */
+  .rel-table-wrap {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    margin-top: 20px;
+  }
+  .rel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .rel-table thead tr {
+    background: var(--text-primary);
+  }
+  .rel-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: .03em;
+  }
+  .rel-table tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .rel-table tbody tr:nth-child(even) { background: var(--gray-light); }
+  .rel-table tbody tr:hover { background: var(--blue-light); }
+  .rel-table td {
+    padding: 10px 16px;
+    vertical-align: middle;
+  }
+  .rel-entity-a { font-weight: 600; color: var(--green-dark); font-family: monospace; font-size: 11px; }
+  .rel-entity-b { font-weight: 600; color: var(--blue-dark); font-family: monospace; font-size: 11px; }
+  .rel-via      { font-family: monospace; font-size: 10px; color: var(--purple); }
+  .rel-type {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 99px;
+  }
+  .rel-type.one-many   { background: var(--blue-light); color: var(--blue-dark); }
+  .rel-type.many-one   { background: var(--green-light); color: var(--green-dark); }
+  .rel-type.one-one    { background: var(--orange-light); color: var(--orange-dark); }
+
+  /* ── CMS OWNERSHIP TABLE ── */
+  .cms-wrap {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .cms-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .cms-table thead tr {
+    background: var(--text-primary);
+  }
+  .cms-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: .03em;
+  }
+  .cms-table thead th:not(:first-child) { text-align: center; }
+  .cms-table tbody tr { border-bottom: 1px solid var(--border); }
+  .cms-table tbody tr:nth-child(even) { background: var(--gray-light); }
+  .cms-table tbody tr:hover { background: #F0FDF8; }
+  .cms-table td {
+    padding: 11px 16px;
+    vertical-align: middle;
+  }
+  .cms-table td:not(:first-child) { text-align: center; }
+  .cms-content-name { font-weight: 600; font-size: 12px; }
+  .cms-content-sub  { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .badge.create  { background: var(--green-light); color: var(--green-dark); }
+  .badge.read    { background: var(--blue-light); color: var(--blue-dark); }
+  .badge.edit    { background: var(--orange-light); color: var(--orange-dark); }
+  .badge.none    { background: var(--gray-light); color: var(--text-label); }
+  .badge.system  { background: var(--purple-light); color: var(--purple-dark); }
+
+  .cms-category-row td {
+    background: var(--text-primary) !important;
+    color: rgba(255,255,255,.6);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* ── DATA FLOW ── */
+  .flow-wrap {
+    background: var(--white);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 32px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 14px;
+  }
+  .flow-actor {
+    width: 110px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--gray-light);
+  }
+  .flow-actor.trainer-actor { border-color: var(--blue); background: var(--blue-light); color: var(--blue-dark); }
+  .flow-actor.user-actor    { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+  .flow-actor.system-actor  { border-color: var(--purple); background: var(--purple-light); color: var(--purple-dark); }
+  .flow-steps {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-left: 12px;
+  }
+  .flow-step {
+    flex: 1;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid var(--border);
+    background: var(--gray-light);
+    color: var(--text-primary);
+    position: relative;
+  }
+  .flow-step.highlight-green  { background: var(--green-light); border-color: var(--green); color: var(--green-dark); font-weight: 600; }
+  .flow-step.highlight-blue   { background: var(--blue-light); border-color: var(--blue); color: var(--blue-dark); font-weight: 600; }
+  .flow-step.highlight-purple { background: var(--purple-light); border-color: var(--purple); color: var(--purple-dark); font-weight: 600; }
+  .flow-step.highlight-orange { background: var(--orange-light); border-color: var(--orange); color: var(--orange-dark); font-weight: 600; }
+  .flow-sep {
+    font-size: 14px;
+    color: var(--text-label);
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+  .flow-row-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: 6px;
+    margin-left: 122px;
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    max-width: 1160px;
+    margin: 0 auto 64px;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<div class="page-header">
+  <div class="eyebrow">Part 2 Submission · IXDS-720-N02</div>
+  <h1>FitBridge — CMS & Data Outline</h1>
+  <p>A full breakdown of every data entity, content relationship, and ownership model powering the FitBridge app ecosystem.</p>
+</div>
+
+<!-- ════════════════════════════════════════════
+  SECTION 1 — DATA ENTITIES
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div>
+      <div class="section-title">Data Entities</div>
+      <div class="section-sub">Every object the app stores — fields, types, and requirements</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+    <span style="font-size:11px;color:var(--text-secondary);">Categories:</span>
+    <span class="badge create">👤 Users &amp; Auth</span>
+    <span class="badge read">💪 Workouts</span>
+    <span class="badge edit">🥗 Nutrition &amp; Health</span>
+    <span class="badge" style="background:var(--purple-light);color:var(--purple-dark);">🎥 Content &amp; Comms</span>
+  </div>
+
+  <div class="entities-grid">
+
+    <!-- USER -->
+    <div class="entity-card cat-green">
+      <div class="entity-header">
+        <span class="entity-icon">👤</span>
+        <div>
+          <div class="entity-name">User</div>
+          <div class="entity-desc">Fitness client account</div>
+        </div>
+        <span class="entity-badge">Auth</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">name</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Jordan Kim</td></tr>
+          <tr><td><span class="field-name">email</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">jordan@email.com</td></tr>
+          <tr><td><span class="field-name">password</span></td><td><span class="field-type">String (hashed)</span></td><td><span class="req-dot yes"></span></td><td class="field-example">••••••••</td></tr>
+          <tr><td><span class="field-name">profile_photo</span></td><td><span class="field-type">URL</span></td><td><span class="req-dot no"></span></td><td class="field-example">/uploads/jordan.jpg</td></tr>
+          <tr><td><span class="field-name">date_of_birth</span></td><td><span class="field-type">Date</span></td><td><span class="req-dot no"></span></td><td class="field-example">1998-03-15</td></tr>
+          <tr><td><span class="field-name">height</span></td><td><span class="field-type">String</span></td><td><span class="req-dot no"></span></td><td class="field-example">5'8"</td></tr>
+          <tr><td><span class="field-name">weight_lbs</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">162.0</td></tr>
+          <tr><td><span class="field-name">goal</span></td><td><span class="field-type">Enum</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Lose weight</td></tr>
+          <tr><td><span class="field-name">bio</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot no"></span></td><td class="field-example">Working on endurance</td></tr>
+          <tr><td><span class="field-name">trainer_id</span></td><td><span class="field-fk">UUID FK → Trainer</span></td><td><span class="req-dot no"></span></td><td class="field-example">trn_001</td></tr>
+          <tr><td><span class="field-name">created_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-01-10 09:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TRAINER -->
+    <div class="entity-card cat-green">
+      <div class="entity-header">
+        <span class="entity-icon">🏋️</span>
+        <div>
+          <div class="entity-name">Trainer</div>
+          <div class="entity-desc">Personal trainer account</div>
+        </div>
+        <span class="entity-badge">Auth</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">trn_001</td></tr>
+          <tr><td><span class="field-name">name</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Marcus Reid</td></tr>
+          <tr><td><span class="field-name">email</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">marcus@fitbridge.com</td></tr>
+          <tr><td><span class="field-name">password</span></td><td><span class="field-type">String (hashed)</span></td><td><span class="req-dot yes"></span></td><td class="field-example">••••••••</td></tr>
+          <tr><td><span class="field-name">profile_photo</span></td><td><span class="field-type">URL</span></td><td><span class="req-dot no"></span></td><td class="field-example">/uploads/marcus.jpg</td></tr>
+          <tr><td><span class="field-name">certification</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">NASM Certified</td></tr>
+          <tr><td><span class="field-name">years_experience</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">6</td></tr>
+          <tr><td><span class="field-name">specialties</span></td><td><span class="field-type">Array</span></td><td><span class="req-dot no"></span></td><td class="field-example">Strength, HIIT</td></tr>
+          <tr><td><span class="field-name">bio</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot no"></span></td><td class="field-example">I specialize in…</td></tr>
+          <tr><td><span class="field-name">max_clients</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">10</td></tr>
+          <tr><td><span class="field-name">invite_code</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">TRN-4829</td></tr>
+          <tr><td><span class="field-name">created_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2025-06-01 10:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- WORKOUT -->
+    <div class="entity-card cat-blue">
+      <div class="entity-header">
+        <span class="entity-icon">💪</span>
+        <div>
+          <div class="entity-name">Workout</div>
+          <div class="entity-desc">Plan assigned by a trainer</div>
+        </div>
+        <span class="entity-badge">Workouts</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">wrk_001</td></tr>
+          <tr><td><span class="field-name">title</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Upper Body Strength</td></tr>
+          <tr><td><span class="field-name">description</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot no"></span></td><td class="field-example">Focus on back</td></tr>
+          <tr><td><span class="field-name">duration_min</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">45</td></tr>
+          <tr><td><span class="field-name">trainer_id</span></td><td><span class="field-fk">UUID FK → Trainer</span></td><td><span class="req-dot yes"></span></td><td class="field-example">trn_001</td></tr>
+          <tr><td><span class="field-name">assigned_to</span></td><td><span class="field-fk">UUID FK → User</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">scheduled_date</span></td><td><span class="field-type">Date</span></td><td><span class="req-dot no"></span></td><td class="field-example">2026-04-03</td></tr>
+          <tr><td><span class="field-name">status</span></td><td><span class="field-type">Enum</span></td><td><span class="req-dot yes"></span></td><td class="field-example">completed</td></tr>
+          <tr><td><span class="field-name">created_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-04-01 08:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- EXERCISE -->
+    <div class="entity-card cat-blue">
+      <div class="entity-header">
+        <span class="entity-icon">🔩</span>
+        <div>
+          <div class="entity-name">Exercise</div>
+          <div class="entity-desc">Single movement inside a workout</div>
+        </div>
+        <span class="entity-badge">Workouts</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">ex_001</td></tr>
+          <tr><td><span class="field-name">workout_id</span></td><td><span class="field-fk">UUID FK → Workout</span></td><td><span class="req-dot yes"></span></td><td class="field-example">wrk_001</td></tr>
+          <tr><td><span class="field-name">name</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Dumbbell Row</td></tr>
+          <tr><td><span class="field-name">sets</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot yes"></span></td><td class="field-example">3</td></tr>
+          <tr><td><span class="field-name">reps</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot yes"></span></td><td class="field-example">12</td></tr>
+          <tr><td><span class="field-name">weight_lbs</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">35.0</td></tr>
+          <tr><td><span class="field-name">rest_seconds</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">60</td></tr>
+          <tr><td><span class="field-name">video_id</span></td><td><span class="field-fk">UUID FK → Video</span></td><td><span class="req-dot no"></span></td><td class="field-example">vid_002</td></tr>
+          <tr><td><span class="field-name">notes</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot no"></span></td><td class="field-example">Keep back flat</td></tr>
+          <tr><td><span class="field-name">order</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- WORKOUTLOG -->
+    <div class="entity-card cat-blue">
+      <div class="entity-header">
+        <span class="entity-icon">📋</span>
+        <div>
+          <div class="entity-name">WorkoutLog</div>
+          <div class="entity-desc">What the user actually completed</div>
+        </div>
+        <span class="entity-badge">Workouts</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">wlog_001</td></tr>
+          <tr><td><span class="field-name">workout_id</span></td><td><span class="field-fk">UUID FK → Workout</span></td><td><span class="req-dot yes"></span></td><td class="field-example">wrk_001</td></tr>
+          <tr><td><span class="field-name">user_id</span></td><td><span class="field-fk">UUID FK → User</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">completed_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-04-03 07:45</td></tr>
+          <tr><td><span class="field-name">duration_actual_min</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">48</td></tr>
+          <tr><td><span class="field-name">notes</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot no"></span></td><td class="field-example">Felt strong today</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MEALLOG -->
+    <div class="entity-card cat-orange">
+      <div class="entity-header">
+        <span class="entity-icon">🥗</span>
+        <div>
+          <div class="entity-name">MealLog</div>
+          <div class="entity-desc">Daily nutrition summary</div>
+        </div>
+        <span class="entity-badge">Nutrition</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">mlog_001</td></tr>
+          <tr><td><span class="field-name">user_id</span></td><td><span class="field-fk">UUID FK → User</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">date</span></td><td><span class="field-type">Date</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-04-02</td></tr>
+          <tr><td><span class="field-name">total_calories</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">1420</td></tr>
+          <tr><td><span class="field-name">total_protein_g</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">88.0</td></tr>
+          <tr><td><span class="field-name">total_carbs_g</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">140.0</td></tr>
+          <tr><td><span class="field-name">total_fat_g</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">42.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MEALENTRY -->
+    <div class="entity-card cat-orange">
+      <div class="entity-header">
+        <span class="entity-icon">🍽️</span>
+        <div>
+          <div class="entity-name">MealEntry</div>
+          <div class="entity-desc">Single food item in a meal log</div>
+        </div>
+        <span class="entity-badge">Nutrition</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">ment_001</td></tr>
+          <tr><td><span class="field-name">meal_log_id</span></td><td><span class="field-fk">UUID FK → MealLog</span></td><td><span class="req-dot yes"></span></td><td class="field-example">mlog_001</td></tr>
+          <tr><td><span class="field-name">meal_type</span></td><td><span class="field-type">Enum</span></td><td><span class="req-dot yes"></span></td><td class="field-example">breakfast</td></tr>
+          <tr><td><span class="field-name">food_name</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Greek Yogurt</td></tr>
+          <tr><td><span class="field-name">calories</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">280</td></tr>
+          <tr><td><span class="field-name">protein_g</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">18.0</td></tr>
+          <tr><td><span class="field-name">carbs_g</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">30.0</td></tr>
+          <tr><td><span class="field-name">fat_g</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">6.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BODYMETRIC -->
+    <div class="entity-card cat-orange">
+      <div class="entity-header">
+        <span class="entity-icon">📏</span>
+        <div>
+          <div class="entity-name">BodyMetric</div>
+          <div class="entity-desc">Body measurement snapshot</div>
+        </div>
+        <span class="entity-badge">Health</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">bm_001</td></tr>
+          <tr><td><span class="field-name">user_id</span></td><td><span class="field-fk">UUID FK → User</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">logged_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-04-02 08:00</td></tr>
+          <tr><td><span class="field-name">weight_lbs</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">162.0</td></tr>
+          <tr><td><span class="field-name">body_fat_pct</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">21.4</td></tr>
+          <tr><td><span class="field-name">muscle_mass_lbs</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">98.2</td></tr>
+          <tr><td><span class="field-name">waist_in</span></td><td><span class="field-type">Float</span></td><td><span class="req-dot no"></span></td><td class="field-example">32.0</td></tr>
+          <tr><td><span class="field-name">notes</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot no"></span></td><td class="field-example">Morning weigh-in</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="entity-card cat-purple">
+      <div class="entity-header">
+        <span class="entity-icon">🎥</span>
+        <div>
+          <div class="entity-name">Video</div>
+          <div class="entity-desc">Trainer-curated exercise content</div>
+        </div>
+        <span class="entity-badge">Content</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">vid_001</td></tr>
+          <tr><td><span class="field-name">trainer_id</span></td><td><span class="field-fk">UUID FK → Trainer</span></td><td><span class="req-dot yes"></span></td><td class="field-example">trn_001</td></tr>
+          <tr><td><span class="field-name">title</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Dumbbell Row Form</td></tr>
+          <tr><td><span class="field-name">url</span></td><td><span class="field-type">URL</span></td><td><span class="req-dot yes"></span></td><td class="field-example">/videos/row.mp4</td></tr>
+          <tr><td><span class="field-name">duration_sec</span></td><td><span class="field-type">Integer</span></td><td><span class="req-dot no"></span></td><td class="field-example">252</td></tr>
+          <tr><td><span class="field-name">category</span></td><td><span class="field-type">Enum</span></td><td><span class="req-dot yes"></span></td><td class="field-example">technique</td></tr>
+          <tr><td><span class="field-name">tags</span></td><td><span class="field-type">Array</span></td><td><span class="req-dot no"></span></td><td class="field-example">Lower body, Mobility</td></tr>
+          <tr><td><span class="field-name">created_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-03-01 11:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TRAINERNOTE -->
+    <div class="entity-card cat-purple">
+      <div class="entity-header">
+        <span class="entity-icon">💬</span>
+        <div>
+          <div class="entity-name">TrainerNote</div>
+          <div class="entity-desc">Message from trainer to client</div>
+        </div>
+        <span class="entity-badge">Comms</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">tnote_001</td></tr>
+          <tr><td><span class="field-name">trainer_id</span></td><td><span class="field-fk">UUID FK → Trainer</span></td><td><span class="req-dot yes"></span></td><td class="field-example">trn_001</td></tr>
+          <tr><td><span class="field-name">user_id</span></td><td><span class="field-fk">UUID FK → User</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">message</span></td><td><span class="field-type">Text</span></td><td><span class="req-dot yes"></span></td><td class="field-example">Great progress!</td></tr>
+          <tr><td><span class="field-name">sent_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-04-01 14:30</td></tr>
+          <tr><td><span class="field-name">is_read</span></td><td><span class="field-type">Boolean</span></td><td><span class="req-dot yes"></span></td><td class="field-example">false</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="entity-card cat-purple">
+      <div class="entity-header">
+        <span class="entity-icon">🔔</span>
+        <div>
+          <div class="entity-name">Notification</div>
+          <div class="entity-desc">System-generated alert</div>
+        </div>
+        <span class="entity-badge">Comms</span>
+      </div>
+      <table class="entity-table">
+        <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><span class="field-name field-pk">id</span></td><td><span class="field-type">UUID PK</span></td><td><span class="req-dot yes"></span></td><td class="field-example">notif_001</td></tr>
+          <tr><td><span class="field-name">user_id</span></td><td><span class="field-fk">UUID FK → User</span></td><td><span class="req-dot yes"></span></td><td class="field-example">usr_001</td></tr>
+          <tr><td><span class="field-name">type</span></td><td><span class="field-type">Enum</span></td><td><span class="req-dot yes"></span></td><td class="field-example">missed_workout</td></tr>
+          <tr><td><span class="field-name">message</span></td><td><span class="field-type">String</span></td><td><span class="req-dot yes"></span></td><td class="field-example">You missed Leg Day</td></tr>
+          <tr><td><span class="field-name">created_at</span></td><td><span class="field-type">Timestamp</span></td><td><span class="req-dot yes"></span></td><td class="field-example">2026-04-02 09:00</td></tr>
+          <tr><td><span class="field-name">is_read</span></td><td><span class="field-type">Boolean</span></td><td><span class="req-dot yes"></span></td><td class="field-example">false</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green-dark);"></div> PK = Primary Key (unique ID)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple);"></div> FK = Foreign Key (links to another entity)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green);"></div> Filled dot = Required field</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--border);"></div> Empty dot = Optional field</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  SECTION 2 — RELATIONSHIP MAP
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div>
+      <div class="section-title">Entity Relationship Map</div>
+      <div class="section-sub">How every entity connects to each other</div>
+    </div>
+  </div>
+
+  <!-- Visual diagram -->
+  <div class="rel-canvas" style="margin-bottom:20px;">
+    <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:20px;">Visual Overview</div>
+    <div class="rel-diagram">
+
+      <!-- Col: Auth -->
+      <div class="rel-col" style="min-width:130px;">
+        <div class="rel-col-label">Auth</div>
+        <div class="rel-node green"><span class="node-icon">🏋️</span>Trainer</div>
+        <div style="height:16px;"></div>
+        <div class="rel-node green"><span class="node-icon">👤</span>User</div>
+      </div>
+
+      <!-- Arrow 1 -->
+      <div class="rel-connector">
+        <div class="rel-line-group">
+          <div class="rel-cardinality">1</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-label">creates</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-cardinality">many</div>
+        </div>
+        <div style="height:24px;"></div>
+        <div class="rel-line-group">
+          <div class="rel-cardinality">1</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-label">logs</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-cardinality">many</div>
+        </div>
+      </div>
+
+      <!-- Col: Workouts -->
+      <div class="rel-col" style="min-width:130px;">
+        <div class="rel-col-label">Workouts</div>
+        <div class="rel-node blue"><span class="node-icon">💪</span>Workout</div>
+        <div class="rel-node blue" style="margin-top:8px;"><span class="node-icon">🔩</span>Exercise</div>
+        <div style="height:8px;"></div>
+        <div class="rel-node blue"><span class="node-icon">📋</span>WorkoutLog</div>
+      </div>
+
+      <!-- Arrow 2 -->
+      <div class="rel-connector">
+        <div class="rel-line-group" style="margin-top:12px;">
+          <div class="rel-cardinality">1</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-label">contains</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-cardinality">many</div>
+        </div>
+        <div style="height:16px;"></div>
+        <div class="rel-line-group">
+          <div class="rel-cardinality">opt</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-label">links to</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-cardinality">1</div>
+        </div>
+      </div>
+
+      <!-- Col: Content -->
+      <div class="rel-col" style="min-width:130px;">
+        <div class="rel-col-label">Content</div>
+        <div class="rel-node purple"><span class="node-icon">🎥</span>Video</div>
+        <div style="height:8px;"></div>
+        <div class="rel-node orange"><span class="node-icon">📏</span>BodyMetric</div>
+        <div style="height:8px;"></div>
+        <div class="rel-node orange"><span class="node-icon">🥗</span>MealLog</div>
+      </div>
+
+      <!-- Arrow 3 -->
+      <div class="rel-connector">
+        <div style="height:60px;"></div>
+        <div class="rel-line-group">
+          <div class="rel-cardinality">1</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-label">contains</div>
+          <div class="rel-arrow"><div class="line"></div><div class="arrowhead"></div></div>
+          <div class="rel-cardinality">many</div>
+        </div>
+      </div>
+
+      <!-- Col: Logs & Comms -->
+      <div class="rel-col" style="min-width:130px;">
+        <div class="rel-col-label">Logs &amp; Comms</div>
+        <div class="rel-node purple"><span class="node-icon">💬</span>TrainerNote</div>
+        <div style="height:8px;"></div>
+        <div class="rel-node purple"><span class="node-icon">🔔</span>Notification</div>
+        <div style="height:8px;"></div>
+        <div class="rel-node orange"><span class="node-icon">🍽️</span>MealEntry</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Relationship table -->
+  <div class="rel-table-wrap">
+    <table class="rel-table">
+      <thead>
+        <tr>
+          <th>Entity A</th>
+          <th>Relationship</th>
+          <th>Entity B</th>
+          <th>Type</th>
+          <th>Via Field</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="rel-entity-a">Trainer</td><td>has many</td><td class="rel-entity-b">Users</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">User.trainer_id</td><td style="font-size:11px;color:var(--text-secondary);">One trainer manages multiple clients</td></tr>
+        <tr><td class="rel-entity-a">User</td><td>belongs to</td><td class="rel-entity-b">Trainer</td><td><span class="rel-type many-one">Many → 1</span></td><td class="rel-via">User.trainer_id</td><td style="font-size:11px;color:var(--text-secondary);">Each client has one trainer</td></tr>
+        <tr><td class="rel-entity-a">Trainer</td><td>creates many</td><td class="rel-entity-b">Workouts</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">Workout.trainer_id</td><td style="font-size:11px;color:var(--text-secondary);">Trainer builds workout plans</td></tr>
+        <tr><td class="rel-entity-a">Workout</td><td>assigned to</td><td class="rel-entity-b">User</td><td><span class="rel-type many-one">Many → 1</span></td><td class="rel-via">Workout.assigned_to</td><td style="font-size:11px;color:var(--text-secondary);">Each workout targets one user</td></tr>
+        <tr><td class="rel-entity-a">Workout</td><td>contains many</td><td class="rel-entity-b">Exercises</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">Exercise.workout_id</td><td style="font-size:11px;color:var(--text-secondary);">Exercises are children of a workout</td></tr>
+        <tr><td class="rel-entity-a">Exercise</td><td>optionally links</td><td class="rel-entity-b">Video</td><td><span class="rel-type one-one">1 → 1 (opt)</span></td><td class="rel-via">Exercise.video_id</td><td style="font-size:11px;color:var(--text-secondary);">Optional demo video per exercise</td></tr>
+        <tr><td class="rel-entity-a">User</td><td>logs many</td><td class="rel-entity-b">WorkoutLogs</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">WorkoutLog.user_id</td><td style="font-size:11px;color:var(--text-secondary);">User records completed sessions</td></tr>
+        <tr><td class="rel-entity-a">WorkoutLog</td><td>references</td><td class="rel-entity-b">Workout</td><td><span class="rel-type many-one">Many → 1</span></td><td class="rel-via">WorkoutLog.workout_id</td><td style="font-size:11px;color:var(--text-secondary);">Links log back to the plan</td></tr>
+        <tr><td class="rel-entity-a">User</td><td>has many</td><td class="rel-entity-b">MealLogs</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">MealLog.user_id</td><td style="font-size:11px;color:var(--text-secondary);">One log per day per user</td></tr>
+        <tr><td class="rel-entity-a">MealLog</td><td>contains many</td><td class="rel-entity-b">MealEntries</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">MealEntry.meal_log_id</td><td style="font-size:11px;color:var(--text-secondary);">Each food item is a separate entry</td></tr>
+        <tr><td class="rel-entity-a">User</td><td>has many</td><td class="rel-entity-b">BodyMetrics</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">BodyMetric.user_id</td><td style="font-size:11px;color:var(--text-secondary);">Each weigh-in is a new record</td></tr>
+        <tr><td class="rel-entity-a">Trainer</td><td>uploads many</td><td class="rel-entity-b">Videos</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">Video.trainer_id</td><td style="font-size:11px;color:var(--text-secondary);">Trainer curates the video library</td></tr>
+        <tr><td class="rel-entity-a">Trainer</td><td>sends many</td><td class="rel-entity-b">TrainerNotes</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">TrainerNote.trainer_id</td><td style="font-size:11px;color:var(--text-secondary);">Notes sent to specific clients</td></tr>
+        <tr><td class="rel-entity-a">User</td><td>receives many</td><td class="rel-entity-b">Notifications</td><td><span class="rel-type one-many">1 → Many</span></td><td class="rel-via">Notification.user_id</td><td style="font-size:11px;color:var(--text-secondary);">System-generated alerts</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  SECTION 3 — CMS / CONTENT OWNERSHIP TABLE
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div>
+      <div class="section-title">CMS / Content Ownership Table</div>
+      <div class="section-sub">Who creates, edits, and views each type of content</div>
+    </div>
+  </div>
+
+  <div class="cms-wrap">
+    <table class="cms-table">
+      <thead>
+        <tr>
+          <th style="width:240px;">Content / Data Type</th>
+          <th>Created by</th>
+          <th>Edited by</th>
+          <th>Deleted by</th>
+          <th>Visible to Trainer</th>
+          <th>Visible to Client</th>
+          <th>Triggered by System</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Auth -->
+        <tr class="cms-category-row"><td colspan="7">👤 Auth &amp; Profiles</td></tr>
+        <tr>
+          <td><div class="cms-content-name">User Account</div><div class="cms-content-sub">Name, email, goals, bio</div></td>
+          <td><span class="badge create">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge system">Admin</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Trainer Account</div><div class="cms-content-sub">Name, cert, specialties, invite code</div></td>
+          <td><span class="badge create">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge system">Admin</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <!-- Workouts -->
+        <tr class="cms-category-row"><td colspan="7">💪 Workout Content</td></tr>
+        <tr>
+          <td><div class="cms-content-name">Workout Plan</div><div class="cms-content-sub">Title, exercises, schedule</div></td>
+          <td><span class="badge create">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Exercise</div><div class="cms-content-sub">Sets, reps, weight, notes</div></td>
+          <td><span class="badge create">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Workout Log</div><div class="cms-content-sub">Completed sets, actual duration</div></td>
+          <td><span class="badge create">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge none">—</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <!-- Nutrition -->
+        <tr class="cms-category-row"><td colspan="7">🥗 Nutrition &amp; Health</td></tr>
+        <tr>
+          <td><div class="cms-content-name">Meal Log</div><div class="cms-content-sub">Daily calorie &amp; macro summary</div></td>
+          <td><span class="badge create">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Meal Entry</div><div class="cms-content-sub">Individual food items</div></td>
+          <td><span class="badge create">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Body Metric</div><div class="cms-content-sub">Weight, body fat %, measurements</div></td>
+          <td><span class="badge create">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge edit">Client</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <!-- Content & Comms -->
+        <tr class="cms-category-row"><td colspan="7">🎥 Content &amp; Communications</td></tr>
+        <tr>
+          <td><div class="cms-content-name">Video</div><div class="cms-content-sub">Demo videos, technique guides</div></td>
+          <td><span class="badge create">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge edit">Trainer</span></td>
+          <td><span class="badge edit">Full</span></td>
+          <td><span class="badge read">Read</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Trainer Note</div><div class="cms-content-sub">Coaching messages to clients</div></td>
+          <td><span class="badge create">Trainer</span></td>
+          <td><span class="badge none">—</span></td>
+          <td><span class="badge none">—</span></td>
+          <td><span class="badge edit">Sent</span></td>
+          <td><span class="badge read">Received</span></td>
+          <td><span class="badge none">—</span></td>
+        </tr>
+        <tr>
+          <td><div class="cms-content-name">Notification</div><div class="cms-content-sub">Missed workout, reminders, alerts</div></td>
+          <td><span class="badge system">System</span></td>
+          <td><span class="badge none">—</span></td>
+          <td><span class="badge none">—</span></td>
+          <td><span class="badge read">Read (flagged)</span></td>
+          <td><span class="badge read">Received</span></td>
+          <td><span class="badge system">Auto-triggered</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend" style="margin-top:16px;">
+    <div class="legend-item"><span class="badge create">Create</span> User initiates and owns this content</div>
+    <div class="legend-item"><span class="badge read">Read</span> Can view but not modify</div>
+    <div class="legend-item"><span class="badge edit">Edit / Full</span> Can create, update, and delete</div>
+    <div class="legend-item"><span class="badge system">System</span> Generated automatically by the app</div>
+    <div class="legend-item"><span class="badge none">—</span> No access or not applicable</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+  SECTION 4 — DATA FLOW
+════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div>
+      <div class="section-title">Data Flow — How Information Moves</div>
+      <div class="section-sub">Step-by-step flow for key actions in the app</div>
+    </div>
+  </div>
+
+  <div class="flow-wrap">
+
+    <div class="flow-row-label">Trainer assigns a workout</div>
+    <div class="flow-row">
+      <div class="flow-actor trainer-actor">🏋️ Trainer</div>
+      <div class="flow-steps">
+        <div class="flow-step highlight-blue">Creates Workout + Exercises</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">Sets assigned_to = User</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">Sets scheduled_date</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-purple">System fires Notification to client</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">Client sees workout on Dashboard</div>
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+    <div class="flow-row-label">Client completes a workout</div>
+    <div class="flow-row">
+      <div class="flow-actor user-actor">👤 Client</div>
+      <div class="flow-steps">
+        <div class="flow-step">Taps "Start Workout"</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-green">Logs sets &amp; reps per Exercise</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">WorkoutLog saved to DB</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">Workout status → completed</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-blue">Trainer sees update in Client Detail</div>
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+    <div class="flow-row-label">Client logs a meal</div>
+    <div class="flow-row">
+      <div class="flow-actor user-actor">👤 Client</div>
+      <div class="flow-steps">
+        <div class="flow-step">Opens Meal Log tab</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-orange">Adds MealEntry (food + macros)</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">MealLog totals recalculated</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-blue">Trainer reads in Data Review</div>
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+    <div class="flow-row-label">System detects missed workout</div>
+    <div class="flow-row">
+      <div class="flow-actor system-actor">⚙️ System</div>
+      <div class="flow-steps">
+        <div class="flow-step">Checks scheduled_date has passed</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">No WorkoutLog found for that Workout</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step">Workout status → missed</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-purple">Fires Notification to client</div>
+        <div class="flow-sep">→</div>
+        <div class="flow-step highlight-blue">Trainer sees red flag in Dashboard</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBridge – System Visualizations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f0f0;
+    color: #111;
+  }
+
+  /* ── SLIDE ── */
+  .slide {
+    width: 1280px;
+    min-height: 720px;
+    margin: 0 auto 8px;
+    background: #fff;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+
+  /* ── LEFT PANEL ── */
+  .left {
+    padding: 48px 36px 48px 48px;
+    border-right: 1px solid #e5e5e5;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-size: 13px;
+    font-weight: 400;
+    color: #555;
+    letter-spacing: .01em;
+    line-height: 1.4;
+    margin-bottom: -8px;
+  }
+  .page-title strong {
+    font-size: 28px;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: -.5px;
+    font-style: normal;
+    display: block;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+  .page-title .subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: #333;
+    display: block;
+    line-height: 1.3;
+  }
+
+  .left-section { display: flex; flex-direction: column; gap: 10px; }
+  .left-section h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 2px;
+  }
+  .left-section p, .left-section li {
+    font-size: 12.5px;
+    color: #444;
+    line-height: 1.55;
+  }
+  .left-section ol, .left-section ul {
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .left-section li span {
+    font-weight: 600;
+    color: #111;
+  }
+
+  .placeholder-box {
+    width: 100%;
+    height: 100px;
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    background: #fafafa;
+    margin-top: auto;
+  }
+  .placeholder-box + .placeholder-box { margin-top: 10px; }
+
+  /* ── RIGHT PANEL ── */
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+  }
+
+  /* ── NODE LABELS (outside circle) ── */
+  .node-label {
+    font-size: 11px;
+    font-weight: 600;
+    fill: #333;
+    text-anchor: middle;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+  SLIDE 1 — ENTITIES · Circular Life-cycle
+══════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="left">
+    <div class="page-title">
+      <strong>ENTITIES</strong>
+      <span class="subtitle">Circular Product Life-cycle Visualization</span>
+    </div>
+
+    <div class="left-section">
+      <h3>Focus:</h3>
+      <p>Continuous loop of engagement, tracking, and improvement between clients and trainers.</p>
+    </div>
+
+    <div class="left-section">
+      <h3>Stages:</h3>
+      <ol>
+        <li><span>Onboard</span> → Sign up, set goals, connect to trainer.</li>
+        <li><span>Plan</span> → Trainer assigns workouts &amp; videos.</li>
+        <li><span>Train</span> → Client completes sessions, logs sets.</li>
+        <li><span>Log</span> → Meals &amp; body metrics recorded.</li>
+        <li><span>Review</span> → Trainer analyzes data, sends notes.</li>
+        <li><span>Evolve</span> → Goals updated, program adjusted.</li>
+      </ol>
+    </div>
+
+    <div class="placeholder-box"></div>
+    <div class="placeholder-box"></div>
+  </div>
+
+  <div class="right">
+    <svg width="580" height="580" viewBox="0 0 580 580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8B9FD4"/>
+        </marker>
+      </defs>
+
+      <!-- Big circle -->
+      <circle cx="290" cy="290" r="190" fill="none" stroke="#BBBFED" stroke-width="2.5" stroke-dasharray="0"/>
+
+      <!-- Arrows along circle (6 arcs) — drawn as curved paths -->
+      <!-- Each arc goes from one node to the next clockwise -->
+      <!-- Nodes at: top=270°, top-right=330°=0°→top=270° wait let me use angles:
+        Onboard = 270° (top) = (290, 100)
+        Plan     = 330° → but in SVG 0=right, going clockwise
+        Let me place 6 nodes evenly: 0°=right, then every 60°
+        Node positions (cx=290, cy=290, r=190):
+          0: angle=-90° (top)      → (290, 100)        Onboard
+          1: angle=-30° (top-right)→ (290+190*cos(-30°), 290+190*sin(-30°)) = (290+164.5, 290-95) = (454.5, 195)   Plan
+          2: angle=30°  (bot-right)→ (290+190*cos(30°), 290+190*sin(30°)) = (454.5, 385)   Train
+          3: angle=90°  (bottom)   → (290, 480)         Log
+          4: angle=150° (bot-left) → (290-164.5, 385) = (125.5, 385)  Review
+          5: angle=210° (top-left) → (125.5, 195)       Evolve
+      -->
+
+      <!-- Arrow segments on the circle -->
+      <path d="M 340 112 A 190 190 0 0 1 445 205" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr1)"/>
+      <path d="M 455 235 A 190 190 0 0 1 455 345" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr1)"/>
+      <path d="M 445 375 A 190 190 0 0 1 340 468" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr1)"/>
+      <path d="M 240 468 A 190 190 0 0 1 135 375" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr1)"/>
+      <path d="M 125 345 A 190 190 0 0 1 125 235" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr1)"/>
+      <path d="M 135 205 A 190 190 0 0 1 240 112" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr1)"/>
+
+      <!-- NODE: Onboard (top) -->
+      <rect x="220" y="78" width="140" height="44" rx="8" fill="#F59E0B"/>
+      <text x="290" y="105" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Onboard</text>
+      <text x="290" y="58" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Sign up, set goals,</text>
+      <text x="290" y="71" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">connect trainer.</text>
+
+      <!-- NODE: Plan (top-right) -->
+      <rect x="414" y="171" width="110" height="44" rx="8" fill="#F97316"/>
+      <text x="469" y="198" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Plan</text>
+      <text x="530" y="178" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Trainer assigns</text>
+      <text x="530" y="191" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">workouts &amp; videos.</text>
+
+      <!-- NODE: Train (bottom-right) -->
+      <rect x="414" y="365" width="110" height="44" rx="8" fill="#EC4899"/>
+      <text x="469" y="392" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Train</text>
+      <text x="530" y="372" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Complete sessions,</text>
+      <text x="530" y="385" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">log sets &amp; reps.</text>
+
+      <!-- NODE: Log (bottom) -->
+      <rect x="220" y="458" width="140" height="44" rx="8" fill="#3B82F6"/>
+      <text x="290" y="485" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Log</text>
+      <text x="290" y="516" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Meals &amp; body</text>
+      <text x="290" y="529" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">metrics recorded.</text>
+
+      <!-- NODE: Review (bottom-left) -->
+      <rect x="56" y="365" width="110" height="44" rx="8" fill="#06B6D4"/>
+      <text x="111" y="392" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Review</text>
+      <text x="40" y="372" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Trainer analyzes</text>
+      <text x="40" y="385" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">data, sends notes.</text>
+
+      <!-- NODE: Evolve (top-left) -->
+      <rect x="56" y="171" width="110" height="44" rx="8" fill="#22C55E"/>
+      <text x="111" y="198" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Evolve</text>
+      <text x="40" y="178" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Goals updated,</text>
+      <text x="40" y="191" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">program adjusted.</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  SLIDE 2 — ANALYSIS · Circular Life-cycle
+══════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="left">
+    <div class="page-title">
+      <strong>ANALYSIS</strong>
+      <span class="subtitle">Circular Product Life-cycle Visualization</span>
+    </div>
+
+    <div class="left-section">
+      <h3>Leverage Points:</h3>
+      <ul>
+        <li>Closing the <span>Train → Log → Review</span> loop drives accountability and retention.</li>
+        <li><span>Trainer notes</span> after Review re-motivate clients and tighten the feedback cycle.</li>
+        <li>Evolve stage allows program scaling — same client, higher goals over time.</li>
+      </ul>
+    </div>
+
+    <div class="left-section">
+      <h3>Risks / Challenges:</h3>
+      <ul>
+        <li>If <span>Log</span> stage breaks (client stops recording meals/metrics), trainer loses visibility.</li>
+        <li><span>Plan → Train</span> friction if workouts feel too hard or irrelevant — dropout risk.</li>
+        <li>Evolve stage requires trainer time investment — scalability concern for large client loads.</li>
+      </ul>
+    </div>
+
+    <div class="placeholder-box"></div>
+    <div class="placeholder-box"></div>
+  </div>
+
+  <div class="right">
+    <svg width="580" height="580" viewBox="0 0 580 580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#8B9FD4"/>
+        </marker>
+        <!-- Red warning marker -->
+        <marker id="arr2r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#EF4444"/>
+        </marker>
+      </defs>
+
+      <circle cx="290" cy="290" r="190" fill="none" stroke="#BBBFED" stroke-width="2.5"/>
+
+      <!-- Normal arrows -->
+      <path d="M 340 112 A 190 190 0 0 1 445 205" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr2)"/>
+      <path d="M 455 235 A 190 190 0 0 1 455 345" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- Risk: Train→Log highlighted red -->
+      <path d="M 445 375 A 190 190 0 0 1 340 468" fill="none" stroke="#EF4444" stroke-width="3" marker-end="url(#arr2r)" stroke-dasharray="6,3"/>
+      <!-- Risk: Log→Review highlighted red -->
+      <path d="M 240 468 A 190 190 0 0 1 135 375" fill="none" stroke="#EF4444" stroke-width="3" marker-end="url(#arr2r)" stroke-dasharray="6,3"/>
+      <path d="M 125 345 A 190 190 0 0 1 125 235" fill="none" stroke="#BBBFED" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- Leverage: Review→Evolve bold green -->
+      <path d="M 135 205 A 190 190 0 0 1 240 112" fill="none" stroke="#22C55E" stroke-width="3" marker-end="url(#arr2)"/>
+
+      <!-- Risk label -->
+      <text x="292" y="462" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#EF4444">⚠ dropout risk</text>
+
+      <!-- Leverage label -->
+      <text x="148" y="152" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#22C55E">★ leverage</text>
+
+      <!-- Nodes (same positions) -->
+      <rect x="220" y="78" width="140" height="44" rx="8" fill="#F59E0B"/>
+      <text x="290" y="105" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Onboard</text>
+      <text x="290" y="58" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Sign up, set goals,</text>
+      <text x="290" y="71" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">connect trainer.</text>
+
+      <rect x="414" y="171" width="110" height="44" rx="8" fill="#F97316"/>
+      <text x="469" y="198" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Plan</text>
+      <text x="530" y="178" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Trainer assigns</text>
+      <text x="530" y="191" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">workouts &amp; videos.</text>
+
+      <rect x="414" y="365" width="110" height="44" rx="8" fill="#EC4899"/>
+      <text x="469" y="392" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Train</text>
+      <text x="530" y="372" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Complete sessions,</text>
+      <text x="530" y="385" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">log sets &amp; reps.</text>
+
+      <rect x="220" y="458" width="140" height="44" rx="8" fill="#3B82F6"/>
+      <text x="290" y="485" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Log</text>
+      <text x="290" y="516" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Meals &amp; body</text>
+      <text x="290" y="529" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">metrics recorded.</text>
+
+      <rect x="56" y="365" width="110" height="44" rx="8" fill="#06B6D4"/>
+      <text x="111" y="392" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Review</text>
+      <text x="40" y="372" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Trainer analyzes</text>
+      <text x="40" y="385" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">data, sends notes.</text>
+
+      <rect x="56" y="171" width="110" height="44" rx="8" fill="#22C55E"/>
+      <text x="111" y="198" text-anchor="middle" font-family="Inter" font-size="15" font-weight="700" fill="white">Evolve</text>
+      <text x="40" y="178" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">Goals updated,</text>
+      <text x="40" y="191" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="600" fill="#444">program adjusted.</text>
+
+      <!-- Legend -->
+      <rect x="30" y="530" width="14" height="3" rx="1" fill="#22C55E"/>
+      <text x="50" y="535" font-family="Inter" font-size="10" fill="#22C55E" font-weight="600">Leverage point</text>
+      <line x1="160" y1="531" x2="174" y2="531" stroke="#EF4444" stroke-width="3" stroke-dasharray="4,2"/>
+      <text x="180" y="535" font-family="Inter" font-size="10" fill="#EF4444" font-weight="600">Risk / dropout</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  SLIDE 3 — ENTITIES · Network Visualization
+══════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="left">
+    <div class="page-title">
+      <strong>ENTITIES</strong>
+      <span class="subtitle">Network Visualization</span>
+    </div>
+
+    <div class="left-section">
+      <h3>Focus:</h3>
+      <p>Who/what interacts with whom, and where FitBridge fits in the ecosystem.</p>
+    </div>
+
+    <div class="left-section">
+      <h3>Actors:</h3>
+      <p>Client, Personal Trainer, System (auto-notifications).</p>
+    </div>
+
+    <div class="left-section">
+      <h3>Artifacts:</h3>
+      <p>FitBridge App, Workout Database, Video Library, Body Metrics Store, Meal Log, Notification Engine, Analytics Dashboard.</p>
+    </div>
+
+    <div class="left-section">
+      <h3>Channels:</h3>
+      <p>Mobile App, Push Notifications, In-app Messaging, Trainer Dashboard (web).</p>
+    </div>
+
+    <div class="left-section">
+      <h3>Policies:</h3>
+      <p>Data Privacy (GDPR), Health Data Protection, Trainer–Client Access Controls.</p>
+    </div>
+
+    <div class="placeholder-box" style="height:70px;"></div>
+  </div>
+
+  <div class="right" style="padding:28px 32px;">
+    <svg width="860" height="640" viewBox="0 0 860 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Arrow markers by color -->
+        <marker id="a-green" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#00C87A"/></marker>
+        <marker id="a-blue"  markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#3B82F6"/></marker>
+        <marker id="a-orange" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#F59E0B"/></marker>
+        <marker id="a-purple" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#8B5CF6"/></marker>
+        <marker id="a-gray"  markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#9CA3AF"/></marker>
+        <marker id="a-pink"  markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#EC4899"/></marker>
+        <marker id="a-teal"  markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#06B6D4"/></marker>
+        <!-- reverse arrows -->
+        <marker id="ar-green" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#00C87A"/></marker>
+        <marker id="ar-blue"  markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#3B82F6"/></marker>
+        <marker id="ar-orange" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#F59E0B"/></marker>
+        <marker id="ar-purple" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#8B5CF6"/></marker>
+      </defs>
+
+      <!-- Outer border = Policies -->
+      <rect x="10" y="10" width="840" height="620" rx="12" fill="none" stroke="#8B5CF6" stroke-width="2.5"/>
+      <text x="425" y="638" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#8B5CF6">Data Privacy · Health Data Protection · Access Controls</text>
+
+      <!-- ── CENTRAL HUB: FitBridge App ── -->
+      <rect x="330" y="265" width="200" height="60" rx="10" fill="#F3F0FF" stroke="#8B5CF6" stroke-width="2"/>
+      <text x="430" y="291" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#6D28D9">FitBridge App</text>
+      <text x="430" y="308" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">Mobile · Dashboard</text>
+
+      <!-- ── ACTORS ── -->
+      <!-- Client (left) -->
+      <rect x="50" y="270" width="130" height="50" rx="8" fill="#E6FAF3" stroke="#00C87A" stroke-width="2"/>
+      <text x="115" y="291" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#065F46">👤 Client</text>
+      <text x="115" y="308" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#047857">Ages 20–40</text>
+
+      <!-- Trainer (right) -->
+      <rect x="680" y="270" width="140" height="50" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+      <text x="750" y="291" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1D4ED8">🏋️ Trainer</text>
+      <text x="750" y="308" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#2563EB">NASM / ACE Certified</text>
+
+      <!-- ── ARTIFACTS (top row) ── -->
+      <!-- Workout DB -->
+      <rect x="180" y="80" width="130" height="46" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="245" y="101" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#92400E">Workout</text>
+      <text x="245" y="116" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#92400E">Database</text>
+
+      <!-- Video Library -->
+      <rect x="365" y="80" width="130" height="46" rx="8" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+      <text x="430" y="101" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#6D28D9">Video</text>
+      <text x="430" y="116" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#6D28D9">Library</text>
+
+      <!-- Analytics -->
+      <rect x="550" y="80" width="130" height="46" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="615" y="101" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#1D4ED8">Analytics</text>
+      <text x="615" y="116" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#1D4ED8">Dashboard</text>
+
+      <!-- ── ARTIFACTS (bottom row) ── -->
+      <!-- Meal Log -->
+      <rect x="140" y="460" width="130" height="46" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+      <text x="205" y="481" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#C2410C">Meal Log</text>
+      <text x="205" y="496" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#EA580C">Macros &amp; calories</text>
+
+      <!-- Body Metrics -->
+      <rect x="320" y="460" width="130" height="46" rx="8" fill="#FFF7ED" stroke="#F97316" stroke-width="1.5"/>
+      <text x="385" y="481" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#C2410C">Body Metrics</text>
+      <text x="385" y="496" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#EA580C">Weight, BF%, waist</text>
+
+      <!-- Notification Engine -->
+      <rect x="500" y="460" width="140" height="46" rx="8" fill="#FDF2F8" stroke="#EC4899" stroke-width="1.5"/>
+      <text x="570" y="481" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#BE185D">Notification</text>
+      <text x="570" y="496" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#DB2777">Engine (System)</text>
+
+      <!-- ── CONNECTIONS ── -->
+      <!-- Client ↔ FitBridge App -->
+      <line x1="180" y1="295" x2="330" y2="295" stroke="#00C87A" stroke-width="1.8" marker-end="url(#a-green)" marker-start="url(#ar-green)"/>
+
+      <!-- Trainer ↔ FitBridge App -->
+      <line x1="680" y1="295" x2="530" y2="295" stroke="#3B82F6" stroke-width="1.8" marker-end="url(#a-blue)" marker-start="url(#ar-blue)"/>
+
+      <!-- FitBridge App → Workout DB -->
+      <line x1="370" y1="265" x2="270" y2="126" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#a-orange)"/>
+
+      <!-- FitBridge App ↔ Video Library -->
+      <line x1="430" y1="265" x2="430" y2="126" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#a-purple)" marker-start="url(#ar-purple)"/>
+
+      <!-- FitBridge App → Analytics -->
+      <line x1="490" y1="265" x2="590" y2="126" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#a-blue)"/>
+
+      <!-- FitBridge App → Meal Log -->
+      <line x1="380" y1="325" x2="245" y2="460" stroke="#F97316" stroke-width="1.5" marker-end="url(#a-orange)"/>
+
+      <!-- FitBridge App ↔ Body Metrics -->
+      <line x1="410" y1="325" x2="390" y2="460" stroke="#F97316" stroke-width="1.5" marker-end="url(#a-orange)" marker-start="url(#ar-orange)"/>
+
+      <!-- FitBridge App → Notification Engine -->
+      <line x1="480" y1="325" x2="540" y2="460" stroke="#EC4899" stroke-width="1.5" marker-end="url(#a-pink)"/>
+
+      <!-- Notification Engine → Client -->
+      <path d="M 500 483 Q 300 560 180 310" fill="none" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#a-pink)"/>
+
+      <!-- Trainer → Workout DB -->
+      <path d="M 720 270 Q 600 160 310 103" fill="none" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#a-orange)"/>
+
+      <!-- Trainer → Video Library -->
+      <path d="M 710 270 Q 640 150 495 103" fill="none" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#a-purple)"/>
+
+      <!-- Analytics → Trainer -->
+      <line x1="680" y1="126" x2="720" y2="270" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#a-blue)"/>
+
+      <!-- Client → Meal Log -->
+      <path d="M 115 320 Q 115 490 140 483" fill="none" stroke="#00C87A" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Client → Body Metrics -->
+      <path d="M 140 305 Q 280 380 320 480" fill="none" stroke="#00C87A" stroke-width="1.5" marker-end="url(#a-green)"/>
+
+      <!-- Workout DB → Client (via app) -->
+      <path d="M 180 103 Q 130 180 115 270" fill="none" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#a-orange)"/>
+
+      <!-- Labels on key connections -->
+      <text x="254" y="288" font-family="Inter" font-size="9" fill="#059669" font-weight="600">logs &amp; views</text>
+      <text x="570" y="288" font-family="Inter" font-size="9" fill="#1D4ED8" font-weight="600">assigns &amp; reviews</text>
+      <text x="448" y="200" font-family="Inter" font-size="9" fill="#7C3AED" font-weight="600">streams</text>
+      <text x="320" y="410" font-family="Inter" font-size="9" fill="#EC4899" font-weight="600">push alerts</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+  SLIDE 4 — ANALYSIS · Network Visualization
+══════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="left">
+    <div class="page-title">
+      <strong>ANALYSIS</strong>
+      <span class="subtitle">Network Visualization</span>
+    </div>
+
+    <div class="left-section">
+      <h3>Leverage Points:</h3>
+      <ul>
+        <li><span>FitBridge App as central hub</span> — all actors and artifacts pass through it, making it the single point of accountability.</li>
+        <li><span>Notification Engine</span> closes the loop automatically — trainer doesn't need to manually chase clients.</li>
+        <li><span>Analytics Dashboard</span> gives trainers data-driven insight, enabling faster, smarter program adjustments.</li>
+      </ul>
+    </div>
+
+    <div class="left-section">
+      <h3>Risks / Challenges:</h3>
+      <ul>
+        <li><span>Single hub dependency</span> — if the app goes down, all connections break simultaneously.</li>
+        <li><span>Meal Log &amp; Metrics</span> are client-driven — low logging compliance breaks trainer visibility.</li>
+        <li><span>Notification overload</span> — too many auto-alerts may cause clients to disengage.</li>
+        <li><span>Privacy policy complexity</span> — health data requires stricter handling than typical apps.</li>
+      </ul>
+    </div>
+
+    <div class="placeholder-box" style="height:60px;"></div>
+  </div>
+
+  <div class="right" style="padding:28px 32px;">
+    <svg width="860" height="640" viewBox="0 0 860 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="b-green" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#00C87A"/></marker>
+        <marker id="b-blue"  markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#3B82F6"/></marker>
+        <marker id="b-orange" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#F59E0B"/></marker>
+        <marker id="b-purple" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#8B5CF6"/></marker>
+        <marker id="b-pink"  markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#EC4899"/></marker>
+        <marker id="b-red"   markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#EF4444"/></marker>
+        <marker id="br-green" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#00C87A"/></marker>
+        <marker id="br-blue"  markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#3B82F6"/></marker>
+        <marker id="br-orange" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#F59E0B"/></marker>
+        <marker id="br-purple" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#8B5CF6"/></marker>
+      </defs>
+
+      <!-- Outer border = Policies (thicker/warning) -->
+      <rect x="10" y="10" width="840" height="620" rx="12" fill="none" stroke="#8B5CF6" stroke-width="3"/>
+      <text x="425" y="638" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#8B5CF6">⚠ Health Data Privacy · GDPR · Access Controls — High Complexity Risk</text>
+
+      <!-- ── CENTRAL HUB highlighted as leverage ── -->
+      <rect x="322" y="257" width="216" height="76" rx="10" fill="#F3F0FF" stroke="#6D28D9" stroke-width="3"/>
+      <!-- glow ring -->
+      <rect x="316" y="251" width="228" height="88" rx="13" fill="none" stroke="#8B5CF6" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+      <text x="430" y="286" text-anchor="middle" font-family="Inter" font-size="14" font-weight="700" fill="#6D28D9">FitBridge App</text>
+      <text x="430" y="303" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">Mobile · Dashboard</text>
+      <text x="430" y="320" text-anchor="middle" font-family="Inter" font-size="9" font-weight="700" fill="#22C55E">★ Central Hub — Leverage Point</text>
+
+      <!-- Actors -->
+      <rect x="50" y="270" width="130" height="50" rx="8" fill="#E6FAF3" stroke="#00C87A" stroke-width="2"/>
+      <text x="115" y="291" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#065F46">👤 Client</text>
+      <text x="115" y="308" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#047857">Ages 20–40</text>
+
+      <rect x="680" y="270" width="140" height="50" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+      <text x="750" y="291" text-anchor="middle" font-family="Inter" font-size="13" font-weight="700" fill="#1D4ED8">🏋️ Trainer</text>
+      <text x="750" y="308" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#2563EB">NASM / ACE Certified</text>
+
+      <!-- Artifacts top -->
+      <rect x="180" y="80" width="130" height="46" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="245" y="101" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#92400E">Workout</text>
+      <text x="245" y="116" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#92400E">Database</text>
+
+      <rect x="365" y="80" width="130" height="46" rx="8" fill="#F5F3FF" stroke="#8B5CF6" stroke-width="1.5"/>
+      <text x="430" y="101" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#6D28D9">Video</text>
+      <text x="430" y="116" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#6D28D9">Library</text>
+
+      <rect x="550" y="80" width="130" height="46" rx="8" fill="#EFF6FF" stroke="#3B82F6" stroke-width="1.5"/>
+      <text x="615" y="101" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#1D4ED8">Analytics</text>
+      <text x="615" y="116" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#1D4ED8">Dashboard</text>
+
+      <!-- Artifacts bottom — risk areas highlighted -->
+      <!-- Meal Log — risk (dashed red border) -->
+      <rect x="140" y="460" width="130" height="46" rx="8" fill="#FFF7ED" stroke="#EF4444" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="205" y="481" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#C2410C">Meal Log</text>
+      <text x="205" y="496" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#EA580C">⚠ low compliance</text>
+
+      <!-- Body Metrics — risk -->
+      <rect x="320" y="460" width="130" height="46" rx="8" fill="#FFF7ED" stroke="#EF4444" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="385" y="481" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#C2410C">Body Metrics</text>
+      <text x="385" y="496" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#EA580C">⚠ low compliance</text>
+
+      <!-- Notification Engine — risk overload -->
+      <rect x="500" y="460" width="140" height="46" rx="8" fill="#FDF2F8" stroke="#EC4899" stroke-width="2"/>
+      <text x="570" y="481" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="#BE185D">Notification</text>
+      <text x="570" y="496" text-anchor="middle" font-family="Inter" font-size="9.5" fill="#DB2777">⚠ overload risk</text>
+
+      <!-- Connections (same as slide 3) -->
+      <line x1="180" y1="295" x2="322" y2="295" stroke="#00C87A" stroke-width="1.8" marker-end="url(#b-green)" marker-start="url(#br-green)"/>
+      <line x1="680" y1="295" x2="538" y2="295" stroke="#3B82F6" stroke-width="1.8" marker-end="url(#b-blue)" marker-start="url(#br-blue)"/>
+      <line x1="370" y1="257" x2="270" y2="126" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#b-orange)"/>
+      <line x1="430" y1="257" x2="430" y2="126" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#b-purple)" marker-start="url(#br-purple)"/>
+      <line x1="490" y1="257" x2="590" y2="126" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#b-blue)"/>
+      <line x1="380" y1="333" x2="245" y2="460" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#b-red)"/>
+      <line x1="410" y1="333" x2="390" y2="460" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#b-red)"/>
+      <line x1="480" y1="333" x2="540" y2="460" stroke="#EC4899" stroke-width="1.5" marker-end="url(#b-pink)"/>
+      <path d="M 500 483 Q 300 560 180 310" fill="none" stroke="#EC4899" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#b-pink)"/>
+      <path d="M 720 270 Q 600 160 310 103" fill="none" stroke="#F59E0B" stroke-width="1.5" marker-end="url(#b-orange)"/>
+      <path d="M 710 270 Q 640 150 495 103" fill="none" stroke="#8B5CF6" stroke-width="1.5" marker-end="url(#b-purple)"/>
+      <line x1="680" y1="126" x2="720" y2="270" stroke="#3B82F6" stroke-width="1.5" marker-end="url(#b-blue)"/>
+      <path d="M 115 320 Q 115 490 140 483" fill="none" stroke="#00C87A" stroke-width="1.5" marker-end="url(#b-green)"/>
+      <path d="M 140 305 Q 280 380 320 480" fill="none" stroke="#00C87A" stroke-width="1.5" marker-end="url(#b-green)"/>
+      <path d="M 180 103 Q 130 180 115 270" fill="none" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#b-orange)"/>
+
+      <!-- Legend -->
+      <line x1="30" y1="575" x2="55" y2="575" stroke="#22C55E" stroke-width="2.5"/>
+      <text x="62" y="579" font-family="Inter" font-size="10" fill="#22C55E" font-weight="600">Leverage point</text>
+      <line x1="170" y1="575" x2="195" y2="575" stroke="#EF4444" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="202" y="579" font-family="Inter" font-size="10" fill="#EF4444" font-weight="600">Risk / weak link</text>
+      <line x1="310" y1="575" x2="335" y2="575" stroke="#EC4899" stroke-width="2" stroke-dasharray="4,2"/>
+      <text x="342" y="579" font-family="Inter" font-size="10" fill="#EC4899" font-weight="600">Auto-notification</text>
+      <rect x="450" y="569" width="12" height="12" rx="2" fill="none" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <text x="468" y="579" font-family="Inter" font-size="10" fill="#EF4444" font-weight="600">Low compliance risk</text>
+    </svg>
+  </div>
+</div>
+
+</body>
+</html>

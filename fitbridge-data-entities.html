@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitBridge – Content Management System / Data Entities</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #111;
+    padding: 40px 48px 80px;
+  }
+
+  /* ── PAGE TITLE ── */
+  h1 {
+    font-size: 36px;
+    font-weight: 900;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: -.5px;
+  }
+
+  /* ── 2-COL LAYOUT ── */
+  .page-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 48px;
+  }
+
+  /* ── SECTION ── */
+  .section { display: flex; flex-direction: column; gap: 8px; }
+  .section-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap {
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 10.5px;
+    white-space: nowrap;
+  }
+  thead tr th {
+    padding: 5px 8px;
+    font-weight: 700;
+    text-align: left;
+    border: 1px solid #ccc;
+    background: #f0f0f0;
+    color: #111;
+    font-size: 10px;
+  }
+  tbody tr td {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    color: #222;
+  }
+  tbody tr:nth-child(even) td { background: #fafafa; }
+  tbody tr:hover td { background: #f0f7ff; }
+
+  /* coloured header themes */
+  .green  thead tr { background: #00C87A; }
+  .green  thead tr th { background: #00C87A; color: #fff; border-color: #00a865; }
+  .blue   thead tr { background: #3B82F6; }
+  .blue   thead tr th { background: #3B82F6; color: #fff; border-color: #2563eb; }
+  .orange thead tr { background: #F59E0B; }
+  .orange thead tr th { background: #F59E0B; color: #fff; border-color: #d97706; }
+  .purple thead tr { background: #8B5CF6; }
+  .purple thead tr th { background: #8B5CF6; color: #fff; border-color: #7c3aed; }
+  .red    thead tr { background: #EF4444; }
+  .red    thead tr th { background: #EF4444; color: #fff; border-color: #dc2626; }
+  .teal   thead tr { background: #0891B2; }
+  .teal   thead tr th { background: #0891B2; color: #fff; border-color: #0e7490; }
+
+  /* id pill */
+  .id { font-weight: 700; font-family: monospace; font-size: 10px; }
+  .fk { color: #7c3aed; font-family: monospace; font-size: 10px; }
+  .status-done   { background: #dcfce7; color: #166534; padding: 1px 6px; border-radius: 99px; font-size: 9px; font-weight: 600; }
+  .status-prog   { background: #fef9c3; color: #854d0e; padding: 1px 6px; border-radius: 99px; font-size: 9px; font-weight: 600; }
+  .status-missed { background: #fee2e2; color: #991b1b; padding: 1px 6px; border-radius: 99px; font-size: 9px; font-weight: 600; }
+  .status-sched  { background: #eff6ff; color: #1d4ed8; padding: 1px 6px; border-radius: 99px; font-size: 9px; font-weight: 600; }
+
+  /* sheet tabs row */
+  .tab-row {
+    display: flex;
+    gap: 0;
+    margin-top: 2px;
+    border-top: 1px solid #ccc;
+  }
+  .tab {
+    padding: 3px 10px;
+    font-size: 9px;
+    font-weight: 600;
+    border-right: 1px solid #ccc;
+    background: #f5f5f5;
+    color: #555;
+    cursor: pointer;
+  }
+  .tab.active { background: #fff; color: #111; border-bottom: 2px solid #111; }
+
+  /* caption */
+  .caption {
+    font-size: 9px;
+    color: #888;
+    margin-top: 4px;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<h1>Content Management System / Data Entities</h1>
+
+<div class="page-grid">
+
+  <!-- ── USER & ROLES ── -->
+  <div class="section">
+    <div class="section-title">User &amp; Roles</div>
+    <div class="tbl-wrap">
+      <table class="green">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Goal</th>
+            <th>Linked Trainer</th>
+            <th>Linked Workouts</th>
+            <th>Linked Metrics</th>
+            <th>Linked Meals</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">usr_001</td>
+            <td>Jordan Kim</td>
+            <td>jordan@email.com</td>
+            <td>Client</td>
+            <td>Lose weight</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">wrk_001, wrk_002</td>
+            <td class="fk">bm_001–bm_14</td>
+            <td class="fk">mlog_001–mlog_28</td>
+          </tr>
+          <tr>
+            <td class="id">usr_002</td>
+            <td>Alex Torres</td>
+            <td>alex@email.com</td>
+            <td>Client</td>
+            <td>Build muscle</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">wrk_003, wrk_004</td>
+            <td class="fk">bm_015–bm_22</td>
+            <td class="fk">mlog_029–mlog_42</td>
+          </tr>
+          <tr>
+            <td class="id">usr_003</td>
+            <td>Dana Lee</td>
+            <td>dana@email.com</td>
+            <td>Client</td>
+            <td>Improve endurance</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">wrk_005</td>
+            <td class="fk">bm_023–bm_30</td>
+            <td class="fk">mlog_043–mlog_55</td>
+          </tr>
+          <tr>
+            <td class="id">usr_004</td>
+            <td>Sam Park</td>
+            <td>sam@email.com</td>
+            <td>Client</td>
+            <td>Eat healthier</td>
+            <td class="fk">trn_002</td>
+            <td class="fk">wrk_006</td>
+            <td class="fk">bm_031–bm_35</td>
+            <td class="fk">mlog_056–mlog_60</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Users</div>
+      <div class="tab">Trainers</div>
+      <div class="tab">Workouts</div>
+      <div class="tab">Metrics</div>
+      <div class="tab">Meals</div>
+      <div class="tab">Comms</div>
+    </div>
+    <div class="caption">Each client links to one Trainer and has many Workouts, Metrics, and Meal Logs via Foreign Keys.</div>
+  </div>
+
+  <!-- ── TRAINER ── -->
+  <div class="section">
+    <div class="section-title">Trainer</div>
+    <div class="tbl-wrap">
+      <table class="green">
+        <thead>
+          <tr>
+            <th>Trainer ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Certification</th>
+            <th>Specialties</th>
+            <th>Invite Code</th>
+            <th>Linked Clients</th>
+            <th>Linked Workouts</th>
+            <th>Linked Videos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">trn_001</td>
+            <td>Marcus Reid</td>
+            <td>marcus@fitbridge.com</td>
+            <td>NASM Certified</td>
+            <td>Strength, HIIT, Weight Loss</td>
+            <td><strong>TRN-4829</strong></td>
+            <td class="fk">usr_001, 002, 003</td>
+            <td class="fk">wrk_001–005</td>
+            <td class="fk">vid_001–vid_008</td>
+          </tr>
+          <tr>
+            <td class="id">trn_002</td>
+            <td>Priya Nair</td>
+            <td>priya@fitbridge.com</td>
+            <td>ACE Certified</td>
+            <td>Mobility, Yoga, Recovery</td>
+            <td><strong>TRN-7731</strong></td>
+            <td class="fk">usr_004</td>
+            <td class="fk">wrk_006–008</td>
+            <td class="fk">vid_009–vid_012</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Trainers</div>
+      <div class="tab">Users</div>
+      <div class="tab">Workouts</div>
+      <div class="tab">Videos</div>
+      <div class="tab">Notes</div>
+    </div>
+    <div class="caption">Trainer creates and manages all workout content, video library, and client notes.</div>
+  </div>
+
+  <!-- ── WORKOUT ── -->
+  <div class="section">
+    <div class="section-title">Workout</div>
+    <div class="tbl-wrap">
+      <table class="blue">
+        <thead>
+          <tr>
+            <th>Workout ID</th>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Trainer ID</th>
+            <th>Assigned To</th>
+            <th>Scheduled Date</th>
+            <th>Status</th>
+            <th>Linked Exercises</th>
+            <th>Linked Log</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">wrk_001</td>
+            <td>Upper Body Strength</td>
+            <td>45 min</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-03</td>
+            <td><span class="status-done">completed</span></td>
+            <td class="fk">ex_001–ex_006</td>
+            <td class="fk">wlog_001</td>
+          </tr>
+          <tr>
+            <td class="id">wrk_002</td>
+            <td>Cardio &amp; Core</td>
+            <td>30 min</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-05</td>
+            <td><span class="status-sched">scheduled</span></td>
+            <td class="fk">ex_007–ex_011</td>
+            <td class="fk">—</td>
+          </tr>
+          <tr>
+            <td class="id">wrk_003</td>
+            <td>Leg Day</td>
+            <td>55 min</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_002</td>
+            <td>2026-04-01</td>
+            <td><span class="status-missed">missed</span></td>
+            <td class="fk">ex_012–ex_018</td>
+            <td class="fk">—</td>
+          </tr>
+          <tr>
+            <td class="id">wrk_004</td>
+            <td>Full Body Circuit</td>
+            <td>40 min</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_002</td>
+            <td>2026-03-29</td>
+            <td><span class="status-done">completed</span></td>
+            <td class="fk">ex_019–ex_026</td>
+            <td class="fk">wlog_002</td>
+          </tr>
+          <tr>
+            <td class="id">wrk_005</td>
+            <td>Mobility &amp; Stretch</td>
+            <td>25 min</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_003</td>
+            <td>2026-04-02</td>
+            <td><span class="status-prog">in-progress</span></td>
+            <td class="fk">ex_027–ex_031</td>
+            <td class="fk">wlog_003</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Workouts</div>
+      <div class="tab">Exercises</div>
+      <div class="tab">Logs</div>
+      <div class="tab">Users</div>
+      <div class="tab">Trainers</div>
+    </div>
+    <div class="caption">Each Workout is created by a Trainer, assigned to one User, and contains many Exercises. Status auto-updates based on WorkoutLog.</div>
+  </div>
+
+  <!-- ── EXERCISE ── -->
+  <div class="section">
+    <div class="section-title">Exercise</div>
+    <div class="tbl-wrap">
+      <table class="blue">
+        <thead>
+          <tr>
+            <th>Exercise ID</th>
+            <th>Workout ID</th>
+            <th>Name</th>
+            <th>Sets</th>
+            <th>Reps</th>
+            <th>Weight (lbs)</th>
+            <th>Rest (sec)</th>
+            <th>Linked Video</th>
+            <th>Coaching Notes</th>
+            <th>Order</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">ex_001</td>
+            <td class="fk">wrk_001</td>
+            <td>Dumbbell Row</td>
+            <td>3</td>
+            <td>12</td>
+            <td>35</td>
+            <td>60</td>
+            <td class="fk">vid_001</td>
+            <td>Keep back flat</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td class="id">ex_002</td>
+            <td class="fk">wrk_001</td>
+            <td>Bench Press</td>
+            <td>4</td>
+            <td>10</td>
+            <td>95</td>
+            <td>90</td>
+            <td class="fk">vid_002</td>
+            <td>Full range of motion</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td class="id">ex_003</td>
+            <td class="fk">wrk_001</td>
+            <td>Shoulder Press</td>
+            <td>3</td>
+            <td>12</td>
+            <td>25</td>
+            <td>60</td>
+            <td class="fk">vid_003</td>
+            <td>Don't lock elbows</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td class="id">ex_004</td>
+            <td class="fk">wrk_001</td>
+            <td>Pull-up</td>
+            <td>3</td>
+            <td>8</td>
+            <td>BW</td>
+            <td>90</td>
+            <td class="fk">vid_004</td>
+            <td>Use band if needed</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td class="id">ex_005</td>
+            <td class="fk">wrk_001</td>
+            <td>Tricep Dip</td>
+            <td>3</td>
+            <td>15</td>
+            <td>BW</td>
+            <td>45</td>
+            <td class="fk">—</td>
+            <td>Elbows close to body</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td class="id">ex_006</td>
+            <td class="fk">wrk_001</td>
+            <td>Face Pull</td>
+            <td>3</td>
+            <td>15</td>
+            <td>20</td>
+            <td>45</td>
+            <td class="fk">vid_005</td>
+            <td>External rotation focus</td>
+            <td>6</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Exercises</div>
+      <div class="tab">Workouts</div>
+      <div class="tab">Videos</div>
+    </div>
+    <div class="caption">Each Exercise belongs to one Workout. BW = bodyweight. Video link is optional.</div>
+  </div>
+
+  <!-- ── BODY METRICS ── -->
+  <div class="section">
+    <div class="section-title">Body Metrics</div>
+    <div class="tbl-wrap">
+      <table class="orange">
+        <thead>
+          <tr>
+            <th>Metric ID</th>
+            <th>User ID</th>
+            <th>Logged At</th>
+            <th>Weight (lbs)</th>
+            <th>Body Fat %</th>
+            <th>Muscle Mass (lbs)</th>
+            <th>Waist (in)</th>
+            <th>Resting HR (bpm)</th>
+            <th>Notes</th>
+            <th>Visible To Trainer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">bm_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-03-05 08:00</td>
+            <td>166.2</td>
+            <td>22.6%</td>
+            <td>97.4</td>
+            <td>32.5</td>
+            <td>72</td>
+            <td>Start of program</td>
+            <td>✓ Yes</td>
+          </tr>
+          <tr>
+            <td class="id">bm_002</td>
+            <td class="fk">usr_001</td>
+            <td>2026-03-12 08:00</td>
+            <td>164.8</td>
+            <td>22.1%</td>
+            <td>97.6</td>
+            <td>32.2</td>
+            <td>70</td>
+            <td>Week 2 check-in</td>
+            <td>✓ Yes</td>
+          </tr>
+          <tr>
+            <td class="id">bm_003</td>
+            <td class="fk">usr_001</td>
+            <td>2026-03-19 08:00</td>
+            <td>163.5</td>
+            <td>21.7%</td>
+            <td>97.9</td>
+            <td>32.0</td>
+            <td>69</td>
+            <td>Week 3 check-in</td>
+            <td>✓ Yes</td>
+          </tr>
+          <tr>
+            <td class="id">bm_004</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-02 08:00</td>
+            <td>162.0</td>
+            <td>21.4%</td>
+            <td>98.2</td>
+            <td>32.0</td>
+            <td>68</td>
+            <td>Morning weigh-in</td>
+            <td>✓ Yes</td>
+          </tr>
+          <tr>
+            <td class="id">bm_005</td>
+            <td class="fk">usr_002</td>
+            <td>2026-04-01 07:30</td>
+            <td>178.4</td>
+            <td>18.2%</td>
+            <td>108.6</td>
+            <td>33.0</td>
+            <td>65</td>
+            <td>Post-rest day</td>
+            <td>✓ Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Metrics</div>
+      <div class="tab">Users</div>
+      <div class="tab">Trainers</div>
+    </div>
+    <div class="caption">Logged by Client, read-only for Trainer. One entry per check-in date. Trainer uses trend data in Client Data Review screen.</div>
+  </div>
+
+  <!-- ── MEAL LOG ── -->
+  <div class="section">
+    <div class="section-title">Meal Log &amp; Entries</div>
+    <div class="tbl-wrap">
+      <table class="orange">
+        <thead>
+          <tr>
+            <th>Entry ID</th>
+            <th>Log ID</th>
+            <th>User ID</th>
+            <th>Date</th>
+            <th>Meal Type</th>
+            <th>Food Name</th>
+            <th>Calories</th>
+            <th>Protein (g)</th>
+            <th>Carbs (g)</th>
+            <th>Fat (g)</th>
+            <th>Day Total Cal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">ment_001</td>
+            <td class="fk">mlog_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-02</td>
+            <td>Breakfast</td>
+            <td>Greek Yogurt + Berries</td>
+            <td>280</td>
+            <td>18</td>
+            <td>30</td>
+            <td>6</td>
+            <td rowspan="4" style="text-align:center;font-weight:700;vertical-align:middle;background:#fff7ed;">1,420 kcal</td>
+          </tr>
+          <tr>
+            <td class="id">ment_002</td>
+            <td class="fk">mlog_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-02</td>
+            <td>Breakfast</td>
+            <td>Oatmeal w/ Honey</td>
+            <td>310</td>
+            <td>7</td>
+            <td>58</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td class="id">ment_003</td>
+            <td class="fk">mlog_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-02</td>
+            <td>Lunch</td>
+            <td>Grilled Chicken Salad</td>
+            <td>420</td>
+            <td>38</td>
+            <td>22</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td class="id">ment_004</td>
+            <td class="fk">mlog_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-02</td>
+            <td>Snack</td>
+            <td>Protein Bar</td>
+            <td>210</td>
+            <td>20</td>
+            <td>24</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td class="id">ment_005</td>
+            <td class="fk">mlog_002</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-03</td>
+            <td>Breakfast</td>
+            <td>Eggs + Avocado Toast</td>
+            <td>380</td>
+            <td>22</td>
+            <td>35</td>
+            <td>18</td>
+            <td style="font-weight:700;background:#fff7ed;">In progress</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Meal Entries</div>
+      <div class="tab">Meal Logs</div>
+      <div class="tab">Users</div>
+    </div>
+    <div class="caption">MealEntry is a child of MealLog (one log per day). Day Total Cal is auto-summed from all entries in that log.</div>
+  </div>
+
+  <!-- ── WORKOUT LOG ── -->
+  <div class="section">
+    <div class="section-title">Workout Log</div>
+    <div class="tbl-wrap">
+      <table class="teal">
+        <thead>
+          <tr>
+            <th>Log ID</th>
+            <th>Workout ID</th>
+            <th>User ID</th>
+            <th>Completed At</th>
+            <th>Actual Duration</th>
+            <th>Sets Logged</th>
+            <th>Linked Workout Title</th>
+            <th>Linked Trainer</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">wlog_001</td>
+            <td class="fk">wrk_001</td>
+            <td class="fk">usr_001</td>
+            <td>2026-04-03 07:48</td>
+            <td>48 min</td>
+            <td>18 / 18</td>
+            <td>Upper Body Strength</td>
+            <td class="fk">trn_001</td>
+            <td>Felt strong, increased row weight</td>
+          </tr>
+          <tr>
+            <td class="id">wlog_002</td>
+            <td class="fk">wrk_004</td>
+            <td class="fk">usr_002</td>
+            <td>2026-03-29 06:30</td>
+            <td>43 min</td>
+            <td>24 / 24</td>
+            <td>Full Body Circuit</td>
+            <td class="fk">trn_001</td>
+            <td>Skipped last cool-down</td>
+          </tr>
+          <tr>
+            <td class="id">wlog_003</td>
+            <td class="fk">wrk_005</td>
+            <td class="fk">usr_003</td>
+            <td>2026-04-02 19:10</td>
+            <td>27 min</td>
+            <td>15 / 15</td>
+            <td>Mobility &amp; Stretch</td>
+            <td class="fk">trn_001</td>
+            <td>Hip flexor very tight</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Workout Logs</div>
+      <div class="tab">Workouts</div>
+      <div class="tab">Users</div>
+      <div class="tab">Trainers</div>
+    </div>
+    <div class="caption">Created by Client when they complete a workout. Updates Workout.status to "completed". Trainer reads via Client Data Review.</div>
+  </div>
+
+  <!-- ── VIDEO ── -->
+  <div class="section">
+    <div class="section-title">Video Library</div>
+    <div class="tbl-wrap">
+      <table class="purple">
+        <thead>
+          <tr>
+            <th>Video ID</th>
+            <th>Trainer ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Duration</th>
+            <th>Tags</th>
+            <th>Linked Exercise</th>
+            <th>Uploaded</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">vid_001</td>
+            <td class="fk">trn_001</td>
+            <td>Proper Dumbbell Row Form</td>
+            <td>Technique</td>
+            <td>4:12</td>
+            <td>Back, Upper body</td>
+            <td class="fk">ex_001</td>
+            <td>2026-03-01</td>
+          </tr>
+          <tr>
+            <td class="id">vid_002</td>
+            <td class="fk">trn_001</td>
+            <td>Bench Press Setup Guide</td>
+            <td>Technique</td>
+            <td>5:30</td>
+            <td>Chest, Upper body</td>
+            <td class="fk">ex_002</td>
+            <td>2026-03-01</td>
+          </tr>
+          <tr>
+            <td class="id">vid_003</td>
+            <td class="fk">trn_001</td>
+            <td>Dynamic Warmup Routine</td>
+            <td>Warmup</td>
+            <td>7:30</td>
+            <td>Mobility, Pre-workout</td>
+            <td class="fk">—</td>
+            <td>2026-03-05</td>
+          </tr>
+          <tr>
+            <td class="id">vid_004</td>
+            <td class="fk">trn_001</td>
+            <td>Foam Rolling for Recovery</td>
+            <td>Recovery</td>
+            <td>5:45</td>
+            <td>Post-workout, Legs</td>
+            <td class="fk">—</td>
+            <td>2026-03-10</td>
+          </tr>
+          <tr>
+            <td class="id">vid_005</td>
+            <td class="fk">trn_001</td>
+            <td>Squat Depth Fix</td>
+            <td>Technique</td>
+            <td>3:20</td>
+            <td>Lower body, Knees</td>
+            <td class="fk">—</td>
+            <td>2026-03-12</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Videos</div>
+      <div class="tab">Exercises</div>
+      <div class="tab">Trainers</div>
+    </div>
+    <div class="caption">Created and managed by Trainer only. Clients have read-only access. Exercises optionally link to one Video.</div>
+  </div>
+
+  <!-- ── TRAINER NOTES ── -->
+  <div class="section">
+    <div class="section-title">Trainer Notes</div>
+    <div class="tbl-wrap">
+      <table class="purple">
+        <thead>
+          <tr>
+            <th>Note ID</th>
+            <th>Trainer ID</th>
+            <th>User ID</th>
+            <th>Message</th>
+            <th>Sent At</th>
+            <th>Is Read</th>
+            <th>Linked Client Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">tnote_001</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_001</td>
+            <td>"Great progress! Log meals before Friday check-in."</td>
+            <td>2026-04-01 14:30</td>
+            <td>✓ Yes</td>
+            <td>Jordan Kim</td>
+          </tr>
+          <tr>
+            <td class="id">tnote_002</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_001</td>
+            <td>"Increase dumbbell row to 40 lbs next session."</td>
+            <td>2026-04-03 08:15</td>
+            <td>✗ No</td>
+            <td>Jordan Kim</td>
+          </tr>
+          <tr>
+            <td class="id">tnote_003</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_002</td>
+            <td>"You missed Leg Day — reschedule for Thursday."</td>
+            <td>2026-04-02 09:00</td>
+            <td>✓ Yes</td>
+            <td>Alex Torres</td>
+          </tr>
+          <tr>
+            <td class="id">tnote_004</td>
+            <td class="fk">trn_001</td>
+            <td class="fk">usr_003</td>
+            <td>"Hip flexor tightness noted — adding extra stretch."</td>
+            <td>2026-04-02 20:00</td>
+            <td>✗ No</td>
+            <td>Dana Lee</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Trainer Notes</div>
+      <div class="tab">Notifications</div>
+      <div class="tab">Users</div>
+    </div>
+    <div class="caption">Sent by Trainer, received by Client. Read-only once sent. Triggers a Notification to the client on delivery.</div>
+  </div>
+
+  <!-- ── NOTIFICATIONS ── -->
+  <div class="section">
+    <div class="section-title">Notifications</div>
+    <div class="tbl-wrap">
+      <table class="red">
+        <thead>
+          <tr>
+            <th>Notif ID</th>
+            <th>User ID</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Created At</th>
+            <th>Is Read</th>
+            <th>Triggered By</th>
+            <th>Linked Entity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="id">notif_001</td>
+            <td class="fk">usr_001</td>
+            <td>new_workout</td>
+            <td>"Marcus assigned: Upper Body Strength for Apr 3"</td>
+            <td>2026-04-01 08:05</td>
+            <td>✓ Yes</td>
+            <td>System</td>
+            <td class="fk">wrk_001</td>
+          </tr>
+          <tr>
+            <td class="id">notif_002</td>
+            <td class="fk">usr_001</td>
+            <td>new_message</td>
+            <td>"Marcus sent you a note"</td>
+            <td>2026-04-03 08:16</td>
+            <td>✗ No</td>
+            <td>System</td>
+            <td class="fk">tnote_002</td>
+          </tr>
+          <tr>
+            <td class="id">notif_003</td>
+            <td class="fk">usr_002</td>
+            <td>missed_workout</td>
+            <td>"You missed Leg Day on Apr 1"</td>
+            <td>2026-04-02 09:00</td>
+            <td>✓ Yes</td>
+            <td>System (auto)</td>
+            <td class="fk">wrk_003</td>
+          </tr>
+          <tr>
+            <td class="id">notif_004</td>
+            <td class="fk">usr_004</td>
+            <td>metric_reminder</td>
+            <td>"Don't forget to log your metrics this week!"</td>
+            <td>2026-04-03 07:00</td>
+            <td>✗ No</td>
+            <td>System (auto)</td>
+            <td class="fk">usr_004</td>
+          </tr>
+          <tr>
+            <td class="id">notif_005</td>
+            <td class="fk">usr_001</td>
+            <td>streak_milestone</td>
+            <td>"🔥 5-day workout streak! Keep it up."</td>
+            <td>2026-04-03 07:50</td>
+            <td>✗ No</td>
+            <td>System (auto)</td>
+            <td class="fk">usr_001</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-row">
+      <div class="tab active">Notifications</div>
+      <div class="tab">Users</div>
+      <div class="tab">Trainer Notes</div>
+      <div class="tab">Workouts</div>
+    </div>
+    <div class="caption">All notifications are system-generated. Types: new_workout, missed_workout, metric_reminder, new_message, streak_milestone.</div>
+  </div>
+
+</div><!-- /page-grid -->
+
+</body>
+</html>
