@@ -12,25 +12,25 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:            #080E1C;
-      --bg-section:    #0B1120;
-      --bg-card:       #111B2E;
-      --bg-elevated:   #162036;
-      --text-primary:  #F0F4FF;
-      --text-secondary:#8A9BBD;
-      --text-tertiary: #4A5A78;
-      --accent:        #00E5A0;
-      --accent-light:  rgba(0,229,160,0.08);
-      --accent-mid:    rgba(0,229,160,0.18);
-      --accent-border: rgba(0,229,160,0.22);
-      --blue:          #5B8DEF;
-      --border:        rgba(0,229,160,0.1);
-      --border-soft:   rgba(255,255,255,0.06);
+      --bg:            #F7F6FF;
+      --bg-section:    #FFFFFF;
+      --bg-card:       #FFFFFF;
+      --bg-elevated:   #EEF0FF;
+      --text-primary:  #0D0B2A;
+      --text-secondary:#5B5878;
+      --text-tertiary: #A09DC0;
+      --accent:        #6B5CE7;
+      --accent-light:  rgba(107,92,231,0.08);
+      --accent-mid:    rgba(107,92,231,0.18);
+      --accent-border: rgba(107,92,231,0.22);
+      --blue:          #4F46E5;
+      --border:        rgba(107,92,231,0.12);
+      --border-soft:   rgba(13,11,42,0.07);
       --radius:        20px;
       --radius-sm:     12px;
       --max-w:         1100px;
-      --shadow-card:   0 2px 12px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.2);
-      --shadow-hover:  0 8px 32px rgba(0,229,160,0.12), 0 2px 8px rgba(0,0,0,0.3);
+      --shadow-card:   0 2px 12px rgba(107,92,231,0.08), 0 1px 3px rgba(13,11,42,0.05);
+      --shadow-hover:  0 8px 32px rgba(107,92,231,0.16), 0 2px 8px rgba(13,11,42,0.06);
     }
 
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
@@ -43,7 +43,7 @@
       overflow-x: hidden;
     }
 
-    ::selection { background: var(--accent); color: #000; }
+    ::selection { background: var(--accent); color: #fff; }
 
     /* ─── Utility ─── */
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 32px; }
@@ -99,9 +99,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(8,14,28,0.92);
+      background: rgba(247,246,255,0.92);
       border-bottom: 1px solid var(--border-soft);
-      backdrop-filter: blur(12px);
       transition: transform 0.3s ease;
     }
     nav.hidden { transform: translateY(-100%); }
@@ -118,7 +117,7 @@
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-size: 13px; font-weight: 800;
-      color: #000;
+      color: #fff;
       letter-spacing: -0.02em;
       flex-shrink: 0;
     }
@@ -178,7 +177,7 @@
       left: calc(50% - 400px);
       width: 800px;
       height: 600px;
-      background: radial-gradient(circle at 50% 40%, rgba(0,229,160,0.08) 0%, transparent 65%);
+      background: radial-gradient(circle at 50% 40%, rgba(107,92,231,0.1) 0%, transparent 65%);
       pointer-events: none;
       z-index: 0;
     }
@@ -320,7 +319,7 @@
       padding: 12px 24px;
       border-radius: 100px;
       background: var(--accent);
-      color: #000;
+      color: #fff;
       font-size: 14px;
       font-weight: 700;
       text-decoration: none;
@@ -400,7 +399,7 @@
     }
     .audience-card:hover { box-shadow: var(--shadow-hover); }
     .audience-card.primary   { border-color: var(--accent-border); }
-    .audience-card.secondary { border-color: rgba(91,141,239,0.22); }
+    .audience-card.secondary { border-color: rgba(79,70,229,0.22); }
     .audience-avatar {
       width: 56px; height: 56px;
       border-radius: 16px; font-size: 26px;
@@ -417,8 +416,8 @@
     .check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
     .check-list li::before {
       content: ''; flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%; margin-top: 1px;
-      background: rgba(0,229,160,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%2300E5A0' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/10px no-repeat;
-      border: 1px solid rgba(0,229,160,.3);
+      background: rgba(107,92,231,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%236B5CE7' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/10px no-repeat;
+      border: 1px solid rgba(107,92,231,.3);
     }
 
     /* ─── Solution cards ─── */
@@ -588,10 +587,10 @@
     }
     .footer-link:hover { transform: translateY(-2px); }
     .footer-link.primary {
-      background: var(--accent); color: #000;
-      box-shadow: 0 4px 16px rgba(0,229,160,0.3);
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 16px rgba(107,92,231,0.3);
     }
-    .footer-link.primary:hover { box-shadow: 0 8px 24px rgba(0,229,160,0.4); }
+    .footer-link.primary:hover { box-shadow: 0 8px 24px rgba(107,92,231,0.4); }
     .footer-link.secondary {
       background: var(--bg-card); color: var(--text-primary);
       border: 1.5px solid var(--border-soft);
@@ -672,7 +671,7 @@
     <p class="hero-sub">A trainer-connected fitness app bridging clients and coaches — from personalized workout plans and nutrition tracking to real-time progress metrics.</p>
     <div class="hero-meta">
       <div class="hero-meta-item">
-        <div class="val">8 Weeks</div>
+        <div class="val">2 Weeks</div>
         <div class="key">Timeline</div>
       </div>
       <div class="hero-meta-item">
@@ -798,7 +797,7 @@
           <div style="display:flex;align-items:center;gap:16px">
             <div class="audience-avatar">🏋️</div>
             <div>
-              <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:100px;border:1px solid var(--accent-border);margin-bottom:8px;display:inline-block;">Primary</div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-light);padding:3px 10px;border-radius:100px;border:1.5px solid var(--accent-border);margin-bottom:8px;display:inline-block;">Primary</div>
               <h3>Fitness Clients</h3>
             </div>
           </div>
@@ -815,7 +814,7 @@
           <div style="display:flex;align-items:center;gap:16px">
             <div class="audience-avatar">📋</div>
             <div>
-              <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);background:rgba(91,141,239,.1);padding:3px 10px;border-radius:100px;border:1px solid rgba(91,141,239,.22);margin-bottom:8px;display:inline-block;">Secondary</div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);background:rgba(79,70,229,.08);padding:3px 10px;border-radius:100px;border:1.5px solid rgba(79,70,229,.22);margin-bottom:8px;display:inline-block;">Secondary</div>
               <h3>Personal Trainers</h3>
             </div>
           </div>
