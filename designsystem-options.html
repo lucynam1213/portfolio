@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System Portfolio — Concept Options</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: #f5f3ff;
+      color: #1e1b4b;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Selector nav ── */
+    .selector {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,243,255,.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(139,92,246,.15);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .selector-label { font-size: .8rem; font-weight: 600; color: #6b7280; letter-spacing: .05em; text-transform: uppercase; }
+    .option-btn {
+      padding: .5rem 1.2rem;
+      border-radius: 999px;
+      border: 1.5px solid rgba(139,92,246,.3);
+      background: transparent;
+      color: #6d28d9;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .option-btn.active, .option-btn:hover {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 16px rgba(139,92,246,.35);
+    }
+
+    /* ── Pages ── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ════════════════════════════════════════
+       OPTION A — "Structured Logic"
+       Clean editorial, token-first narrative
+    ════════════════════════════════════════ */
+    .a-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem 8rem;
+    }
+    .a-eyebrow {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #8b5cf6;
+      margin-bottom: .75rem;
+    }
+    .a-title {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: #1e1b4b;
+      margin-bottom: 1.5rem;
+    }
+    .a-lead {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: #4b5563;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+    .a-meta-row {
+      display: flex;
+      gap: 3rem;
+      padding: 2rem 0;
+      border-top: 1px solid rgba(139,92,246,.15);
+      border-bottom: 1px solid rgba(139,92,246,.15);
+      margin-bottom: 5rem;
+    }
+    .a-meta-item label {
+      display: block;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: .3rem;
+    }
+    .a-meta-item span {
+      font-size: .9rem;
+      font-weight: 600;
+      color: #1e1b4b;
+    }
+
+    /* Section */
+    .a-section { margin-bottom: 5rem; }
+    .a-section-num {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: #d1d5db;
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+    .a-section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: #1e1b4b;
+      margin-bottom: 1rem;
+    }
+    .a-body {
+      font-size: .95rem;
+      line-height: 1.8;
+      color: #6b7280;
+      margin-bottom: 2rem;
+    }
+
+    /* Token grid */
+    .token-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .token-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .token-swatch { height: 80px; }
+    .token-info { padding: .75rem 1rem; }
+    .token-name { font-size: .75rem; font-weight: 700; color: #1e1b4b; margin-bottom: .2rem; }
+    .token-val { font-size: .7rem; color: #9ca3af; font-family: 'Courier New', monospace; }
+
+    /* Type scale */
+    .type-scale { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; margin-bottom: 2rem; }
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-row-label { font-size: .7rem; font-weight: 600; color: #d1d5db; min-width: 80px; font-family: monospace; }
+    .type-row-sample { color: #1e1b4b; font-weight: 600; }
+    .type-row-meta { margin-left: auto; font-size: .7rem; color: #9ca3af; }
+
+    /* Component grid */
+    .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .comp-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .comp-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; margin-bottom: 1rem; }
+    .comp-demo { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+    .demo-btn-pri {
+      padding: .5rem 1.2rem;
+      border-radius: 999px;
+      background: #8b5cf6;
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 600;
+      border: none;
+    }
+    .demo-btn-sec {
+      padding: .5rem 1.2rem;
+      border-radius: 999px;
+      background: transparent;
+      color: #8b5cf6;
+      font-size: .82rem;
+      font-weight: 600;
+      border: 1.5px solid #8b5cf6;
+    }
+    .demo-input {
+      padding: .45rem .9rem;
+      border-radius: 8px;
+      border: 1.5px solid #e5e7eb;
+      font-size: .82rem;
+      color: #374151;
+      width: 100%;
+      margin-top: .5rem;
+    }
+    .demo-badge {
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 700;
+    }
+    .demo-card-mini {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1rem;
+      width: 100%;
+    }
+    .demo-card-mini-title { font-size: .82rem; font-weight: 700; color: #1e1b4b; margin-bottom: .3rem; }
+    .demo-card-mini-body { font-size: .75rem; color: #6b7280; line-height: 1.5; }
+
+    /* Spacing visual */
+    .spacing-row { display: flex; align-items: center; gap: 1.5rem; padding: .75rem 0; border-bottom: 1px solid #f3f4f6; }
+    .spacing-bar { background: rgba(139,92,246,.15); height: 20px; border-radius: 4px; border-left: 3px solid #8b5cf6; }
+    .spacing-info label { font-size: .7rem; font-weight: 700; color: #1e1b4b; display: block; }
+    .spacing-info span { font-size: .68rem; color: #9ca3af; font-family: monospace; }
+
+
+    /* ════════════════════════════════════════
+       OPTION B — "System Map"
+       Visual-first, diagram + annotation style
+    ════════════════════════════════════════ */
+    .b-wrap { max-width: 1000px; margin: 0 auto; padding: 5rem 2rem 8rem; }
+
+    .b-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 6rem;
+    }
+    .b-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      color: #1e1b4b;
+      margin-bottom: 1rem;
+    }
+    .b-subtitle { font-size: 1rem; color: #6b7280; line-height: 1.7; }
+    .b-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .b-stat {
+      background: rgba(139,92,246,.06);
+      border: 1px solid rgba(139,92,246,.15);
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+    }
+    .b-stat-num { font-size: 2rem; font-weight: 800; color: #8b5cf6; line-height: 1; margin-bottom: .3rem; }
+    .b-stat-label { font-size: .78rem; color: #6b7280; }
+
+    /* Hierarchy diagram */
+    .b-section { margin-bottom: 5rem; }
+    .b-section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .b-section-tag {
+      padding: .3rem .8rem;
+      border-radius: 6px;
+      background: #1e1b4b;
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .b-section-title { font-size: 1.4rem; font-weight: 700; color: #1e1b4b; letter-spacing: -.02em; }
+
+    .b-diagram {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .b-diagram-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #9ca3af; margin-bottom: 2rem; }
+
+    /* 3-layer hierarchy */
+    .b-hier { display: flex; flex-direction: column; gap: 1.5rem; }
+    .b-hier-layer { display: flex; gap: 1rem; }
+    .b-hier-label { font-size: .7rem; font-weight: 700; color: #d1d5db; min-width: 70px; padding-top: .4rem; text-align: right; letter-spacing: .05em; }
+    .b-hier-nodes { display: flex; gap: .75rem; flex-wrap: wrap; flex: 1; }
+    .b-node {
+      padding: .5rem 1.1rem;
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 600;
+      border: 1.5px solid;
+    }
+    .b-node.token { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+    .b-node.primitive { background: #dbeafe; border-color: #3b82f6; color: #1e40af; }
+    .b-node.semantic { background: #f3e8ff; border-color: #8b5cf6; color: #6d28d9; }
+    .b-node.component { background: #d1fae5; border-color: #10b981; color: #065f46; }
+    .b-node.pattern { background: #fce7f3; border-color: #ec4899; color: #9d174d; }
+
+    /* Decision table */
+    .b-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .b-table th { background: #f9fafb; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: #9ca3af; padding: .75rem 1rem; text-align: left; border-bottom: 2px solid #e5e7eb; }
+    .b-table td { padding: .9rem 1rem; border-bottom: 1px solid #f3f4f6; color: #374151; vertical-align: top; }
+    .b-table tr:last-child td { border-bottom: none; }
+    .b-badge { display: inline-block; padding: .2rem .6rem; border-radius: 4px; font-size: .68rem; font-weight: 700; }
+
+    /* Annotated mockup */
+    .b-annotated { position: relative; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 16px; padding: 2rem; }
+    .b-annotation {
+      display: flex;
+      gap: .75rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .b-annotation-num {
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #8b5cf6;
+      color: #fff;
+      font-size: .7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: .1rem;
+    }
+    .b-annotation-text { font-size: .82rem; color: #6b7280; line-height: 1.6; }
+    .b-annotation-text strong { color: #1e1b4b; }
+
+
+    /* ════════════════════════════════════════
+       OPTION C — "Living System"
+       Interactive-feel, principle + example pairs
+    ════════════════════════════════════════ */
+    .c-wrap { max-width: 960px; margin: 0 auto; padding: 5rem 2rem 8rem; }
+
+    /* Split hero */
+    .c-hero { margin-bottom: 6rem; }
+    .c-hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2.5rem;
+      gap: 2rem;
+    }
+    .c-title {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: #1e1b4b;
+    }
+    .c-title em { font-style: normal; color: #8b5cf6; }
+    .c-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .c-tag {
+      padding: .3rem .75rem;
+      border-radius: 6px;
+      border: 1px solid rgba(139,92,246,.25);
+      color: #7c3aed;
+      background: rgba(139,92,246,.07);
+      font-size: .75rem;
+      font-weight: 600;
+    }
+    .c-divider { height: 1px; background: linear-gradient(90deg, #8b5cf6 0%, rgba(139,92,246,0) 100%); margin-bottom: 2.5rem; }
+    .c-hero-bottom { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+    .c-hero-stat { border-left: 3px solid rgba(139,92,246,.2); padding-left: 1rem; }
+    .c-hero-stat-num { font-size: 2.5rem; font-weight: 800; color: #8b5cf6; line-height: 1; }
+    .c-hero-stat-label { font-size: .8rem; color: #6b7280; margin-top: .3rem; }
+
+    /* Principle + example pairs */
+    .c-section { margin-bottom: 5rem; }
+    .c-section-eyebrow { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #8b5cf6; margin-bottom: .5rem; }
+    .c-section-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; color: #1e1b4b; margin-bottom: 2rem; }
+
+    .c-pair { display: grid; grid-template-columns: 280px 1fr; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid #f3f4f6; padding-bottom: 2rem; }
+    .c-pair:last-child { border-bottom: none; padding-bottom: 0; }
+    .c-pair-principle {}
+    .c-pair-title { font-size: 1rem; font-weight: 700; color: #1e1b4b; margin-bottom: .5rem; }
+    .c-pair-body { font-size: .85rem; color: #6b7280; line-height: 1.7; }
+    .c-pair-example {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+    .c-pair-example-label { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #d1d5db; margin-bottom: 1rem; }
+
+    /* Color system visual */
+    .c-color-strip { display: flex; height: 48px; border-radius: 10px; overflow: hidden; margin-bottom: .75rem; }
+    .c-color-strip-item { flex: 1; }
+    .c-color-palette { display: flex; gap: .5rem; }
+    .c-color-dot { width: 32px; height: 32px; border-radius: 50%; }
+    .c-color-dot-label { font-size: .65rem; color: #9ca3af; text-align: center; margin-top: .3rem; }
+
+    /* Do / Don't */
+    .c-do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .c-do, .c-dont {
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      font-size: .82rem;
+      line-height: 1.6;
+    }
+    .c-do {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      color: #166534;
+    }
+    .c-dont {
+      background: #fff1f2;
+      border: 1.5px solid #fca5a5;
+      color: #991b1b;
+    }
+    .c-do strong, .c-dont strong {
+      display: block;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+    .c-do strong { color: #16a34a; }
+    .c-dont strong { color: #dc2626; }
+
+    /* Icon grid */
+    .c-icon-grid { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .c-icon-item { display: flex; flex-direction: column; align-items: center; gap: .4rem; }
+    .c-icon-box {
+      width: 44px; height: 44px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .c-icon-label { font-size: .62rem; color: #9ca3af; font-weight: 600; }
+
+    /* Pattern anatomy */
+    .c-anatomy {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+    .c-anatomy-ui {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .c-anatomy-legend { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .c-anatomy-legend-item { display: flex; align-items: center; gap: .4rem; font-size: .72rem; color: #6b7280; }
+    .c-anatomy-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* Impact section */
+    .c-impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .c-impact-card {
+      background: linear-gradient(135deg, rgba(139,92,246,.06), rgba(109,40,217,.03));
+      border: 1px solid rgba(139,92,246,.15);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .c-impact-num { font-size: 2.5rem; font-weight: 900; color: #8b5cf6; letter-spacing: -.04em; }
+    .c-impact-label { font-size: .82rem; color: #6b7280; margin-top: .3rem; line-height: 1.5; }
+
+    /* ── Shared ── */
+    @media (max-width: 640px) {
+      .b-hero, .c-hero-bottom, .comp-grid, .c-impact-grid { grid-template-columns: 1fr; }
+      .c-pair { grid-template-columns: 1fr; }
+      .b-stat-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Concept Selector ── -->
+<div class="selector">
+  <span class="selector-label">Concept</span>
+  <button class="option-btn active" onclick="showPage('a', this)">A — Structured Logic</button>
+  <button class="option-btn" onclick="showPage('b', this)">B — System Map</button>
+  <button class="option-btn" onclick="showPage('c', this)">C — Living System</button>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     OPTION A — "Structured Logic"
+     Editorial layout: token → component → pattern
+     Clean, document-feel, minimal color
+══════════════════════════════════════════════ -->
+<div id="page-a" class="page active">
+  <div class="a-wrap">
+
+    <div class="a-eyebrow">Case Study · Design Systems</div>
+    <h1 class="a-title">Building a<br>Scalable Design<br>System</h1>
+    <p class="a-lead">A token-first component library built for a cross-platform product — reducing design debt, aligning teams, and accelerating delivery.</p>
+
+    <div class="a-meta-row">
+      <div class="a-meta-item"><label>Role</label><span>Lead UX Designer</span></div>
+      <div class="a-meta-item"><label>Team</label><span>Design + Engineering</span></div>
+      <div class="a-meta-item"><label>Timeline</label><span>12 weeks</span></div>
+      <div class="a-meta-item"><label>Tools</label><span>Figma · Storybook</span></div>
+    </div>
+
+    <!-- 01 Problem -->
+    <div class="a-section">
+      <div class="a-section-num">01 / Problem</div>
+      <div class="a-section-title">Inconsistency at scale</div>
+      <p class="a-body">Four product teams were shipping features independently. Without a shared system, every team maintained its own component library — creating visual debt, redundant work, and diverging user experiences across platforms.</p>
+    </div>
+
+    <!-- 02 Tokens -->
+    <div class="a-section">
+      <div class="a-section-num">02 / Foundation — Color Tokens</div>
+      <div class="a-section-title">Primitive → Semantic → Component</div>
+      <p class="a-body">All visual decisions are driven by design tokens. Primitives define raw values; semantic tokens assign meaning; component tokens bind semantics to specific parts.</p>
+
+      <div class="token-grid">
+        <div class="token-card">
+          <div class="token-swatch" style="background:#8b5cf6;"></div>
+          <div class="token-info">
+            <div class="token-name">Purple 500</div>
+            <div class="token-val">--color-purple-500</div>
+          </div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#6d28d9;"></div>
+          <div class="token-info">
+            <div class="token-name">Purple 700</div>
+            <div class="token-val">--color-purple-700</div>
+          </div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#1e1b4b;"></div>
+          <div class="token-info">
+            <div class="token-name">Ink 900</div>
+            <div class="token-val">--color-ink-900</div>
+          </div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#f5f3ff;"></div>
+          <div class="token-info">
+            <div class="token-name">Lavender 50</div>
+            <div class="token-val">--color-lavender-50</div>
+          </div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#10b981;"></div>
+          <div class="token-info">
+            <div class="token-name">Emerald 500</div>
+            <div class="token-val">--color-emerald-500</div>
+          </div>
+        </div>
+        <div class="token-card">
+          <div class="token-swatch" style="background:#f59e0b;"></div>
+          <div class="token-info">
+            <div class="token-name">Amber 500</div>
+            <div class="token-val">--color-amber-500</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semantic mapping -->
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;font-size:.82rem;">
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin-bottom:1rem;">Semantic mapping</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+          <div><div style="font-weight:700;color:#1e1b4b;margin-bottom:.3rem;">--color-action</div><div style="color:#9ca3af;">→ purple-500</div></div>
+          <div><div style="font-weight:700;color:#1e1b4b;margin-bottom:.3rem;">--color-action-hover</div><div style="color:#9ca3af;">→ purple-700</div></div>
+          <div><div style="font-weight:700;color:#1e1b4b;margin-bottom:.3rem;">--color-text-primary</div><div style="color:#9ca3af;">→ ink-900</div></div>
+          <div><div style="font-weight:700;color:#1e1b4b;margin-bottom:.3rem;">--color-success</div><div style="color:#9ca3af;">→ emerald-500</div></div>
+          <div><div style="font-weight:700;color:#1e1b4b;margin-bottom:.3rem;">--color-warning</div><div style="color:#9ca3af;">→ amber-500</div></div>
+          <div><div style="font-weight:700;color:#1e1b4b;margin-bottom:.3rem;">--color-surface</div><div style="color:#9ca3af;">→ lavender-50</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Typography -->
+    <div class="a-section">
+      <div class="a-section-num">03 / Foundation — Type Scale</div>
+      <div class="a-section-title">A rationed scale for clarity</div>
+      <p class="a-body">Six steps on a 1.25× ratio. Each step maps to a semantic role, eliminating arbitrary font-size decisions.</p>
+
+      <div class="type-scale">
+        <div class="type-row">
+          <span class="type-row-label">display</span>
+          <span class="type-row-sample" style="font-size:2.25rem;">Display Text</span>
+          <span class="type-row-meta">2.25rem / 800 / −0.04em</span>
+        </div>
+        <div class="type-row">
+          <span class="type-row-label">heading-l</span>
+          <span class="type-row-sample" style="font-size:1.5rem;">Heading Large</span>
+          <span class="type-row-meta">1.5rem / 700 / −0.02em</span>
+        </div>
+        <div class="type-row">
+          <span class="type-row-label">heading-m</span>
+          <span class="type-row-sample" style="font-size:1.125rem;">Heading Medium</span>
+          <span class="type-row-meta">1.125rem / 700 / −0.01em</span>
+        </div>
+        <div class="type-row">
+          <span class="type-row-label">body</span>
+          <span class="type-row-sample" style="font-size:.95rem;font-weight:400;">Body text example for readability</span>
+          <span class="type-row-meta">0.95rem / 400 / 0</span>
+        </div>
+        <div class="type-row">
+          <span class="type-row-label">caption</span>
+          <span class="type-row-sample" style="font-size:.8rem;font-weight:400;">Caption and supporting text</span>
+          <span class="type-row-meta">0.8rem / 400 / 0</span>
+        </div>
+        <div class="type-row">
+          <span class="type-row-label">label</span>
+          <span class="type-row-sample" style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;">Label Text</span>
+          <span class="type-row-meta">0.7rem / 700 / 0.08em</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Spacing -->
+    <div class="a-section">
+      <div class="a-section-num">04 / Foundation — Spacing</div>
+      <div class="a-section-title">Base-4 grid</div>
+      <p class="a-body">All spacing values are multiples of 4px. This creates visual rhythm and eliminates arbitrary pixel choices.</p>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.5rem;">
+        <div class="spacing-row">
+          <div class="spacing-bar" style="width:4px;"></div>
+          <div class="spacing-info"><label>--space-1</label><span>4px</span></div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-bar" style="width:8px;"></div>
+          <div class="spacing-info"><label>--space-2</label><span>8px</span></div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-bar" style="width:16px;"></div>
+          <div class="spacing-info"><label>--space-4</label><span>16px</span></div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-bar" style="width:24px;"></div>
+          <div class="spacing-info"><label>--space-6</label><span>24px</span></div>
+        </div>
+        <div class="spacing-row">
+          <div class="spacing-bar" style="width:32px;"></div>
+          <div class="spacing-info"><label>--space-8</label><span>32px</span></div>
+        </div>
+        <div class="spacing-row" style="border-bottom:none;">
+          <div class="spacing-bar" style="width:48px;"></div>
+          <div class="spacing-info"><label>--space-12</label><span>48px</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Components -->
+    <div class="a-section">
+      <div class="a-section-num">05 / Components</div>
+      <div class="a-section-title">Built from tokens up</div>
+      <p class="a-body">Every component references semantic tokens — never raw values. This means a theme change propagates everywhere automatically.</p>
+
+      <div class="comp-grid">
+        <div class="comp-card">
+          <div class="comp-label">Buttons</div>
+          <div class="comp-demo">
+            <button class="demo-btn-pri">Primary</button>
+            <button class="demo-btn-sec">Secondary</button>
+          </div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-label">Status Badges</div>
+          <div class="comp-demo">
+            <span class="demo-badge" style="background:#d1fae5;color:#065f46;">Active</span>
+            <span class="demo-badge" style="background:#fce7f3;color:#9d174d;">Paused</span>
+            <span class="demo-badge" style="background:#fef3c7;color:#92400e;">Pending</span>
+            <span class="demo-badge" style="background:#f3f4f6;color:#374151;">Draft</span>
+          </div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-label">Form Inputs</div>
+          <div class="comp-demo">
+            <input class="demo-input" placeholder="Email address" type="email">
+            <input class="demo-input" placeholder="Password" type="password" style="margin-top:.5rem;">
+          </div>
+        </div>
+        <div class="comp-card">
+          <div class="comp-label">Card</div>
+          <div class="comp-demo">
+            <div class="demo-card-mini">
+              <div class="demo-card-mini-title">Card component</div>
+              <div class="demo-card-mini-body">Supporting information that helps the user understand this item at a glance.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 Outcome -->
+    <div class="a-section">
+      <div class="a-section-num">06 / Outcome</div>
+      <div class="a-section-title">Measurable impact</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;">
+        <div style="border-top:3px solid #8b5cf6;padding-top:1.25rem;">
+          <div style="font-size:2.5rem;font-weight:800;color:#8b5cf6;letter-spacing:-.04em;">40%</div>
+          <div style="font-size:.85rem;color:#6b7280;margin-top:.4rem;">reduction in design-to-dev handoff time</div>
+        </div>
+        <div style="border-top:3px solid #10b981;padding-top:1.25rem;">
+          <div style="font-size:2.5rem;font-weight:800;color:#10b981;letter-spacing:-.04em;">120+</div>
+          <div style="font-size:.85rem;color:#6b7280;margin-top:.4rem;">components in the live library</div>
+        </div>
+        <div style="border-top:3px solid #1e1b4b;padding-top:1.25rem;">
+          <div style="font-size:2.5rem;font-weight:800;color:#1e1b4b;letter-spacing:-.04em;">4</div>
+          <div style="font-size:.85rem;color:#6b7280;margin-top:.4rem;">product teams aligned on one system</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     OPTION B — "System Map"
+     Diagram-forward: shows architecture visually
+     Good for demonstrating systems thinking
+══════════════════════════════════════════════ -->
+<div id="page-b" class="page">
+  <div class="b-wrap">
+
+    <!-- Hero -->
+    <div class="b-hero">
+      <div>
+        <div style="font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8b5cf6;margin-bottom:.75rem;">Design Systems · Case Study</div>
+        <h1 class="b-title">A System<br>Built to Scale</h1>
+        <p class="b-subtitle">Mapping the full hierarchy from raw design token to shipped UI pattern — and the decisions that held it together.</p>
+      </div>
+      <div class="b-stat-grid">
+        <div class="b-stat"><div class="b-stat-num">120+</div><div class="b-stat-label">Components</div></div>
+        <div class="b-stat"><div class="b-stat-num">4</div><div class="b-stat-label">Platforms</div></div>
+        <div class="b-stat"><div class="b-stat-num">40%</div><div class="b-stat-label">Less handoff time</div></div>
+        <div class="b-stat"><div class="b-stat-num">1</div><div class="b-stat-label">Source of truth</div></div>
+      </div>
+    </div>
+
+    <!-- Architecture diagram -->
+    <div class="b-section">
+      <div class="b-section-header">
+        <div class="b-section-tag">01</div>
+        <div class="b-section-title">System Architecture</div>
+      </div>
+      <div class="b-diagram">
+        <div class="b-diagram-title">Hierarchy — from raw value to user-facing pattern</div>
+        <div class="b-hier">
+          <div class="b-hier-layer">
+            <div class="b-hier-label">TOKENS</div>
+            <div class="b-hier-nodes">
+              <div class="b-node token">#8b5cf6</div>
+              <div class="b-node token">16px</div>
+              <div class="b-node token">Inter 700</div>
+              <div class="b-node token">8px radius</div>
+            </div>
+          </div>
+          <div style="margin-left:70px;color:#d1d5db;font-size:.75rem;padding:.3rem 0;">↓ assigned meaning</div>
+          <div class="b-hier-layer">
+            <div class="b-hier-label">SEMANTIC</div>
+            <div class="b-hier-nodes">
+              <div class="b-node semantic">color-action</div>
+              <div class="b-node semantic">space-4</div>
+              <div class="b-node semantic">text-heading</div>
+              <div class="b-node semantic">radius-m</div>
+            </div>
+          </div>
+          <div style="margin-left:70px;color:#d1d5db;font-size:.75rem;padding:.3rem 0;">↓ composed into</div>
+          <div class="b-hier-layer">
+            <div class="b-hier-label">COMPONENT</div>
+            <div class="b-hier-nodes">
+              <div class="b-node component">Button</div>
+              <div class="b-node component">Input</div>
+              <div class="b-node component">Badge</div>
+              <div class="b-node component">Card</div>
+              <div class="b-node component">Modal</div>
+            </div>
+          </div>
+          <div style="margin-left:70px;color:#d1d5db;font-size:.75rem;padding:.3rem 0;">↓ assembled into</div>
+          <div class="b-hier-layer">
+            <div class="b-hier-label">PATTERN</div>
+            <div class="b-hier-nodes">
+              <div class="b-node pattern">Form</div>
+              <div class="b-node pattern">Auth flow</div>
+              <div class="b-node pattern">Data table</div>
+              <div class="b-node pattern">Empty state</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decision log -->
+    <div class="b-section">
+      <div class="b-section-header">
+        <div class="b-section-tag">02</div>
+        <div class="b-section-title">Key Decisions</div>
+      </div>
+      <div class="b-diagram" style="padding:0;overflow:hidden;">
+        <table class="b-table">
+          <thead>
+            <tr>
+              <th>Decision</th>
+              <th>Option considered</th>
+              <th>Chosen approach</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Naming convention</strong></td>
+              <td>BEM / utility classes</td>
+              <td><span class="b-badge" style="background:#f3e8ff;color:#6d28d9;">CSS custom properties</span></td>
+              <td>Runtime theming; framework-agnostic</td>
+            </tr>
+            <tr>
+              <td><strong>Token format</strong></td>
+              <td>SCSS variables</td>
+              <td><span class="b-badge" style="background:#f3e8ff;color:#6d28d9;">W3C Design Token spec</span></td>
+              <td>Cross-tool sync (Figma → code)</td>
+            </tr>
+            <tr>
+              <td><strong>Component API</strong></td>
+              <td>Many props</td>
+              <td><span class="b-badge" style="background:#f3e8ff;color:#6d28d9;">Variant + size pattern</span></td>
+              <td>Predictable; reduces misuse</td>
+            </tr>
+            <tr>
+              <td><strong>Documentation</strong></td>
+              <td>Notion / Confluence</td>
+              <td><span class="b-badge" style="background:#f3e8ff;color:#6d28d9;">Storybook (co-located)</span></td>
+              <td>Single source, always current</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Annotated component -->
+    <div class="b-section">
+      <div class="b-section-header">
+        <div class="b-section-tag">03</div>
+        <div class="b-section-title">Anatomy — Button Component</div>
+      </div>
+      <div class="b-diagram">
+        <div class="b-diagram-title">Each part references a specific token</div>
+        <div style="display:flex;gap:1.5rem;align-items:center;margin-bottom:2rem;padding:1.5rem;background:#f9fafb;border-radius:12px;">
+          <button style="padding:.65rem 1.5rem;border-radius:999px;background:#8b5cf6;color:#fff;font-size:.9rem;font-weight:700;border:none;cursor:default;">
+            Get started
+          </button>
+          <div style="font-size:.8rem;color:#6b7280;">← live render from tokens</div>
+        </div>
+        <div class="b-annotation">
+          <div class="b-annotation-num">1</div>
+          <div class="b-annotation-text"><strong>Background:</strong> <code style="background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;font-size:.78rem;">--color-action</code> → purple-500. On hover: <code style="background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;font-size:.78rem;">--color-action-hover</code></div>
+        </div>
+        <div class="b-annotation">
+          <div class="b-annotation-num">2</div>
+          <div class="b-annotation-text"><strong>Padding:</strong> <code style="background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;font-size:.78rem;">--space-3 --space-6</code> (12px 24px) from spacing scale</div>
+        </div>
+        <div class="b-annotation">
+          <div class="b-annotation-num">3</div>
+          <div class="b-annotation-text"><strong>Label:</strong> <code style="background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;font-size:.78rem;">--text-label</code> — 0.9rem / 700 weight</div>
+        </div>
+        <div class="b-annotation">
+          <div class="b-annotation-num">4</div>
+          <div class="b-annotation-text"><strong>Radius:</strong> <code style="background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;font-size:.78rem;">--radius-full</code> — 9999px (pill shape, defined once)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outcome -->
+    <div class="b-section">
+      <div class="b-section-header">
+        <div class="b-section-tag">04</div>
+        <div class="b-section-title">Outcome</div>
+      </div>
+      <p style="font-size:1rem;color:#6b7280;line-height:1.8;max-width:620px;">By defining a clear hierarchy and surfacing the decision logic — not just the outputs — the system became something teams could reason about, not just consume. Adoption happened because the rules made sense.</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     OPTION C — "Living System"
+     Principle + example pairs; do/don't patterns
+     Shows design reasoning, not just deliverables
+══════════════════════════════════════════════ -->
+<div id="page-c" class="page">
+  <div class="c-wrap">
+
+    <!-- Hero -->
+    <div class="c-hero">
+      <div class="c-hero-top">
+        <h1 class="c-title">Design<br><em>System</em></h1>
+        <div class="c-tags">
+          <span class="c-tag">Figma</span>
+          <span class="c-tag">Storybook</span>
+          <span class="c-tag">Tokens</span>
+          <span class="c-tag">12 weeks</span>
+        </div>
+      </div>
+      <div class="c-divider"></div>
+      <div class="c-hero-bottom">
+        <div class="c-hero-stat">
+          <div class="c-hero-stat-num">120+</div>
+          <div class="c-hero-stat-label">Shipped components</div>
+        </div>
+        <div class="c-hero-stat">
+          <div class="c-hero-stat-num">40%</div>
+          <div class="c-hero-stat-label">Faster design-to-dev</div>
+        </div>
+        <div class="c-hero-stat">
+          <div class="c-hero-stat-num">4</div>
+          <div class="c-hero-stat-label">Teams aligned</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Principle 1: Color -->
+    <div class="c-section">
+      <div class="c-section-eyebrow">Foundation</div>
+      <div class="c-section-title">Color with intention</div>
+
+      <div class="c-pair">
+        <div class="c-pair-principle">
+          <div class="c-pair-title">Two-layer token model</div>
+          <div class="c-pair-body">Primitive tokens name raw values. Semantic tokens assign purpose. Components reference semantics only — never primitives — so the entire palette can shift without touching component code.</div>
+        </div>
+        <div class="c-pair-example">
+          <div class="c-pair-example-label">Color ramp — Purple scale</div>
+          <div class="c-color-strip">
+            <div class="c-color-strip-item" style="background:#f3e8ff;"></div>
+            <div class="c-color-strip-item" style="background:#e9d5ff;"></div>
+            <div class="c-color-strip-item" style="background:#c4b5fd;"></div>
+            <div class="c-color-strip-item" style="background:#a78bfa;"></div>
+            <div class="c-color-strip-item" style="background:#8b5cf6;"></div>
+            <div class="c-color-strip-item" style="background:#7c3aed;"></div>
+            <div class="c-color-strip-item" style="background:#6d28d9;"></div>
+            <div class="c-color-strip-item" style="background:#5b21b6;"></div>
+            <div class="c-color-strip-item" style="background:#4c1d95;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.65rem;color:#9ca3af;margin-top:.3rem;margin-bottom:1rem;">
+            <span>50</span><span>100</span><span>200</span><span>300</span><span>400</span><span>500</span><span>600</span><span>700</span><span>900</span>
+          </div>
+          <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#d1d5db;margin-bottom:.6rem;">Semantic assignment</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.78rem;">
+            <div style="display:flex;gap:.75rem;align-items:center;"><div style="width:16px;height:16px;border-radius:4px;background:#8b5cf6;"></div><span style="color:#374151;"><strong>500</strong> → --color-action (interactive)</span></div>
+            <div style="display:flex;gap:.75rem;align-items:center;"><div style="width:16px;height:16px;border-radius:4px;background:#6d28d9;"></div><span style="color:#374151;"><strong>700</strong> → --color-action-hover</span></div>
+            <div style="display:flex;gap:.75rem;align-items:center;"><div style="width:16px;height:16px;border-radius:4px;background:#f3e8ff;"></div><span style="color:#374151;"><strong>50</strong> → --color-surface-subtle</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-pair">
+        <div class="c-pair-principle">
+          <div class="c-pair-title">Contrast is non-negotiable</div>
+          <div class="c-pair-body">Every text/background combination must meet WCAG AA (4.5:1 for body, 3:1 for large text). Contrast ratios are stored as token metadata and validated in CI.</div>
+        </div>
+        <div class="c-pair-example">
+          <div class="c-pair-example-label">Contrast examples</div>
+          <div class="c-do-dont">
+            <div class="c-do">
+              <strong>✓ Do</strong>
+              <div style="background:#8b5cf6;color:#fff;padding:.5rem .75rem;border-radius:8px;font-size:.82rem;font-weight:600;">White on Purple 500</div>
+              <div style="margin-top:.4rem;font-size:.7rem;">Ratio: 4.6:1 ✓</div>
+            </div>
+            <div class="c-dont">
+              <strong>✗ Don't</strong>
+              <div style="background:#c4b5fd;color:#a78bfa;padding:.5rem .75rem;border-radius:8px;font-size:.82rem;font-weight:600;">Purple on Purple</div>
+              <div style="margin-top:.4rem;font-size:.7rem;">Ratio: 1.4:1 ✗</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Principle 2: Typography -->
+    <div class="c-section">
+      <div class="c-section-eyebrow">Foundation</div>
+      <div class="c-section-title">Type that communicates hierarchy</div>
+
+      <div class="c-pair">
+        <div class="c-pair-principle">
+          <div class="c-pair-title">Six steps, one typeface</div>
+          <div class="c-pair-body">A single typeface (Inter) across six semantic sizes. Weight and tracking do the work of differentiation — no decorative fonts, no arbitrary sizes.</div>
+        </div>
+        <div class="c-pair-example">
+          <div class="c-pair-example-label">Type scale preview</div>
+          <div style="display:flex;flex-direction:column;gap:.8rem;">
+            <div style="display:flex;align-items:baseline;gap:1rem;">
+              <span style="font-size:1.8rem;font-weight:800;letter-spacing:-.04em;color:#1e1b4b;">Display</span>
+              <span style="font-size:.68rem;color:#9ca3af;font-family:monospace;">28px / 800</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:1rem;">
+              <span style="font-size:1.25rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">Heading</span>
+              <span style="font-size:.68rem;color:#9ca3af;font-family:monospace;">20px / 700</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:1rem;">
+              <span style="font-size:.95rem;font-weight:500;color:#374151;">Subheading</span>
+              <span style="font-size:.68rem;color:#9ca3af;font-family:monospace;">15px / 500</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:1rem;">
+              <span style="font-size:.9rem;font-weight:400;color:#4b5563;">Body text for reading longer content blocks</span>
+              <span style="font-size:.68rem;color:#9ca3af;font-family:monospace;">14px / 400</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:1rem;">
+              <span style="font-size:.78rem;font-weight:400;color:#6b7280;">Caption supporting information</span>
+              <span style="font-size:.68rem;color:#9ca3af;font-family:monospace;">12px / 400</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:1rem;">
+              <span style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;">Label / Overline</span>
+              <span style="font-size:.68rem;color:#9ca3af;font-family:monospace;">11px / 700</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Principle 3: Components -->
+    <div class="c-section">
+      <div class="c-section-eyebrow">Components</div>
+      <div class="c-section-title">Composed, not customized</div>
+
+      <div class="c-pair">
+        <div class="c-pair-principle">
+          <div class="c-pair-title">Variant API over prop explosion</div>
+          <div class="c-pair-body">Components expose a <code style="font-family:monospace;font-size:.82rem;background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;">variant</code> prop (primary / secondary / ghost) and a <code style="font-family:monospace;font-size:.82rem;background:#f3f4f6;padding:.1rem .3rem;border-radius:4px;">size</code> prop (sm / md / lg). No one-off style overrides allowed.</div>
+        </div>
+        <div class="c-pair-example">
+          <div class="c-pair-example-label">Button variants</div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem;">
+            <button style="padding:.6rem 1.3rem;border-radius:999px;background:#8b5cf6;color:#fff;font-weight:700;font-size:.82rem;border:none;">Primary</button>
+            <button style="padding:.6rem 1.3rem;border-radius:999px;background:transparent;color:#8b5cf6;font-weight:700;font-size:.82rem;border:1.5px solid #8b5cf6;">Secondary</button>
+            <button style="padding:.6rem 1.3rem;border-radius:999px;background:transparent;color:#374151;font-weight:600;font-size:.82rem;border:1.5px solid #e5e7eb;">Ghost</button>
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+            <button style="padding:.4rem 1rem;border-radius:999px;background:#8b5cf6;color:#fff;font-weight:700;font-size:.72rem;border:none;">Small</button>
+            <button style="padding:.6rem 1.3rem;border-radius:999px;background:#8b5cf6;color:#fff;font-weight:700;font-size:.82rem;border:none;">Medium</button>
+            <button style="padding:.75rem 1.75rem;border-radius:999px;background:#8b5cf6;color:#fff;font-weight:700;font-size:.92rem;border:none;">Large</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-pair">
+        <div class="c-pair-principle">
+          <div class="c-pair-title">Icons as a system, not decoration</div>
+          <div class="c-pair-body">Every icon is 24×24px, 1.5px stroke, and maps to a semantic name. No icon may appear without a text label or accessible aria-label.</div>
+        </div>
+        <div class="c-pair-example">
+          <div class="c-pair-example-label">Icon set — sample</div>
+          <div class="c-icon-grid">
+            <div class="c-icon-item"><div class="c-icon-box">☁️</div><div class="c-icon-label">upload</div></div>
+            <div class="c-icon-item"><div class="c-icon-box">🔔</div><div class="c-icon-label">notify</div></div>
+            <div class="c-icon-item"><div class="c-icon-box">✓</div><div class="c-icon-label">check</div></div>
+            <div class="c-icon-item"><div class="c-icon-box">⚙️</div><div class="c-icon-label">settings</div></div>
+            <div class="c-icon-item"><div class="c-icon-box">👤</div><div class="c-icon-label">user</div></div>
+            <div class="c-icon-item"><div class="c-icon-box">🔍</div><div class="c-icon-label">search</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact -->
+    <div class="c-section">
+      <div class="c-section-eyebrow">Outcome</div>
+      <div class="c-section-title">What the system enabled</div>
+      <div class="c-impact-grid">
+        <div class="c-impact-card">
+          <div class="c-impact-num">40%</div>
+          <div class="c-impact-label">Faster design → dev handoff through shared token vocabulary</div>
+        </div>
+        <div class="c-impact-card">
+          <div class="c-impact-num">120+</div>
+          <div class="c-impact-label">Components shipped across four platforms from a single source</div>
+        </div>
+        <div class="c-impact-card">
+          <div class="c-impact-num">0</div>
+          <div class="c-impact-label">One-off style overrides in production — enforced by Storybook tests</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 56, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
