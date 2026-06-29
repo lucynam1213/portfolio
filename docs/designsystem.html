@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FashionGo Linesheet — Design System · Lucy Nam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    :root {
+      --pink: #E11074;
+      --pink-light: #fce7f3;
+      --ink: #1A1A1A;
+      --ink-mid: #666666;
+      --ink-light: #999999;
+      --border: #ECECEC;
+      --surface: #F7F7F7;
+      --white: #FFFFFF;
+      --warm: #F5F3EE;
+    }
+
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 3rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--ink);
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: .82rem; color: var(--ink-mid); font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--pink); }
+
+    /* ── Sections ── */
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 10rem 0 6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: .5rem;
+    }
+    .hero-title-serif {
+      font-weight: 400;
+      color: var(--pink);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 1.5rem 0 3rem;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item label {
+      display: block;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: .35rem;
+    }
+    .hero-meta-item span {
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-item {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -.05em;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .stat-num span { color: var(--pink); }
+    .stat-label { font-size: .78rem; color: var(--ink-mid); line-height: 1.5; }
+
+    /* ── Section shell ── */
+    section { padding: 6rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+
+    .section-header { display: flex; align-items: flex-start; gap: 2rem; margin-bottom: 3.5rem; }
+    .section-num {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      padding-top: .6rem;
+      min-width: 2rem;
+    }
+    .section-titles {}
+    .section-tag {
+      display: inline-block;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--pink);
+      margin-bottom: .5rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .section-body {
+      font-size: .92rem;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      max-width: 560px;
+      margin-top: .75rem;
+    }
+
+    /* ── Architecture diagram ── */
+    .arch-diagram {
+      background: var(--ink);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-bottom: 1.5rem;
+    }
+    .arch-diagram-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      margin-bottom: 2.5rem;
+    }
+    .arch-layer { display: flex; gap: 1.5rem; align-items: flex-start; margin-bottom: 1rem; }
+    .arch-layer-label {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.25);
+      min-width: 80px;
+      padding-top: .45rem;
+      text-align: right;
+    }
+    .arch-layer-nodes { display: flex; gap: .6rem; flex-wrap: wrap; flex: 1; }
+    .arch-node {
+      padding: .4rem 1rem;
+      border-radius: 6px;
+      font-size: .78rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .arch-node.primitive { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.15); color: rgba(255,255,255,.7); }
+    .arch-node.semantic  { background: rgba(225,16,116,.12); border-color: rgba(225,16,116,.35); color: #f9a8d4; }
+    .arch-node.component { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.9); }
+    .arch-node.pattern   { background: rgba(225,16,116,.2); border-color: rgba(225,16,116,.5); color: #fda4cf; }
+
+    .arch-arrow {
+      margin-left: calc(80px + 1.5rem);
+      font-size: .72rem;
+      color: rgba(255,255,255,.2);
+      padding: .4rem 0;
+    }
+
+    /* ── Color section ── */
+    .color-block { margin-bottom: 2.5rem; }
+    .color-block-title {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 1rem;
+    }
+
+    /* Primitive ramp */
+    .color-ramp { display: flex; border-radius: 10px; overflow: hidden; height: 56px; margin-bottom: .75rem; }
+    .color-ramp-step { flex: 1; }
+    .color-ramp-labels { display: flex; justify-content: space-between; font-size: .62rem; color: var(--ink-light); }
+
+    /* Semantic grid */
+    .semantic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .75rem; }
+    .semantic-swatch {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .semantic-swatch-color { height: 52px; }
+    .semantic-swatch-info { padding: .6rem .75rem; }
+    .semantic-swatch-name { font-size: .72rem; font-weight: 700; color: var(--ink); margin-bottom: .15rem; }
+    .semantic-swatch-token { font-size: .62rem; color: var(--ink-light); font-family: 'Courier New', monospace; }
+
+    /* ── Type section ── */
+    .type-table { width: 100%; border-collapse: collapse; }
+    .type-table th {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-align: left;
+      padding: .75rem 1rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .type-table td {
+      padding: 1.25rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .type-table tr:last-child td { border-bottom: none; }
+    .type-tag {
+      display: inline-block;
+      padding: .2rem .55rem;
+      border-radius: 4px;
+      font-size: .62rem;
+      font-weight: 700;
+      font-family: monospace;
+      background: var(--surface);
+      color: var(--ink-mid);
+    }
+    .type-meta { font-size: .72rem; color: var(--ink-light); }
+
+    /* ── Decision table ── */
+    .decision-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .decision-table th {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-align: left;
+      padding: .75rem 1rem;
+      border-bottom: 2px solid var(--border);
+      background: var(--surface);
+    }
+    .decision-table th:first-child { border-radius: 8px 0 0 0; }
+    .decision-table th:last-child { border-radius: 0 8px 0 0; }
+    .decision-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--ink-mid);
+    }
+    .decision-table td:first-child { color: var(--ink); font-weight: 600; }
+    .decision-table tr:last-child td { border-bottom: none; }
+    .d-badge {
+      display: inline-block;
+      padding: .2rem .6rem;
+      border-radius: 5px;
+      font-size: .7rem;
+      font-weight: 700;
+      background: var(--pink-light);
+      color: var(--pink);
+    }
+
+    /* ── Component anatomy ── */
+    .anatomy-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .anatomy-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .anatomy-panel-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Sidebar miniature */
+    .mini-sidebar {
+      background: var(--ink);
+      border-radius: 8px;
+      width: 48px;
+      padding: 1rem .75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      align-items: center;
+    }
+    .mini-logo-dot { width: 20px; height: 20px; border-radius: 4px; background: var(--pink); margin-bottom: .5rem; }
+    .mini-nav-icon { width: 18px; height: 3px; border-radius: 2px; background: rgba(255,255,255,.25); }
+    .mini-nav-icon.active { background: var(--pink); }
+
+    /* Badge demo — pill, no dot, text + border only */
+    .badge-demo { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: .18rem .6rem;
+      border-radius: 9999px;
+      font-size: .7rem;
+      font-weight: 600;
+      border: 1px solid;
+      line-height: 1.5;
+      letter-spacing: .01em;
+    }
+
+    /* Table demo */
+    .table-demo { width: 100%; border-collapse: collapse; font-size: .75rem; }
+    .table-demo th {
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-align: left;
+      padding: .5rem .75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-demo td {
+      padding: .6rem .75rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-mid);
+    }
+    .table-demo tr:last-child td { border-bottom: none; }
+
+    /* Form demo */
+    .form-demo { display: flex; flex-direction: column; gap: .75rem; }
+    .form-label-demo { font-size: .72rem; font-weight: 600; color: var(--ink); margin-bottom: .3rem; }
+    .form-input-demo {
+      width: 100%;
+      padding: .55rem .85rem;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      font-size: .82rem;
+      color: var(--ink);
+      font-family: inherit;
+    }
+    .form-input-demo:focus { outline: none; border-color: var(--pink); }
+    .form-btn-demo {
+      padding: .55rem 1.2rem;
+      border-radius: 6px;
+      background: var(--pink);
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    /* Annotation list */
+    .annotation-list { display: flex; flex-direction: column; gap: .85rem; margin-top: 1.5rem; }
+    .annotation-item { display: flex; gap: .75rem; align-items: flex-start; }
+    .annotation-num {
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--pink);
+      color: #fff;
+      font-size: .62rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: .1rem;
+      flex-shrink: 0;
+    }
+    .annotation-text { font-size: .8rem; color: var(--ink-mid); line-height: 1.6; }
+    .annotation-text strong { color: var(--ink); }
+    code {
+      font-family: 'Courier New', monospace;
+      font-size: .78rem;
+      background: var(--surface);
+      padding: .1rem .35rem;
+      border-radius: 4px;
+      color: var(--pink);
+    }
+
+    /* ── Outcome ── */
+    .outcome-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .outcome-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .outcome-num {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -.05em;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+    .outcome-num em { color: var(--pink); font-style: normal; }
+    .outcome-label { font-size: .85rem; color: var(--ink-mid); line-height: 1.6; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    footer span { font-size: .8rem; color: var(--ink-light); }
+    .footer-back {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: color .2s;
+    }
+    .footer-back:hover { color: var(--pink); }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 1.25rem; }
+      .wrap { padding: 0 1.25rem; }
+      .hero { padding: 8rem 0 4rem; }
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .stat-item:nth-child(2) { border-right: none; }
+      .anatomy-wrap { grid-template-columns: 1fr; }
+      .outcome-grid { grid-template-columns: 1fr; }
+      .hero-meta { flex-wrap: wrap; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-logo">Lucy Nam</div>
+  <div class="nav-links">
+    <a href="index.html">← Back to portfolio</a>
+  </div>
+</nav>
+
+
+<!-- ── Hero ── -->
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-eyebrow">Design System · Case Study</div>
+    <h1 class="hero-title">FashionGo<br><span class="hero-title-serif">Linesheet</span></h1>
+    <p class="hero-sub">A token-first UI kit for a wholesale fashion B2B platform — exported as 98 CSS variables, spanning every surface from data tables to product cards.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><label>Platform</label><span>FashionGo Vendor</span></div>
+      <div class="hero-meta-item"><label>Stack</label><span>Figma · CSS</span></div>
+      <div class="hero-meta-item"><label>Tokens</label><span>98 CSS variables</span></div>
+      <div class="hero-meta-item"><label>Scope</label><span>UI Kit + Linesheet</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Stats ── -->
+<div class="stats-bar">
+  <div class="stat-item" style="padding-left:2rem;"><div class="stat-num">98<span>+</span></div><div class="stat-label">Design tokens exported<br>as CSS variables</div></div>
+  <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Type roles<br>Display + Functional</div></div>
+  <div class="stat-item"><div class="stat-num"><span>1</span></div><div class="stat-label">Source of truth across<br>design and engineering</div></div>
+  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Token layers<br>Primitive → Semantic → Component</div></div>
+</div>
+
+
+<!-- ── 01 Architecture ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-titles">
+        <div class="section-tag">System Architecture</div>
+        <h2 class="section-title">From raw value<br>to shipped UI</h2>
+        <p class="section-body">Everything in the system flows upward from primitive tokens. No component ever references a raw hex value — only named semantic tokens. This makes global changes (themes, brand updates) a single-source operation.</p>
+      </div>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-diagram-label">Token hierarchy — FashionGo Linesheet</div>
+
+      <div class="arch-layer">
+        <div class="arch-layer-label">Primitive</div>
+        <div class="arch-layer-nodes">
+          <div class="arch-node primitive">#E11074</div>
+          <div class="arch-node primitive">#1A1A1A</div>
+          <div class="arch-node primitive">#ECECEC</div>
+          <div class="arch-node primitive">#F7F7F7</div>
+          <div class="arch-node primitive">Inter 700</div>
+          <div class="arch-node primitive">Inter 400</div>
+          <div class="arch-node primitive">6px radius</div>
+          <div class="arch-node primitive">16px base</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ assigned meaning</div>
+
+      <div class="arch-layer">
+        <div class="arch-layer-label">Semantic</div>
+        <div class="arch-layer-nodes">
+          <div class="arch-node semantic">--color-primary</div>
+          <div class="arch-node semantic">--color-foreground</div>
+          <div class="arch-node semantic">--color-border</div>
+          <div class="arch-node semantic">--color-muted</div>
+          <div class="arch-node semantic">--color-destructive</div>
+          <div class="arch-node semantic">--space-4</div>
+          <div class="arch-node semantic">--radius-m</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ composed into</div>
+
+      <div class="arch-layer">
+        <div class="arch-layer-label">Component</div>
+        <div class="arch-layer-nodes">
+          <div class="arch-node component">Badge</div>
+          <div class="arch-node component">Button</div>
+          <div class="arch-node component">Input</div>
+          <div class="arch-node component">Table</div>
+          <div class="arch-node component">Card</div>
+          <div class="arch-node component">Dropdown</div>
+          <div class="arch-node component">Tab Menu</div>
+          <div class="arch-node component">Sidebar</div>
+          <div class="arch-node component">Modal</div>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ assembled into</div>
+
+      <div class="arch-layer">
+        <div class="arch-layer-label">Pattern</div>
+        <div class="arch-layer-nodes">
+          <div class="arch-node pattern">Linesheet view</div>
+          <div class="arch-node pattern">Item management</div>
+          <div class="arch-node pattern">Order table</div>
+          <div class="arch-node pattern">Empty state</div>
+          <div class="arch-node pattern">Product grid</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── 02 Color ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-titles">
+        <div class="section-tag">Color Tokens</div>
+        <h2 class="section-title">Primitive → Semantic<br>two-layer model</h2>
+        <p class="section-body">Primitive tokens name raw values. Semantic tokens assign purpose. The Linesheet system exports both layers as CSS variables — 98 total across Mode 02 (Variation B), covering base, badge, chart, sidebar, and sonner states.</p>
+      </div>
+    </div>
+
+    <!-- Neutral Gray ramp -->
+    <div class="color-block">
+      <div class="color-block-title">Neutral Gray — primitive scale</div>
+      <div class="color-ramp">
+        <div class="color-ramp-step" style="background:#1A1A1A;"></div>
+        <div class="color-ramp-step" style="background:#333333;"></div>
+        <div class="color-ramp-step" style="background:#666666;"></div>
+        <div class="color-ramp-step" style="background:#999999;"></div>
+        <div class="color-ramp-step" style="background:#B3B3B3;"></div>
+        <div class="color-ramp-step" style="background:#DDDDDD;"></div>
+        <div class="color-ramp-step" style="background:#ECECEC;"></div>
+        <div class="color-ramp-step" style="background:#F2F2F2;"></div>
+        <div class="color-ramp-step" style="background:#F7F7F7;"></div>
+        <div class="color-ramp-step" style="background:#FFFFFF; border: 1px solid #ececec;"></div>
+      </div>
+      <div class="color-ramp-labels">
+        <span>900</span><span>800</span><span>700</span><span>600</span><span>500</span><span>400</span><span>300</span><span>200</span><span>100</span><span>White</span>
+      </div>
+    </div>
+
+    <!-- Warm Gray ramp -->
+    <div class="color-block">
+      <div class="color-block-title">Warm Gray — primitive scale</div>
+      <div class="color-ramp" style="height:40px;">
+        <div class="color-ramp-step" style="background:#DEDAD3;"></div>
+        <div class="color-ramp-step" style="background:#EAE7E1;"></div>
+        <div class="color-ramp-step" style="background:#F5F3EE;"></div>
+        <div class="color-ramp-step" style="background:#F7F6F2;"></div>
+        <div class="color-ramp-step" style="background:#FBFAF9;"></div>
+      </div>
+      <div class="color-ramp-labels">
+        <span>700</span><span>600</span><span>500</span><span>400</span><span>300</span>
+      </div>
+    </div>
+
+    <!-- Semantic swatches -->
+    <div class="color-block">
+      <div class="color-block-title">Semantic tokens — base layer</div>
+      <div class="semantic-grid">
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#E11074;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Primary</div>
+            <div class="semantic-swatch-token">--color-primary</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#1A1A1A;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Foreground</div>
+            <div class="semantic-swatch-token">--color-foreground</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#F0FCFA;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Background</div>
+            <div class="semantic-swatch-token">--color-background</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#EF4444;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Destructive</div>
+            <div class="semantic-swatch-token">--color-destructive</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#BAB0A3;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Muted</div>
+            <div class="semantic-swatch-token">--color-muted</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#E2E8E7;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Border</div>
+            <div class="semantic-swatch-token">--color-border</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#808B8B;"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Secondary</div>
+            <div class="semantic-swatch-token">--color-secondary</div>
+          </div>
+        </div>
+        <div class="semantic-swatch">
+          <div class="semantic-swatch-color" style="background:#1A1A1A; background: linear-gradient(135deg,#1a1a1a,#2d2d2d);"></div>
+          <div class="semantic-swatch-info">
+            <div class="semantic-swatch-name">Sidebar BG</div>
+            <div class="semantic-swatch-token">--color-sidebar-bg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badge semantic tokens -->
+    <div class="color-block">
+      <div class="color-block-title">Badge semantic tokens — status colors</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <span class="badge" style="background:#EBF4F1;border-color:#b6ddd4;color:#0f6b50;">Green</span>
+        <span class="badge" style="background:#fce7f3;border-color:#f9a8d4;color:#9d174d;">Red</span>
+        <span class="badge" style="background:#EBF2F8;border-color:#bfdbfe;color:#1e40af;">Blue</span>
+        <span class="badge" style="background:#fef3c7;border-color:#fde68a;color:#92400e;">Amber</span>
+        <span class="badge" style="background:#f3e8ff;border-color:#e9d5ff;color:#6d28d9;">Purple</span>
+        <span class="badge" style="background:#ccfbf1;border-color:#99f6e4;color:#134e4a;">Teal</span>
+        <span class="badge" style="background:#e0e7ff;border-color:#c7d2fe;color:#3730a3;">Indigo</span>
+        <span class="badge" style="background:#f1f5f9;border-color:#e2e8f0;color:#475569;">Slate</span>
+        <span class="badge" style="background:#f3f4f6;border-color:#e5e7eb;color:#374151;">Gray</span>
+      </div>
+    </div>
+
+    <!-- Color token screenshot -->
+    <figure style="margin-top:2.5rem;border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <img src="Shopcord Color list.png" alt="Linesheet Color Tokens — full export from Figma" style="width:100%;display:block;">
+      <figcaption style="padding:.75rem 1.25rem;font-size:.72rem;color:var(--ink-light);border-top:1px solid var(--border);">Linesheet Color Tokens — 98 variables exported from Figma (Mode 02 · Variation B)</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ── 03 Typography ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-titles">
+        <div class="section-tag">Typography</div>
+        <h2 class="section-title">Two typefaces,<br>one role each</h2>
+        <p class="section-body">Inter is used across all UI — navigation, labels, data, inputs, and headings. Weight and tracking do the work of differentiation: 900 for display, 700 for headings, 400 for body. No decorative typefaces, no arbitrary size decisions.</p>
+      </div>
+    </div>
+
+    <table class="type-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Sample</th>
+          <th>Spec</th>
+          <th>Typeface</th>
+          <th>Used for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="type-tag">H1</span></td>
+          <td><span style="font-size:2rem;font-weight:800;letter-spacing:-.04em;color:#1a1a1a;">Large Titles</span></td>
+          <td class="type-meta">32px / 800 / −0.04em</td>
+          <td class="type-meta">Inter</td>
+          <td class="type-meta">Page headers, brand moments</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag">H2</span></td>
+          <td><span style="font-size:1.35rem;font-weight:600;letter-spacing:-.01em;">Mid-Level Titles</span></td>
+          <td class="type-meta">22px / 600 / −0.01em</td>
+          <td class="type-meta">Inter</td>
+          <td class="type-meta">Section headers, panel titles</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag">H3</span></td>
+          <td><span style="font-size:1rem;font-weight:600;">Subtitles</span></td>
+          <td class="type-meta">16px / 600 / 0</td>
+          <td class="type-meta">Inter</td>
+          <td class="type-meta">Card titles, table labels</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag">body</span></td>
+          <td><span style="font-size:.88rem;font-weight:400;color:#666;">Body text for product descriptions and list content</span></td>
+          <td class="type-meta">14px / 400 / 0</td>
+          <td class="type-meta">Inter</td>
+          <td class="type-meta">General UI copy, descriptions</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag">price</span></td>
+          <td><span style="font-size:1rem;color:#E11074;font-weight:700;">$24.00</span></td>
+          <td class="type-meta">16px / 700</td>
+          <td class="type-meta">Inter</td>
+          <td class="type-meta">Wholesale price, primary CTA value</td>
+        </tr>
+        <tr>
+          <td><span class="type-tag">label</span></td>
+          <td><span style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#999;">SECTION LABEL</span></td>
+          <td class="type-meta">11px / 700 / 0.08em</td>
+          <td class="type-meta">Inter</td>
+          <td class="type-meta">Navigation labels, column headers</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ── 04 Key Decisions ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-titles">
+        <div class="section-tag">Key Decisions</div>
+        <h2 class="section-title">The choices that<br>shaped the system</h2>
+        <p class="section-body">A design system is a series of constrained decisions. Documenting them prevents revisiting the same debate and helps new contributors understand the boundaries.</p>
+      </div>
+    </div>
+
+    <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <table class="decision-table">
+        <thead>
+          <tr>
+            <th>Decision</th>
+            <th>Alternative considered</th>
+            <th>Chosen approach</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Token format</td>
+            <td>SCSS variables</td>
+            <td><span class="d-badge">CSS custom properties</span></td>
+            <td>Runtime theming; framework-agnostic</td>
+          </tr>
+          <tr>
+            <td>Naming convention</td>
+            <td>Raw hex values in components</td>
+            <td><span class="d-badge">Semantic token names</span></td>
+            <td>Single-point brand updates; prevents drift</td>
+          </tr>
+          <tr>
+            <td>Typography pairing</td>
+            <td>Single typeface (Inter only)</td>
+            <td><span class="d-badge">Inter — weight scale</span></td>
+            <td>Functional vs editorial separation; fashion brand feel</td>
+          </tr>
+          <tr>
+            <td>Sidebar behavior</td>
+            <td>Fixed expanded sidebar</td>
+            <td><span class="d-badge">Collapse at ≤1600px</span></td>
+            <td>Preserves content width on common vendor monitor sizes</td>
+          </tr>
+          <tr>
+            <td>Color modes</td>
+            <td>Single mode</td>
+            <td><span class="d-badge">Mode 02 — Variation B</span></td>
+            <td>Supports future theming (TheEdit, AsiaDirect sub-brands)</td>
+          </tr>
+          <tr>
+            <td>Badge system</td>
+            <td>One generic badge</td>
+            <td><span class="d-badge">9 semantic status badges</span></td>
+            <td>Order state, shipping, discount, and label all need distinction</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── 05 Component Anatomy ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-titles">
+        <div class="section-tag">Components</div>
+        <h2 class="section-title">Built from<br>tokens up</h2>
+        <p class="section-body">Every component references only semantic tokens — never primitives. Below: four components from the Linesheet kit, each with token annotations showing exactly which variable governs which visual property.</p>
+      </div>
+    </div>
+
+    <div class="anatomy-wrap">
+
+      <!-- Sidebar -->
+      <div class="anatomy-panel">
+        <div class="anatomy-panel-label">Sidebar — collapsed state (≤1600px)</div>
+        <div style="display:flex;gap:1rem;margin-bottom:1.5rem;">
+          <div class="mini-sidebar">
+            <div class="mini-logo-dot"></div>
+            <div class="mini-nav-icon active"></div>
+            <div class="mini-nav-icon"></div>
+            <div class="mini-nav-icon"></div>
+            <div class="mini-nav-icon"></div>
+            <div class="mini-nav-icon"></div>
+          </div>
+          <div class="annotation-list" style="margin-top:0;">
+            <div class="annotation-item">
+              <div class="annotation-num">1</div>
+              <div class="annotation-text"><strong>Background:</strong> <code>--sidebar-background</code> → Gray 900 (#1A1A1A)</div>
+            </div>
+            <div class="annotation-item">
+              <div class="annotation-num">2</div>
+              <div class="annotation-text"><strong>Active icon:</strong> <code>--sidebar-accent</code> → Primary (#E11074)</div>
+            </div>
+            <div class="annotation-item">
+              <div class="annotation-num">3</div>
+              <div class="annotation-text"><strong>Inactive:</strong> <code>--sidebar-foreground</code> → 25% white alpha</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="anatomy-panel">
+        <div class="anatomy-panel-label">Badge — semantic status variants</div>
+        <div class="badge-demo" style="margin-bottom:1.5rem;">
+          <span class="badge" style="background:#EBF4F1;border-color:#b6ddd4;color:#0f6b50;">Free Shipping</span>
+          <span class="badge" style="background:#fce7f3;border-color:#f9a8d4;color:#9d174d;">Discount</span>
+          <span class="badge" style="background:#f3e8ff;border-color:#e9d5ff;color:#6d28d9;">26 SS</span>
+        </div>
+        <div class="annotation-list" style="margin-top:0;">
+          <div class="annotation-item">
+            <div class="annotation-num">1</div>
+            <div class="annotation-text"><strong>Background:</strong> <code>--badge-green</code> → Green 300 (light tint)</div>
+          </div>
+          <div class="annotation-item">
+            <div class="annotation-num">2</div>
+            <div class="annotation-text"><strong>Dot color:</strong> <code>--badge-green-accent</code> → Green 600 (full saturation)</div>
+          </div>
+          <div class="annotation-item">
+            <div class="annotation-num">3</div>
+            <div class="annotation-text"><strong>Each status</strong> has its own primitive pair — accent + light background — stored as semantic token pairs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data table -->
+      <div class="anatomy-panel">
+        <div class="anatomy-panel-label">Data table — item management</div>
+        <figure style="border-radius:8px;overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--border);">
+          <img src="linesheet-03.png" alt="Items data table with dropdown" style="width:100%;display:block;">
+        </figure>
+        <div class="annotation-list" style="margin-top:0;">
+          <div class="annotation-item">
+            <div class="annotation-num">1</div>
+            <div class="annotation-text"><strong>Header bg:</strong> <code>--table-header</code> → warm surface</div>
+          </div>
+          <div class="annotation-item">
+            <div class="annotation-num">2</div>
+            <div class="annotation-text"><strong>Price column:</strong> always <code>--color-primary</code> — price is a primary CTA signal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form input -->
+      <div class="anatomy-panel">
+        <div class="anatomy-panel-label">Slide-in panel — new item entry</div>
+        <figure style="border-radius:8px;overflow:hidden;margin-bottom:1.25rem;border:1px solid var(--border);">
+          <img src="linesheet-04.png" alt="New item form slide-in panel" style="width:100%;display:block;">
+        </figure>
+        <div class="annotation-list" style="margin-top:0;">
+          <div class="annotation-item">
+            <div class="annotation-num">1</div>
+            <div class="annotation-text"><strong>Border:</strong> <code>--color-input</code> → border token; on focus → <code>--color-ring</code> pink outline</div>
+          </div>
+          <div class="annotation-item">
+            <div class="annotation-num">2</div>
+            <div class="annotation-text"><strong>CTA button:</strong> <code>--color-primary</code> — consistent with all primary actions</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── 06 Patterns ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-titles">
+        <div class="section-tag">Patterns</div>
+        <h2 class="section-title">Components assembled<br>into flows</h2>
+        <p class="section-body">Patterns are reusable compositions of components — a modal + form + table working together as a single user flow. The linesheet creation flow combines all three.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+      <figure style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <img src="linesheet-01.png" alt="Access Type modal — linesheet creation flow" style="width:100%;display:block;">
+        <figcaption style="padding:.75rem 1.25rem;font-size:.72rem;color:var(--ink-light);border-top:1px solid var(--border);">Access Type modal — step 1 of linesheet creation</figcaption>
+      </figure>
+      <figure style="border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <img src="linesheet-02.png" alt="Add from Customers panel — customer selection" style="width:100%;display:block;">
+        <figcaption style="padding:.75rem 1.25rem;font-size:.72rem;color:var(--ink-light);border-top:1px solid var(--border);">Add from Customers — multi-select with search</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── 07 Outcome ── -->
+<section>
+  <div class="wrap">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-titles">
+        <div class="section-tag">Outcome</div>
+        <h2 class="section-title">What the system<br>made possible</h2>
+      </div>
+    </div>
+
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-num">98<em>+</em></div>
+        <div class="outcome-label">CSS variables exported from Figma — every visual decision traceable to a named token</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num"><em>1</em></div>
+        <div class="outcome-label">Single source of truth shared between Figma components and engineering</div></div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">9</div>
+        <div class="outcome-label">Semantic badge variants covering every order, shipping, and label state in the platform</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2.5rem;padding:2rem;background:var(--surface);border-radius:14px;border:1px solid var(--border);">
+      <p style="font-size:.95rem;color:var(--ink-mid);line-height:1.9;max-width:640px;">The two-layer token model was the key unlock. By separating <em>primitive values</em> from <em>semantic meaning</em>, the system supports future sub-brand theming (TheEdit, AsiaDirect) without touching any component code — only the semantic layer needs to change.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── Footer ── -->
+<div class="wrap">
+  <footer>
+    <span>Lucy Nam · FashionGo Linesheet Design System</span>
+    <a href="index.html" class="footer-back">← All work</a>
+  </footer>
+</div>
+
+</body>
+</html>
