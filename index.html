@@ -149,6 +149,7 @@
       padding: 0 2.5rem; height: 64px;
       transition: background .3s ease, backdrop-filter .3s ease, border-color .3s ease;
     }
+    .nav-left { display: flex; align-items: center; gap: 1.5rem; }
     nav.scrolled {
       background: rgba(255,255,255,.88);
       -webkit-backdrop-filter: blur(20px);
@@ -476,14 +477,16 @@
 
   <!-- ── Nav ── -->
   <nav id="nav">
-    <a href="/" class="nav-logo">
-      <div class="nav-logo-mark">LN</div>
-      <span class="nav-logo-text">Lucy Nam</span>
-    </a>
-    <div class="nav-links">
-      <a href="/#work">Work</a>
-      <a href="/#about">About</a>
-      <a href="/#contact">Contact</a>
+    <div class="nav-left">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">LN</div>
+        <span class="nav-logo-text">Lucy Nam</span>
+      </a>
+      <div class="nav-links">
+        <a href="/#work">Work</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+      </div>
     </div>
     <div class="nav-right">
       <a href="/#contact" class="btn-primary" style="margin-left:.5rem;padding:.45rem 1.1rem;font-size:.85rem;">Hire Me</a>
