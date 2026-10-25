@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onboarding for Buyer — Lucy Nam</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0; }
+    html { scroll-behavior: smooth; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; height: auto; }
+    body {
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      color: #1e1b4b;
+      -webkit-font-smoothing: antialiased;
+      background-color: #f5f3ff;
+      background-image:
+        radial-gradient(70% 50% at 10% 5%,  rgba(139,92,246,.13) 0%, transparent 60%),
+        radial-gradient(60% 50% at 90% 90%,  rgba(59,130,246,.10) 0%, transparent 60%);
+      background-attachment: fixed;
+      min-width: 320px;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f5f3ff; }
+    ::-webkit-scrollbar-thumb { background: rgba(139,92,246,.3); border-radius: 3px; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 2.5rem; height: 64px;
+      background: rgba(255,255,255,.88);
+      -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(139,92,246,.1);
+    }
+    .nav-logo { display: flex; align-items: center; gap: .5rem; }
+    .nav-logo-mark {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -.02em;
+    }
+    .nav-logo-text { font-size: .95rem; font-weight: 700; color: #1e1b4b; letter-spacing: -.01em; }
+    .nav-left { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-links { display: flex; align-items: center; gap: .25rem; }
+    .nav-links a {
+      padding: .4rem .9rem; border-radius: 8px;
+      font-size: .88rem; font-weight: 500; color: #64748b;
+      transition: color .15s, background .15s;
+    }
+    .nav-links a:hover { color: #8b5cf6; background: rgba(139,92,246,.06); }
+    .nav-btn {
+      padding: .45rem 1.1rem; font-size: .85rem; font-weight: 600;
+      color: #fff; background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+      border-radius: 9999px; transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(139,92,246,.3); display: inline-block;
+    }
+    .nav-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,.4); }
+    .back-btn {
+      position: fixed; top: 80px; left: 2.5rem; z-index: 90;
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .4rem .9rem; border-radius: 9999px;
+      background: rgba(255,255,255,.8);
+      border: 1px solid rgba(139,92,246,.15);
+      color: #64748b; font-size: .82rem; font-weight: 500;
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      transition: background .2s, color .2s;
+    }
+    .back-btn:hover { background: rgba(139,92,246,.08); color: #7c3aed; }
+    .glass {
+      -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(139,92,246,.15); border-radius: 16px;
+    }
+    .glass-glow { box-shadow: 0 8px 40px rgba(139,92,246,.12), 0 2px 8px rgba(0,0,0,.05); }
+    .work-card { transition: transform .3s, box-shadow .3s; }
+    .work-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(139,92,246,.15); }
+    .section-label {
+      letter-spacing: .12em; text-transform: uppercase;
+      color: #8b5cf6; font-size: .78rem; font-weight: 600;
+    }
+    .tag-chip {
+      display: inline-block; color: #fff;
+      background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+      border-radius: 9999px; padding: .2rem .65rem;
+      font-size: .75rem; font-weight: 500;
+    }
+    .tool-chip {
+      padding: .35rem .8rem; border-radius: 8px;
+      background: rgba(255,255,255,.8); border: 1px solid rgba(139,92,246,.15);
+      font-size: .8rem; font-weight: 500; color: #374151; display: inline-block;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-20px) scale(1.03); }
+    }
+    .orb-float { animation: 8s ease-in-out infinite float; }
+    .thumb { width: 100%; max-width: 420px; object-fit: contain; cursor: zoom-in; border-radius: 10px; border: 1px solid rgba(139,92,246,.15); transition: transform .2s, box-shadow .2s; background: #fff; }
+    .thumb:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(79,70,229,.2); }
+    .thumb-wide { width: 100%; object-fit: contain; cursor: zoom-in; border-radius: 10px; border: 1px solid rgba(139,92,246,.15); background: #fff; }
+    .thumb-wide:hover { box-shadow: 0 8px 24px rgba(79,70,229,.2); }
+    .lightbox-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,.92); overflow-y: auto; cursor: zoom-out; }
+    .lightbox-overlay.open { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .lightbox-overlay img { display: block; max-width: 88vw; max-height: 78vh; width: auto; height: auto; margin: 0 auto; border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,.5); cursor: zoom-out; object-fit: contain; }
+    .lightbox-caption { text-align: center; color: rgba(255,255,255,.75); font-size: .85rem; margin-top: 1.1rem; letter-spacing: .02em; }
+    .lightbox-nav-btn {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; cursor: pointer; z-index: 1000; transition: background .2s;
+    }
+    .lightbox-nav-btn:hover { background: rgba(255,255,255,.22); }
+    #lightbox-prev { left: 24px; }
+    #lightbox-next { right: 24px; }
+    .lightbox-close-btn {
+      position: fixed; top: 24px; right: 24px; width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 1000; transition: background .2s;
+    }
+    .lightbox-close-btn:hover { background: rgba(255,255,255,.22); }
+    .flow-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; }
+    .flow-grid.mobile-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); max-width: 680px; }
+    .flow-item { cursor: zoom-in; border-radius: 10px; overflow: hidden; border: 1px solid rgba(139,92,246,.15); background: #fff; transition: transform .2s, box-shadow .2s; }
+    .flow-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(79,70,229,.2); }
+    .flow-item img { width: 100%; height: 150px; object-fit: cover; object-position: top; display: block; }
+    .flow-grid.mobile-grid .flow-item img { height: 260px; }
+    .flow-label { padding: .5rem .65rem; font-size: .72rem; font-weight: 600; color: #4f46e5; background: rgba(79,70,229,.06); border-top: 1px solid rgba(139,92,246,.1); line-height: 1.3; }
+    .decision-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1.25rem; }
+    .decision-card .decision-num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 7px; background: #4f46e522; border: 1px solid #4f46e544; color: #4f46e5; font-size: .72rem; font-weight: 700; margin-bottom: .6rem; }
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-links { display: none; }
+      .back-btn { left: 1rem; }
+      .approach-grid { grid-template-columns: 1fr !important; }
+      .approach-grid.reverse { direction: ltr !important; }
+      .decision-grid { grid-template-columns: 1fr !important; }
+      .lightbox-nav-btn { width: 38px; height: 38px; }
+      #lightbox-prev { left: 8px; }
+      #lightbox-next { right: 8px; }
+      .lightbox-close-btn { top: 12px; right: 12px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">LN</div>
+        <span class="nav-logo-text">Lucy Nam</span>
+      </a>
+      <div class="nav-links">
+        <a href="/#work">Work</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
+      </div>
+    </div>
+    <a href="/#contact" class="nav-btn">Hire Me</a>
+  </nav>
+
+  <a href="/#work" class="back-btn">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+      <path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Back
+  </a>
+
+  <!-- Hero -->
+  <div style="background:linear-gradient(135deg, #0c0a2e 0%, #161247 100%);padding-top:7rem;padding-bottom:4rem;padding-left:2.5rem;padding-right:2.5rem;position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.06);">
+    <div class="orb-float" style="position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;background:linear-gradient(135deg, #4f46e5, #4338ca);opacity:.16;filter:blur(60px);pointer-events:none;"></div>
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <p class="section-label" style="margin-bottom:1rem;color:rgba(255,255,255,.6);">Featured Projects</p>
+      <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin:0 0 .75rem;color:#fff;">Onboarding for Buyer</h1>
+      <p style="font-size:1rem;color:rgba(255,255,255,.65);margin:0 0 1.5rem;">Redesigning FashionGo's buyer onboarding journey — from the first sign-in prompt through a four-step account, business, and preference wizard — for both desktop and mobile</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem;">
+        <span style="padding:.35rem .85rem;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.8rem;font-weight:500;color:rgba(255,255,255,.85);"><span style="color:#818cf8;margin-right:.35rem;">Role:</span>Product Designer</span>
+        <span style="padding:.35rem .85rem;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.8rem;font-weight:500;color:rgba(255,255,255,.85);"><span style="color:#818cf8;margin-right:.35rem;">Scope:</span>Desktop + Mobile</span>
+        <span style="padding:.35rem .85rem;border-radius:9999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.8rem;font-weight:500;color:rgba(255,255,255,.85);"><span style="color:#818cf8;margin-right:.35rem;">Company:</span>FashionGo (NHN Global)</span>
+      </div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+        <span class="tag-chip">Buyer Onboarding</span>
+<span class="tag-chip">Multi-Step Wizard</span>
+<span class="tag-chip">Google SSO</span>
+<span class="tag-chip">Responsive Design</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div style="max-width:900px;margin:0 auto;padding:3rem 2.5rem 5rem;display:flex;flex-direction:column;gap:2rem;">
+
+    <!-- Challenge -->
+    <div class="glass" style="padding:2rem;">
+      <p class="section-label" style="margin-bottom:.75rem;color:#4f46e5;">The Challenge</p>
+      <p style="margin:0;font-size:1rem;line-height:1.75;color:#374151;">Becoming a verified buyer on FashionGo isn't a single sign-up form — it's a sequence of trust-building steps: proving you're a real person, proving you're a real business, and telling FashionGo enough about your store to get matched with the right vendors. Each step is a place a buyer can stall or drop off, and each one needed to work cleanly on both desktop and mobile, where screen space and attention are very different. I designed the full flow end to end — the entry modal, the four-step wizard (Welcome, Basics, Business, For You), real-time password and email verification, and a mobile-specific adaptation of each step — balancing how much friction is actually necessary to verify a legitimate wholesale buyer against how much is just friction.</p>
+    </div>
+
+    <!-- Tools -->
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+      <span class="tool-chip">Figma</span>
+<span class="tool-chip">Design Systems</span>
+<span class="tool-chip">Responsive / Mobile Adaptation</span>
+    </div>
+
+    <!-- Design Decisions -->
+    <div class="glass" style="padding:2rem;">
+      <p class="section-label" style="margin-bottom:1.25rem;color:#4f46e5;">Key Design Decisions</p>
+      <div class="decision-grid">
+        <div class="decision-card">
+          <div class="decision-num">01</div>
+          <h3 style="margin:0 0 .5rem;font-size:1rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">A Low-Friction Entry Point</h3>
+          <p style="margin:0;font-size:.85rem;line-height:1.65;color:#64748b;">A single "Sign In or Create Account" modal with one email field and a <strong>Continue with Google</strong> shortcut replaces making visitors decide up front whether they're signing in or creating an account — on both desktop and mobile.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-num">02</div>
+          <h3 style="margin:0 0 .5rem;font-size:1rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">A Four-Step Wizard</h3>
+          <p style="margin:0;font-size:.85rem;line-height:1.65;color:#64748b;">A persistent tab bar (Welcome → Basics → Business → For You) keeps buyers oriented. Step one branches immediately into "I am a buyer" or "I am a vendor," since the two groups need almost entirely different information from there.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-num">03</div>
+          <h3 style="margin:0 0 .5rem;font-size:1rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">Verification Without Derailing the Flow</h3>
+          <p style="margin:0;font-size:.85rem;line-height:1.65;color:#64748b;">Password requirements show as a live checklist instead of a post-submit error, and email is verified in place with a 5-digit code — on mobile, as a bottom-sheet overlay directly on top of the form — rather than an email link that bounces the buyer out of the flow.</p>
+        </div>
+        <div class="decision-card">
+          <div class="decision-num">04</div>
+          <h3 style="margin:0 0 .5rem;font-size:1rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">Business Verification, Trimmed for Mobile</h3>
+          <p style="margin:0;font-size:.85rem;line-height:1.65;color:#64748b;">Desktop collects the full business picture — company, type, address, seller's permit — in one pass. Mobile cuts it down to the fields that matter most for verification and defers the rest, instead of asking someone to fill out a long form on a small screen.</p>
+        </div>
+        <div class="decision-card" style="grid-column:1 / -1;">
+          <div class="decision-num">05</div>
+          <h3 style="margin:0 0 .5rem;font-size:1rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">Personalizing From Day One</h3>
+          <p style="margin:0;font-size:.85rem;line-height:1.65;color:#64748b;">The last step opens into a tag-based preference picker — product categories, style, business attributes like Made in USA or Private Label, and identity preferences like Women-Owned or Eco Friendly — so FashionGo can start surfacing relevant vendors from a buyer's very first session.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Flow -->
+    <div class="glass" style="padding:2rem;">
+      <p class="section-label" style="margin-bottom:.4rem;color:#4f46e5;">Desktop Flow</p>
+      <p style="margin:0 0 1.25rem;font-size:.85rem;color:#64748b;">Click any screen to step through the full desktop sequence, start to finish.</p>
+      <div class="flow-grid" id="desktop-flow">
+        <div class="flow-item" data-label="Entry · Sign In or Create Account">
+          <img src="images/onboarding-entry-modal.png" alt="Entry: Sign In or Create Account modal on the FashionGo homepage">
+          <div class="flow-label">Entry — Sign In / Create Account</div>
+        </div>
+        <div class="flow-item" data-label="Step 1 · Welcome">
+          <img src="images/onboarding-01-welcome.png" alt="Step 1 Welcome: choose I am a buyer or I am a vendor">
+          <div class="flow-label">01 — Welcome</div>
+        </div>
+        <div class="flow-item" data-label="Step 2 · Basics">
+          <img src="images/onboarding-02-basics.jpg" alt="Step 2 Basics: account form with live password strength checklist">
+          <div class="flow-label">02 — Basics</div>
+        </div>
+        <div class="flow-item" data-label="Step 3 · Business">
+          <img src="images/onboarding-03-business.jpg" alt="Step 3 Business: full company verification form">
+          <div class="flow-label">03 — Business</div>
+        </div>
+        <div class="flow-item" data-label="Step 4 · For You">
+          <img src="images/onboarding-04-foryou-attribution.png" alt="Step 4 For You: how did you hear about us">
+          <div class="flow-label">04 — For You</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Flow -->
+    <div class="glass" style="padding:2rem;">
+      <p class="section-label" style="margin-bottom:.4rem;color:#4f46e5;">Mobile Flow</p>
+      <p style="margin:0 0 1.25rem;font-size:.85rem;color:#64748b;">The same journey, adapted for a phone — including the email-verification step that only exists on mobile. Click to step through.</p>
+      <div class="flow-grid mobile-grid" id="mobile-flow">
+        <div class="flow-item" data-label="Entry · Sign in or create an account">
+          <img src="images/onboarding-mobile-entry.png" alt="Mobile entry: Sign in or create an account bottom sheet">
+          <div class="flow-label">Entry</div>
+        </div>
+        <div class="flow-item" data-label="Step 1 · Welcome">
+          <img src="images/onboarding-mobile-01-welcome.png" alt="Mobile Step 1 Welcome: I am a buyer or I am a vendor">
+          <div class="flow-label">01 — Welcome</div>
+        </div>
+        <div class="flow-item" data-label="Step 2 · Basics">
+          <img src="images/onboarding-mobile-02-basics.png" alt="Mobile Step 2 Basics: account form">
+          <div class="flow-label">02 — Basics</div>
+        </div>
+        <div class="flow-item" data-label="Step 2 · Check your email">
+          <img src="images/onboarding-02-basics-email-verify-mobile.png" alt="Mobile email verification overlay with 5-digit code">
+          <div class="flow-label">02 — Check your email</div>
+        </div>
+        <div class="flow-item" data-label="Step 3 · Business">
+          <img src="images/onboarding-03-business-mobile.png" alt="Mobile Step 3 Business: trimmed-down business form">
+          <div class="flow-label">03 — Business</div>
+        </div>
+        <div class="flow-item" data-label="Step 4 · For You">
+          <img src="images/onboarding-04-foryou-preferences-mobile.png" alt="Mobile Step 4 For You: category, style and identity preference tags">
+          <div class="flow-label">04 — For You</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Highlights -->
+    <div class="glass" style="padding:2rem;">
+      <p class="section-label" style="margin-bottom:1.5rem;color:#4f46e5;">Highlights</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;">
+
+          <div style="padding:1.25rem;border-radius:12px;background:#4f46e511;border:1px solid #4f46e533;text-align:center;">
+            <div style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;letter-spacing:-.03em;color:#4f46e5;line-height:1.1;margin-bottom:.4rem;">4</div>
+            <div style="font-size:.75rem;color:#64748b;font-weight:500;line-height:1.3;">Step wizard (Welcome, Basics, Business, For You)</div>
+          </div>
+
+          <div style="padding:1.25rem;border-radius:12px;background:#4f46e511;border:1px solid #4f46e533;text-align:center;">
+            <div style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;letter-spacing:-.03em;color:#4f46e5;line-height:1.1;margin-bottom:.4rem;">1-click</div>
+            <div style="font-size:.75rem;color:#64748b;font-weight:500;line-height:1.3;">Sign-up with Google SSO</div>
+          </div>
+
+          <div style="padding:1.25rem;border-radius:12px;background:#4f46e511;border:1px solid #4f46e533;text-align:center;">
+            <div style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;letter-spacing:-.03em;color:#4f46e5;line-height:1.1;margin-bottom:.4rem;">Desktop + Mobile</div>
+            <div style="font-size:.75rem;color:#64748b;font-weight:500;line-height:1.3;">Every step adapted, not just resized</div>
+          </div>
+
+          <div style="padding:1.25rem;border-radius:12px;background:#4f46e511;border:1px solid #4f46e533;text-align:center;">
+            <div style="font-size:clamp(1.3rem,3vw,1.8rem);font-weight:800;letter-spacing:-.03em;color:#4f46e5;line-height:1.1;margin-bottom:.4rem;">Oct 2026</div>
+            <div style="font-size:.75rem;color:#64748b;font-weight:500;line-height:1.3;">Onboarding redesign launched</div>
+          </div>
+
+      </div>
+    </div>
+
+    <!-- More Projects -->
+    <a href="/#work" style="text-decoration:none;display:block;">
+      <div class="glass work-card" style="padding:1.75rem;cursor:pointer;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <p style="margin:0 0 .4rem;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#94a3b8;">More Projects</p>
+            <h3 style="margin:0;font-size:1.1rem;font-weight:700;letter-spacing:-.02em;color:#1e1b4b;">Back to Featured Projects</h3>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" style="color:#6B5CE7;flex-shrink:0;">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="lightbox-overlay" id="lightbox">
+    <div class="lightbox-close-btn" id="lightbox-close-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div class="lightbox-nav-btn" id="lightbox-prev">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="lightbox-nav-btn" id="lightbox-next">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+  <script>
+    function buildFlow(containerId) {
+      return Array.from(document.querySelectorAll('#' + containerId + ' .flow-item')).map(item => ({
+        src: item.querySelector('img').getAttribute('src'),
+        alt: item.querySelector('img').getAttribute('alt'),
+        label: item.dataset.label || item.querySelector('img').getAttribute('alt')
+      }));
+    }
+    const flows = { desktop: buildFlow('desktop-flow'), mobile: buildFlow('mobile-flow') };
+    let currentGroup = null, currentIndex = 0;
+
+    function updateLightbox() {
+      const list = flows[currentGroup];
+      const item = list[currentIndex];
+      document.getElementById('lightbox-img').src = item.src;
+      document.getElementById('lightbox-img').alt = item.alt;
+      document.getElementById('lightbox-caption').textContent = item.label + '   ·   ' + (currentIndex + 1) + ' / ' + list.length;
+    }
+    function openLightbox(group, index) {
+      currentGroup = group; currentIndex = index;
+      updateLightbox();
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+    function navLightbox(delta) {
+      const len = flows[currentGroup].length;
+      currentIndex = (currentIndex + delta + len) % len;
+      updateLightbox();
+    }
+    document.querySelectorAll('#desktop-flow .flow-item').forEach((item, i) => {
+      item.addEventListener('click', () => openLightbox('desktop', i));
+    });
+    document.querySelectorAll('#mobile-flow .flow-item').forEach((item, i) => {
+      item.addEventListener('click', () => openLightbox('mobile', i));
+    });
+    document.getElementById('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); navLightbox(-1); });
+    document.getElementById('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); navLightbox(1); });
+    document.getElementById('lightbox-close-btn').addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+    document.getElementById('lightbox').addEventListener('click', () => closeLightbox());
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>
