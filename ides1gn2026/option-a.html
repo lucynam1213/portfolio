@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option A — Editorial Index</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f4f0;
+    --red: #d63a2f;
+    --gray: #888;
+    --border: rgba(0,0,0,.1);
+  }
+  html { font-size: 16px; }
+  body {
+    font-family: Inter, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    -webkit-font-smoothing: antialiased;
+    cursor: none;
+  }
+
+  /* custom cursor */
+  #cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--red);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .1s ease, width .2s ease, height .2s ease;
+  }
+  #cursor.big { width: 48px; height: 48px; background: var(--black); mix-blend-mode: multiply; }
+
+  /* hover thumbnail */
+  #thumb {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    width: 320px;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity .2s ease;
+    transform: translate(20px, -50%);
+  }
+  #thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #thumb.show { opacity: 1; }
+
+  /* nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+    mix-blend-mode: multiply;
+  }
+  .nav-name { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+  .nav-links a { color: inherit; text-decoration: none; }
+  .hire {
+    font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    border: 1.5px solid var(--black); padding: .4rem 1rem; color: inherit; text-decoration: none;
+  }
+  .hire:hover { background: var(--black); color: var(--white); }
+
+  /* hero */
+  .hero {
+    padding: 18rem 3rem 6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-label {
+    font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 900;
+    line-height: .92;
+    letter-spacing: -.04em;
+    max-width: 900px;
+  }
+  .hero h1 em { font-style: italic; font-weight: 300; color: var(--red); }
+  .hero-sub {
+    margin-top: 3rem;
+    display: flex; gap: 4rem; align-items: flex-end;
+  }
+  .hero-desc {
+    font-size: 1rem; line-height: 1.7; color: #444; max-width: 380px;
+  }
+  .hero-meta { font-size: .75rem; color: var(--gray); letter-spacing: .06em; line-height: 2; }
+
+  /* work index */
+  .section-label {
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between;
+    font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gray);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-list { }
+  .project-row {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.75rem 3rem;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: background .15s ease;
+    cursor: none;
+  }
+  .project-row:hover { background: var(--black); color: var(--white); }
+  .project-row:hover .p-year,
+  .project-row:hover .p-tags { color: rgba(255,255,255,.4); }
+
+  .p-num { font-size: .75rem; font-weight: 500; color: var(--gray); }
+  .project-row:hover .p-num { color: rgba(255,255,255,.4); }
+
+  .p-title { font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 700; letter-spacing: -.02em; }
+  .p-year { font-size: .75rem; letter-spacing: .06em; color: var(--gray); min-width: 60px; text-align: right; }
+  .p-tags { font-size: .7rem; letter-spacing: .06em; color: var(--gray); text-align: right; min-width: 160px; }
+
+  /* about strip */
+  .about-strip {
+    padding: 5rem 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .about-strip h2 { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gray); margin-bottom: 1rem; }
+  .about-strip p { font-size: 1.1rem; line-height: 1.75; }
+  .about-strip strong { font-weight: 700; }
+
+  /* footer */
+  footer {
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gray);
+  }
+  footer a { color: var(--black); font-weight: 700; text-decoration: none; }
+  footer a:hover { color: var(--red); }
+
+  /* red dot available */
+  .avail {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gray);
+  }
+  .avail::before {
+    content: '';
+    width: 6px; height: 6px; background: var(--red); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; } 50% { opacity: .3; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="thumb"><img src="" alt=""></div>
+
+<nav>
+  <span class="nav-name">Lucy Nam</span>
+  <div class="nav-links">
+    <a href="#">Work</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <a href="#" class="hire">Hire Me</a>
+</nav>
+
+<section class="hero">
+  <p class="hero-label">Product Designer · Seoul & Remote</p>
+  <h1>Design<br>that <em>ships</em><br>and holds.</h1>
+  <div class="hero-sub">
+    <p class="hero-desc">I design digital products for e-commerce and enterprise platforms — systems that scale without losing the craft that makes them feel considered.</p>
+    <div class="hero-meta">
+      <div class="avail">Open to new roles</div><br>
+      B2B · E-Commerce · Systems<br>
+      5+ years · Product &amp; Design Systems
+    </div>
+  </div>
+</section>
+
+<div class="section-label">
+  <span>Selected Work</span>
+  <span>2021 — 2025</span>
+</div>
+
+<div class="project-list">
+  <a class="project-row" href="#" data-img="../b2b-hero.webp">
+    <span class="p-num">01</span>
+    <span class="p-title">Enterprise B2B eCommerce Redesign</span>
+    <span class="p-year">2024</span>
+    <span class="p-tags">Product Design · Design System</span>
+  </a>
+  <a class="project-row" href="#" data-img="../designsystem.png">
+    <span class="p-num">02</span>
+    <span class="p-title">FashionGo Design System</span>
+    <span class="p-year">2024</span>
+    <span class="p-tags">Design System · Tokens</span>
+  </a>
+  <a class="project-row" href="#" data-img="../SellOnFG.PNG">
+    <span class="p-num">03</span>
+    <span class="p-title">Sell on FashionGo</span>
+    <span class="p-year">2023</span>
+    <span class="p-tags">Landing Page · B2B</span>
+  </a>
+  <a class="project-row" href="#" data-img="../hankook-01.webp">
+    <span class="p-num">04</span>
+    <span class="p-title">Hankook TV</span>
+    <span class="p-year">2022</span>
+    <span class="p-tags">OTT · Multi-Platform</span>
+  </a>
+  <a class="project-row" href="#" data-img="../instantdiscovery-hero.webp">
+    <span class="p-num">05</span>
+    <span class="p-title">Instant Discovery</span>
+    <span class="p-year">2022</span>
+    <span class="p-tags">Mobile · E-Commerce</span>
+  </a>
+  <a class="project-row" href="#" data-img="../fitbridge-hero.webp">
+    <span class="p-num">06</span>
+    <span class="p-title">FitBridge</span>
+    <span class="p-year">2021</span>
+    <span class="p-tags">Mobile App · Health</span>
+  </a>
+</div>
+
+<div class="about-strip">
+  <div>
+    <h2>Approach</h2>
+    <p>I work at the intersection of <strong>systems rigor and visual craft.</strong> I build design systems that engineering teams actually want to use, and I design interfaces that don't need onboarding to understand.</p>
+  </div>
+  <div>
+    <h2>Background</h2>
+    <p>Five years designing for <strong>FashionGo</strong>, the largest B2B wholesale fashion marketplace in the US, plus consumer platforms, OTT services, and early-stage startups. I've shipped at every scale.</p>
+  </div>
+</div>
+
+<footer>
+  <span>© 2025 Lucy Nam</span>
+  <div>
+    <a href="#">LinkedIn</a>&ensp;·&ensp;<a href="#">Resume</a>&ensp;·&ensp;<a href="mailto:lucy@ides1gn.com">lucy@ides1gn.com</a>
+  </div>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const thumb = document.getElementById('thumb');
+  const thumbImg = thumb.querySelector('img');
+
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    thumb.style.left = e.clientX + 'px';
+    thumb.style.top = e.clientY + 'px';
+  });
+
+  document.querySelectorAll('.project-row').forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      cursor.classList.add('big');
+      const img = row.dataset.img;
+      if (img) {
+        thumbImg.src = img;
+        thumb.classList.add('show');
+      }
+    });
+    row.addEventListener('mouseleave', () => {
+      cursor.classList.remove('big');
+      thumb.classList.remove('show');
+    });
+  });
+
+  document.querySelectorAll('a:not(.project-row), nav *').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+</script>
+</body>
+</html>

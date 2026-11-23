@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option C — Horizontal Scroll Split</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #111;
+    --off: #f8f6f2;
+    --accent: #0040ff;
+    --light-gray: #e8e6e2;
+  }
+  html, body {
+    height: 100%; overflow: hidden;
+    font-family: Inter, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 2.5rem;
+    pointer-events: none;
+  }
+  .nav-logo { font-size: .7rem; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; color: inherit; pointer-events: all; }
+  .nav-r { display: flex; gap: 2rem; align-items: center; pointer-events: all; }
+  .nav-r a { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; color: inherit; opacity: .5; transition: opacity .2s; }
+  .nav-r a:hover { opacity: 1; }
+  .hire-btn {
+    font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    background: var(--black); color: var(--off);
+    padding: .45rem 1rem; text-decoration: none; opacity: 1 !important;
+  }
+
+  /* scroll container */
+  .h-scroll {
+    display: flex;
+    width: 100%; height: 100vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .h-scroll::-webkit-scrollbar { display: none; }
+
+  /* panels */
+  .panel {
+    flex: 0 0 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+
+  /* panel left = text, right = image */
+  .p-left {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 2.5rem;
+    padding-top: 6rem;
+    position: relative;
+    z-index: 2;
+  }
+  .p-right {
+    overflow: hidden;
+    position: relative;
+  }
+  .p-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 1s ease;
+  }
+
+  /* ── Panel 0: Hero ── */
+  .panel-hero { background: var(--off); color: var(--black); }
+  .panel-hero .p-left { justify-content: center; }
+  .hero-eyebrow {
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(0,0,0,.4); margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 900; line-height: .9; letter-spacing: -.04em;
+  }
+  .hero-title em { font-style: italic; font-weight: 300; color: var(--accent); }
+  .hero-body {
+    margin-top: 2rem; font-size: 1rem; line-height: 1.7;
+    color: rgba(0,0,0,.55); max-width: 380px;
+  }
+  .hero-cta {
+    margin-top: 2.5rem; display: inline-flex; align-items: center; gap: 1rem;
+    font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--black); text-decoration: none;
+    border-bottom: 2px solid var(--black); padding-bottom: .2rem;
+  }
+  .hero-cta::after { content: '→'; }
+
+  .hero-scroll-hint {
+    position: absolute; right: 2.5rem; bottom: 2.5rem;
+    font-size: .65rem; letter-spacing: .16em; text-transform: uppercase;
+    color: rgba(0,0,0,.35);
+    display: flex; align-items: center; gap: .5rem;
+    animation: nudge 2s infinite;
+  }
+  @keyframes nudge {
+    0%,100% { transform: translateX(0); }
+    50% { transform: translateX(6px); }
+  }
+
+  .panel-hero .p-right { background: var(--black); }
+  .hero-reel {
+    width: 100%; height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+  }
+  .hero-reel div {
+    background-size: cover; background-position: center;
+    opacity: 0;
+    transition: opacity .8s ease;
+  }
+  .hero-reel div.vis { opacity: 1; }
+
+  /* project panels */
+  .panel-proj { }
+  .panel-proj:nth-child(odd) { background: var(--black); color: var(--off); }
+  .panel-proj:nth-child(even) { background: var(--off); color: var(--black); }
+  .panel-proj:nth-child(even) .p-left { order: 2; }
+  .panel-proj:nth-child(even) .p-right { order: 1; }
+
+  .p-index {
+    font-size: .65rem; letter-spacing: .16em; text-transform: uppercase;
+    opacity: .35; margin-bottom: .75rem;
+  }
+  .p-name {
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-weight: 900; line-height: 1; letter-spacing: -.03em;
+    margin-bottom: 1.25rem;
+  }
+  .p-blurb {
+    font-size: .9rem; line-height: 1.7; opacity: .6; max-width: 340px; margin-bottom: 2rem;
+  }
+  .p-tags-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 2.5rem; }
+  .p-tag {
+    font-size: .65rem; letter-spacing: .08em; text-transform: uppercase;
+    border: 1px solid currentColor; padding: .3rem .7rem; opacity: .4;
+  }
+  .p-view {
+    font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    text-decoration: none; color: inherit;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+  .p-view::after { content: '→'; }
+
+  /* panel about */
+  .panel-about { background: var(--accent); color: var(--off); }
+  .panel-about .p-left { justify-content: center; }
+  .about-big {
+    font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+    font-weight: 900; line-height: 1; letter-spacing: -.04em;
+    margin-bottom: 2rem;
+  }
+  .about-big em { font-style: italic; font-weight: 300; }
+  .about-p { font-size: 1rem; line-height: 1.75; opacity: .85; max-width: 380px; }
+  .about-p + .about-p { margin-top: 1rem; }
+  .panel-about .p-right { background: rgba(0,0,0,.2); }
+  .contact-block {
+    padding: 2.5rem; display: flex; flex-direction: column; justify-content: flex-end;
+    height: 100%;
+  }
+  .contact-block p { font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; opacity: .6; margin-bottom: 1rem; }
+  .contact-email {
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    font-weight: 700; color: var(--off);
+    text-decoration: none; letter-spacing: -.02em;
+    border-bottom: 2px solid rgba(255,255,255,.4); padding-bottom: .25rem;
+    display: inline-block;
+  }
+  .contact-links { margin-top: 1.5rem; display: flex; gap: 1.5rem; }
+  .contact-links a { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--off); opacity: .6; text-decoration: none; }
+
+  /* progress dots */
+  .dots {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: .5rem; z-index: 200;
+  }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(0,0,0,.2); transition: background .3s, transform .3s;
+  }
+  .dot.active { background: var(--black); transform: scale(1.5); }
+  .panel-proj:nth-child(odd) ~ * .dot, body.dark-panel .dot { background: rgba(255,255,255,.2); }
+  .dot.active-dark { background: var(--off); transform: scale(1.5); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Lucy Nam</span>
+  <div class="nav-r">
+    <a href="#">Work</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <a href="#" class="hire-btn">Hire Me</a>
+  </div>
+</nav>
+
+<div class="h-scroll" id="scroll">
+
+  <!-- 0: Hero -->
+  <div class="panel panel-hero" data-index="0">
+    <div class="p-left">
+      <p class="hero-eyebrow">Product Designer · Available for new roles</p>
+      <h1 class="hero-title">I make<br>complex <em>feel</em><br>simple.</h1>
+      <p class="hero-body">Five years designing for FashionGo — the largest B2B wholesale fashion marketplace in the US. Systems thinker, visual craftsperson.</p>
+      <a href="#" class="hero-cta">View work</a>
+      <span class="hero-scroll-hint">Scroll →</span>
+    </div>
+    <div class="p-right">
+      <div class="hero-reel">
+        <div style="background-image:url('../b2b-hero.webp')" class="vis"></div>
+        <div style="background-image:url('../hankook-01.webp')" class="vis"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1: B2B -->
+  <div class="panel panel-proj" data-index="1">
+    <div class="p-left">
+      <p class="p-index">01 — Product Design · 2024</p>
+      <h2 class="p-name">Enterprise B2B eCommerce Redesign</h2>
+      <p class="p-blurb">Led UI and design system evolution for FashionGo — redesigning core buyer and vendor flows to scale across a marketplace with millions of orders.</p>
+      <div class="p-tags-row">
+        <span class="p-tag">Product Design</span>
+        <span class="p-tag">Design System</span>
+        <span class="p-tag">B2B</span>
+      </div>
+      <a href="#" class="p-view">View case study</a>
+    </div>
+    <div class="p-right">
+      <img src="../b2b-hero.webp" alt="B2B Redesign">
+    </div>
+  </div>
+
+  <!-- 2: Design System -->
+  <div class="panel panel-proj" data-index="2">
+    <div class="p-left">
+      <p class="p-index">02 — Design System · 2024</p>
+      <h2 class="p-name">FashionGo Design System</h2>
+      <p class="p-blurb">Token-first UI kit with 98 CSS variables — every component linked back to named semantic tokens. Built to outlast any single designer on the team.</p>
+      <div class="p-tags-row">
+        <span class="p-tag">Tokens</span>
+        <span class="p-tag">Components</span>
+        <span class="p-tag">Storybook</span>
+      </div>
+      <a href="#" class="p-view">View case study</a>
+    </div>
+    <div class="p-right">
+      <img src="../designsystem.png" alt="Design System">
+    </div>
+  </div>
+
+  <!-- 3: Hankook -->
+  <div class="panel panel-proj" data-index="3">
+    <div class="p-left">
+      <p class="p-index">03 — Multi-Platform · 2022</p>
+      <h2 class="p-name">Hankook TV</h2>
+      <p class="p-blurb">Led product design for a Korean-American OTT streaming platform — web, mobile, and smart TV. Content discovery redesign and visual system.</p>
+      <div class="p-tags-row">
+        <span class="p-tag">OTT</span>
+        <span class="p-tag">Multi-Platform</span>
+        <span class="p-tag">Consumer</span>
+      </div>
+      <a href="#" class="p-view">View case study</a>
+    </div>
+    <div class="p-right">
+      <img src="../hankook-01.webp" alt="Hankook TV">
+    </div>
+  </div>
+
+  <!-- 4: FitBridge -->
+  <div class="panel panel-proj" data-index="4">
+    <div class="p-left">
+      <p class="p-index">04 — Mobile App · 2021</p>
+      <h2 class="p-name">FitBridge</h2>
+      <p class="p-blurb">Fitness app connecting personal trainers and clients. Designed the full product — onboarding, trainer dashboard, workout assignment, and nutrition tracking.</p>
+      <div class="p-tags-row">
+        <span class="p-tag">Mobile</span>
+        <span class="p-tag">Health</span>
+        <span class="p-tag">End-to-end</span>
+      </div>
+      <a href="#" class="p-view">View case study</a>
+    </div>
+    <div class="p-right">
+      <img src="../fitbridge-hero.webp" alt="FitBridge">
+    </div>
+  </div>
+
+  <!-- 5: About + Contact -->
+  <div class="panel panel-about" data-index="5">
+    <div class="p-left">
+      <p class="hero-eyebrow" style="color:rgba(255,255,255,.5)">About</p>
+      <h2 class="about-big">Built for<br><em>scale.</em><br>Cared<br>for craft.</h2>
+      <p class="about-p">I've spent five years at FashionGo designing for complexity — a platform where the edge cases are the main case. I build systems that hold up and interfaces that feel obvious once you're in them.</p>
+      <p class="about-p">Looking for roles in e-commerce, enterprise, or early-stage products where design is a real lever.</p>
+    </div>
+    <div class="p-right">
+      <div class="contact-block">
+        <p>Get in touch</p>
+        <a href="mailto:lucy@ides1gn.com" class="contact-email">lucy@ides1gn.com</a>
+        <div class="contact-links">
+          <a href="#">LinkedIn</a>
+          <a href="#">Resume</a>
+          <a href="#">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- dots -->
+<div class="dots" id="dots">
+  <div class="dot active" data-i="0"></div>
+  <div class="dot" data-i="1"></div>
+  <div class="dot" data-i="2"></div>
+  <div class="dot" data-i="3"></div>
+  <div class="dot" data-i="4"></div>
+  <div class="dot" data-i="5"></div>
+</div>
+
+<script>
+  const scroll = document.getElementById('scroll');
+  const dots = document.querySelectorAll('.dot');
+  const panels = document.querySelectorAll('.panel');
+
+  scroll.addEventListener('scroll', () => {
+    const idx = Math.round(scroll.scrollLeft / window.innerWidth);
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  });
+
+  // keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') {
+      scroll.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+    } else if (e.key === 'ArrowLeft') {
+      scroll.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option B — Full-Bleed Type</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,900;1,900;0,400;0,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #080808;
+    --white: #f0ede8;
+    --accent: #e8c547;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Inter, sans-serif;
+    background: var(--black);
+    color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.75rem 2.5rem;
+  }
+  .nav-logo { font-size: .7rem; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; color: var(--white); }
+  .nav-r { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-r a { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); text-decoration: none; transition: color .2s; }
+  .nav-r a:hover { color: var(--white); }
+  .hire-btn {
+    font-size: .7rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase;
+    background: var(--accent); color: var(--black);
+    padding: .5rem 1.1rem; text-decoration: none;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 2.5rem 3rem;
+    overflow: hidden;
+  }
+
+  /* background images stacked, revealed on scroll */
+  .hero-bg {
+    position: absolute; inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .hero-bg-panel {
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity .6s ease;
+  }
+  .hero-bg-panel:nth-child(1) { background-image: url('../b2b-hero.webp'); }
+  .hero-bg-panel:nth-child(2) { background-image: url('../hankook-01.webp'); }
+  .hero-bg-panel:nth-child(3) { background-image: url('../fitbridge-hero.webp'); }
+
+  /* dark overlay */
+  .hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,.5) 60%, rgba(8,8,8,.2) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-text {
+    position: relative; z-index: 2;
+  }
+  .hero-name {
+    font-size: clamp(5rem, 14vw, 14rem);
+    font-weight: 900;
+    line-height: .88;
+    letter-spacing: -.05em;
+    text-transform: uppercase;
+  }
+  .hero-name .line2 {
+    display: block;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-bottom {
+    margin-top: 2rem;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .hero-desc {
+    font-size: 1rem; line-height: 1.65; color: rgba(255,255,255,.65); max-width: 360px;
+  }
+  .scroll-hint {
+    font-size: .65rem; letter-spacing: .16em; text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .scroll-hint::before {
+    content: '';
+    display: block; width: 32px; height: 1px; background: rgba(255,255,255,.3);
+  }
+
+  /* ── WORK ── */
+  .work { padding: 0 0 6rem; }
+  .work-label {
+    padding: 2rem 2.5rem 1rem;
+    font-size: .65rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; justify-content: space-between;
+  }
+
+  .project-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 50vh;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+  .project-block:nth-child(even) .p-img { order: -1; }
+
+  .p-img {
+    background-size: cover;
+    background-position: center;
+    min-height: 320px;
+    filter: grayscale(40%);
+    transition: filter .4s ease, transform .6s ease;
+  }
+  .project-block:hover .p-img {
+    filter: grayscale(0%);
+    transform: scale(1.02);
+  }
+
+  .p-info {
+    padding: 3rem 2.5rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-left: 1px solid rgba(255,255,255,.08);
+  }
+  .project-block:nth-child(even) .p-info { border-left: none; border-right: 1px solid rgba(255,255,255,.08); }
+
+  .p-num-label {
+    font-size: .65rem; letter-spacing: .16em; text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+  .p-title-big {
+    font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+    font-weight: 900; line-height: 1.05; letter-spacing: -.03em;
+    margin: 1.5rem 0 1rem;
+  }
+  .p-desc { font-size: .9rem; line-height: 1.65; color: rgba(255,255,255,.55); max-width: 320px; }
+  .p-cta {
+    margin-top: 2rem;
+    display: inline-flex; align-items: center; gap: .75rem;
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .p-cta::after { content: '→'; }
+
+  /* ── ABOUT ── */
+  .about {
+    padding: 6rem 2.5rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: center;
+  }
+  .about h2 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900; line-height: 1; letter-spacing: -.04em;
+  }
+  .about h2 em { font-style: italic; color: var(--accent); }
+  .about-body p { font-size: 1rem; line-height: 1.8; color: rgba(255,255,255,.65); margin-bottom: 1.25rem; }
+  .about-body strong { color: var(--white); font-weight: 700; }
+
+  /* footer */
+  footer {
+    padding: 1.75rem 2.5rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: flex; justify-content: space-between;
+    font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.25);
+  }
+  footer a { color: var(--white); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Lucy Nam</span>
+  <div class="nav-r">
+    <a href="#">Work</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <a href="#" class="hire-btn">Hire Me</a>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-panel"></div>
+    <div class="hero-bg-panel"></div>
+    <div class="hero-bg-panel"></div>
+  </div>
+  <div class="hero-text">
+    <div class="hero-name">
+      Lucy<br>
+      <span class="line2">Nam</span>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-desc">Product Designer. I build systems that scale and interfaces that feel inevitable once you use them.</p>
+      <span class="scroll-hint">Scroll</span>
+    </div>
+  </div>
+</section>
+
+<section class="work">
+  <div class="work-label">
+    <span>Selected Work</span><span>2021–2025</span>
+  </div>
+
+  <a class="project-block" href="#">
+    <div class="p-img" style="background-image:url('../b2b-hero.webp')"></div>
+    <div class="p-info">
+      <span class="p-num-label">01 / Product Design</span>
+      <div>
+        <h3 class="p-title-big">Enterprise B2B eCommerce Redesign</h3>
+        <p class="p-desc">Led UI and design system evolution for FashionGo — the largest B2B wholesale fashion marketplace in the US.</p>
+        <span class="p-cta">View project</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="project-block" href="#">
+    <div class="p-img" style="background-image:url('../designsystem.png')"></div>
+    <div class="p-info">
+      <span class="p-num-label">02 / Design System</span>
+      <div>
+        <h3 class="p-title-big">FashionGo Design System</h3>
+        <p class="p-desc">Token-first UI kit — 98 CSS variables, every visual decision traceable from primitive to component.</p>
+        <span class="p-cta">View project</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="project-block" href="#">
+    <div class="p-img" style="background-image:url('../hankook-01.webp')"></div>
+    <div class="p-info">
+      <span class="p-num-label">03 / Multi-Platform</span>
+      <div>
+        <h3 class="p-title-big">Hankook TV</h3>
+        <p class="p-desc">OTT platform for Korean Americans. Product design across web and mobile.</p>
+        <span class="p-cta">View project</span>
+      </div>
+    </div>
+  </a>
+
+  <a class="project-block" href="#">
+    <div class="p-img" style="background-image:url('../fitbridge-hero.webp')"></div>
+    <div class="p-info">
+      <span class="p-num-label">04 / Mobile App</span>
+      <div>
+        <h3 class="p-title-big">FitBridge</h3>
+        <p class="p-desc">Fitness app connecting trainers and clients. Designed the full product end-to-end.</p>
+        <span class="p-cta">View project</span>
+      </div>
+    </div>
+  </a>
+</section>
+
+<section class="about">
+  <h2>Design<br>that<br><em>holds.</em></h2>
+  <div class="about-body">
+    <p>I've spent five years designing for <strong>FashionGo</strong>, one of the largest B2B wholesale platforms in the US. That means shipping at scale, building systems that last, and caring about the craft in details most designers skip.</p>
+    <p>I work best where <strong>product complexity is real</strong> — e-commerce, enterprise, platforms with many users and many edge cases. I make them feel simple.</p>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Lucy Nam — Product Designer</span>
+  <div><a href="#">LinkedIn</a> · <a href="#">Resume</a> · <a href="mailto:lucy@ides1gn.com">lucy@ides1gn.com</a></div>
+</footer>
+
+<script>
+  // reveal bg panels on scroll
+  const panels = document.querySelectorAll('.hero-bg-panel');
+  window.addEventListener('scroll', () => {
+    const ratio = Math.min(window.scrollY / 300, 1);
+    panels.forEach((p, i) => {
+      p.style.opacity = ratio * (0.3 + i * 0.1);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 [build]
-  publish = "."
+  publish = "ides1gn2026"
 
 [[redirects]]
   from = "/work/instantdiscovery"
