@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopcord Design System — Lucy Nam</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0d0d0d; --white: #f4f2ed; --red: #d63028;
+  --gray: #888; --accent: #e11074;
+}
+html, body { width:100%; height:100%; overflow:hidden; font-family:Inter,sans-serif; -webkit-font-smoothing:antialiased; cursor:none; }
+#cursor { position:fixed; width:7px; height:7px; background:var(--red); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .18s,height .18s,background .18s; }
+body.cursor-hover #cursor { width:44px; height:44px; background:rgba(255,255,255,.15); }
+body.light-panel.cursor-hover #cursor { background:rgba(13,13,13,.1); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:1.5rem 2.5rem; pointer-events:none; color:var(--white); transition:color .4s; }
+nav.light { color:var(--black); }
+.nav-logo { font-size:.68rem; font-weight:900; letter-spacing:.18em; text-transform:uppercase; text-decoration:none; color:inherit; pointer-events:all; }
+.nav-center { position:absolute; left:50%; transform:translateX(-50%); font-size:.63rem; letter-spacing:.1em; text-transform:uppercase; opacity:.4; pointer-events:all; color:inherit; }
+.nav-back { font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; color:inherit; opacity:.45; pointer-events:all; transition:opacity .2s; }
+.nav-back:hover { opacity:1; }
+.h-scroll { display:flex; width:100vw; height:100vh; overflow-x:scroll; overflow-y:hidden; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.h-scroll::-webkit-scrollbar { display:none; }
+.panel { flex:0 0 100vw; height:100vh; scroll-snap-align:start; display:grid; grid-template-columns:1fr 1fr; position:relative; }
+.panel.dark { background:var(--black); color:var(--white); }
+.panel.light { background:var(--white); color:var(--black); }
+.panel.mid { background:#1a1a2e; color:var(--white); }
+.panel.flip .p-left { order:2; }
+.panel.flip .p-right { order:1; }
+.p-left { display:flex; flex-direction:column; justify-content:flex-end; padding:2.5rem; padding-top:6rem; position:relative; z-index:2; border-right:1px solid rgba(255,255,255,.08); }
+.panel.light .p-left { border-right:1px solid rgba(13,13,13,.08); }
+.panel.flip .p-left { border-right:none; border-left:1px solid rgba(13,13,13,.08); }
+.panel.flip.dark .p-left,.panel.flip.mid .p-left { border-left:1px solid rgba(255,255,255,.08); }
+.p-right { position:relative; overflow:hidden; }
+.p-right img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .8s cubic-bezier(.16,1,.3,1); }
+.panel:hover .p-right img { transform:scale(1.03); }
+.p-right-content { width:100%; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:2.5rem; gap:1rem; }
+.p-eyebrow { font-size:.63rem; letter-spacing:.16em; text-transform:uppercase; opacity:.35; margin-bottom:1rem; display:flex; align-items:center; gap:.75rem; }
+.p-eyebrow::after { content:''; display:block; height:1px; width:2rem; background:currentColor; opacity:.4; }
+.p-title { font-size:clamp(2rem,4.5vw,4rem); font-weight:900; line-height:.95; letter-spacing:-.04em; margin-bottom:1.5rem; }
+.p-title em { font-style:italic; font-weight:300; color:var(--accent); }
+.p-body { font-size:.95rem; line-height:1.8; opacity:.6; max-width:360px; margin-bottom:1rem; }
+.p-body strong { opacity:1; font-weight:600; }
+.panel.light .p-body strong { color:var(--black); }
+.panel.dark .p-body strong,.panel.mid .p-body strong { color:var(--white); }
+.p-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:2rem; }
+.p-tag { font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; border:1px solid currentColor; padding:.28rem .65rem; opacity:.3; }
+.p-meta-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:2rem; }
+.p-meta-label { font-size:.58rem; letter-spacing:.14em; text-transform:uppercase; opacity:.35; margin-bottom:.2rem; }
+.p-meta-val { font-size:.88rem; font-weight:600; }
+.stat-card { padding:1.5rem 2rem; }
+.panel.dark .stat-card,.panel.mid .stat-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); }
+.panel.light .stat-card { background:rgba(13,13,13,.04); border:1px solid rgba(13,13,13,.08); }
+.stat-num { font-size:2.8rem; font-weight:900; letter-spacing:-.04em; line-height:1; color:var(--accent); margin-bottom:.3rem; }
+.stat-label { font-size:.72rem; line-height:1.5; opacity:.55; }
+.callout { border-left:2px solid var(--accent); padding-left:1.25rem; margin:1.5rem 0; }
+.callout p { font-size:1.05rem; font-style:italic; font-weight:300; line-height:1.65; opacity:.8; }
+.p-cta { display:inline-flex; align-items:center; gap:.6rem; font-size:.68rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; color:inherit; margin-top:1rem; opacity:.5; transition:opacity .2s; }
+.p-cta:hover { opacity:1; }
+.p-cta::after { content:'→'; }
+
+/* token diagram */
+.token-flow { display:flex; flex-direction:column; justify-content:center; gap:1rem; padding:2.5rem; height:100%; }
+.token-row { display:flex; align-items:center; gap:.75rem; }
+.token-box { padding:.6rem 1rem; font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; border:1px solid rgba(255,255,255,.12); min-width:120px; text-align:center; }
+.token-box.primitive { background:rgba(225,16,116,.15); border-color:rgba(225,16,116,.3); color:#e11074; }
+.token-box.semantic { background:rgba(255,255,255,.07); }
+.token-box.component { background:rgba(255,255,255,.12); }
+.token-arrow { font-size:.8rem; opacity:.3; }
+
+/* color swatches */
+.swatch-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; padding:2.5rem; align-content:center; }
+.swatch { aspect-ratio:1; border-radius:2px; position:relative; }
+.swatch-label { position:absolute; bottom:.4rem; left:.4rem; font-size:.55rem; letter-spacing:.06em; color:rgba(255,255,255,.6); font-weight:600; }
+
+.progress { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:.75rem; z-index:200; }
+.progress-dot { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,.25); cursor:pointer; transition:background .3s,transform .3s,width .3s; }
+.progress-dot.active { width:20px; border-radius:2px; background:var(--white); }
+nav.light ~ .progress .progress-dot { background:rgba(13,13,13,.2); }
+nav.light ~ .progress .progress-dot.active { background:var(--black); }
+.panel-counter { position:fixed; bottom:2rem; right:2.5rem; z-index:200; font-size:.6rem; letter-spacing:.12em; opacity:.3; color:var(--white); transition:color .4s; }
+.panel-counter.light { color:var(--black); }
+.key-hint { position:fixed; bottom:2rem; left:2.5rem; z-index:200; font-size:.58rem; letter-spacing:.1em; opacity:.25; color:var(--white); display:flex; align-items:center; gap:.4rem; transition:color .4s, opacity .4s; }
+.key-hint.light { color:var(--black); }
+.key { border:1px solid currentColor; padding:.1rem .3rem; border-radius:2px; font-size:.6rem; }
+.img-caption { position:absolute; bottom:1.25rem; left:1.5rem; font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.4); background:rgba(0,0,0,.4); padding:.3rem .6rem; }
+.panel.light .img-caption { color:rgba(0,0,0,.5); background:rgba(255,255,255,.7); }
+
+/* iframe full-panel */
+.iframe-panel { position:absolute; inset:0; }
+.iframe-panel iframe { width:100%; height:100%; border:none; display:block; }
+
+/* scroll-slide image */
+.scroll-img-wrap { position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+.scroll-img-wrap img { width:100%; height:auto; display:block; }
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<nav id="nav">
+  <a class="nav-logo" href="/ides1gn2026/">Lucy Nam</a>
+  <span class="nav-center">Shopcord Design System</span>
+  <a class="nav-back" href="/ides1gn2026/">← All Work</a>
+</nav>
+<div class="h-scroll" id="scroll">
+
+  <!-- 01 Intro -->
+  <div class="panel dark" data-theme="dark">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">01 / 06 &nbsp; Design System</p>
+        <h1 class="p-title">Shopcord<br><em>Design</em><br>System</h1>
+        <div class="p-meta-grid">
+          <div><p class="p-meta-label">Company</p><p class="p-meta-val">NHN Global</p></div>
+          <div><p class="p-meta-label">Role</p><p class="p-meta-val">Lead Designer</p></div>
+          <div><p class="p-meta-label">Year</p><p class="p-meta-val">2026</p></div>
+          <div><p class="p-meta-label">Output</p><p class="p-meta-val">57 CSS Variables</p></div>
+        </div>
+        <div class="p-tags">
+          <span class="p-tag">Design System</span><span class="p-tag">Tokens</span>
+          <span class="p-tag">Figma</span><span class="p-tag">Storybook</span>
+        </div>
+        <p class="p-body">A token-first UI kit for a B2B wholesale fashion platform — every visual decision traceable from primitive value to shipped component.</p>
+      </div>
+    </div>
+    <div class="p-right">
+      <div class="iframe-panel">
+        <iframe src="/shopcord-ds.html" title="Shopcord Design System 2.5"></iframe>
+      </div>
+      <span class="img-caption">Shopcord Design System 2.5 — live reference</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="progress" id="progress">
+  <div class="progress-dot active" data-i="0"></div>
+</div>
+<div class="panel-counter" id="counter">01 / 01</div>
+<div class="key-hint" id="keyhint"><span class="key">←</span><span class="key">→</span> navigate</div>
+
+<script>
+  const scroll=document.getElementById('scroll'),dots=document.querySelectorAll('.progress-dot'),panels=document.querySelectorAll('.panel'),nav=document.getElementById('nav'),counter=document.getElementById('counter'),keyhint=document.getElementById('keyhint'),cursor=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});
+  function update(idx){const t=panels.length;dots.forEach((d,i)=>d.classList.toggle('active',i===idx));counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(t).padStart(2,'0');const light=panels[idx]?.dataset.theme==='light';nav.classList.toggle('light',light);counter.classList.toggle('light',light);keyhint.classList.toggle('light',light);document.body.classList.toggle('light-panel',light);}
+  scroll.addEventListener('scroll',()=>update(Math.round(scroll.scrollLeft/window.innerWidth)));
+  dots.forEach(d=>d.addEventListener('click',()=>scroll.scrollTo({left:parseInt(d.dataset.i)*window.innerWidth,behavior:'smooth'})));
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')scroll.scrollBy({left:window.innerWidth,behavior:'smooth'});if(e.key==='ArrowLeft')scroll.scrollBy({left:-window.innerWidth,behavior:'smooth'});});
+  scroll.addEventListener('scroll',()=>{keyhint.style.opacity='0';},{once:true});
+</script>
+</body>
+</html>

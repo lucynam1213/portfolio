@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hankook TV — Lucy Nam</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root { --black:#0d0d0d; --white:#f4f2ed; --red:#d63028; --gray:#888; --accent:#c8102e; }
+html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;cursor:none;}
+#cursor{position:fixed;width:7px;height:7px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s;}
+body.cursor-hover #cursor{width:44px;height:44px;background:rgba(255,255,255,.15);}
+body.light-panel.cursor-hover #cursor{background:rgba(13,13,13,.1);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;pointer-events:none;color:var(--white);transition:color .4s;}
+nav.light{color:var(--black);}
+.nav-logo{font-size:.68rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:inherit;pointer-events:all;}
+.nav-center{position:absolute;left:50%;transform:translateX(-50%);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;opacity:.4;pointer-events:all;color:inherit;}
+.nav-back{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:inherit;opacity:.45;pointer-events:all;transition:opacity .2s;}
+.nav-back:hover{opacity:1;}
+.h-scroll{display:flex;width:100vw;height:100vh;overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.h-scroll::-webkit-scrollbar{display:none;}
+.panel{flex:0 0 100vw;height:100vh;scroll-snap-align:start;display:grid;grid-template-columns:1fr 1fr;position:relative;}
+.panel.dark{background:var(--black);color:var(--white);}
+.panel.light{background:var(--white);color:var(--black);}
+.panel.charcoal{background:#1a1a1a;color:var(--white);}
+.panel.flip .p-left{order:2;}
+.panel.flip .p-right{order:1;}
+.p-left{display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;padding-top:6rem;position:relative;z-index:2;border-right:1px solid rgba(255,255,255,.08);}
+.panel.light .p-left{border-right:1px solid rgba(13,13,13,.08);}
+.panel.flip .p-left{border-right:none;border-left:1px solid rgba(13,13,13,.08);}
+.panel.flip.dark .p-left,.panel.flip.charcoal .p-left{border-left:1px solid rgba(255,255,255,.08);}
+.p-right{position:relative;overflow:hidden;}
+.p-right img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1);}
+.panel:hover .p-right img{transform:scale(1.03);}
+.p-right-content{width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;gap:1rem;}
+.p-eyebrow{font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;opacity:.35;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;}
+.p-eyebrow::after{content:'';display:block;height:1px;width:2rem;background:currentColor;opacity:.4;}
+.p-title{font-size:clamp(2rem,4.5vw,4rem);font-weight:900;line-height:.95;letter-spacing:-.04em;margin-bottom:1.5rem;}
+.p-title em{font-style:italic;font-weight:300;color:var(--accent);}
+.p-body{font-size:.95rem;line-height:1.8;opacity:.6;max-width:360px;margin-bottom:1rem;}
+.p-body strong{opacity:1;font-weight:600;}
+.panel.light .p-body strong{color:var(--black);}
+.panel.dark .p-body strong,.panel.charcoal .p-body strong{color:var(--white);}
+.p-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem;}
+.p-tag{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid currentColor;padding:.28rem .65rem;opacity:.3;}
+.p-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem;}
+.p-meta-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;opacity:.35;margin-bottom:.2rem;}
+.p-meta-val{font-size:.88rem;font-weight:600;}
+.stat-card{padding:1.5rem 2rem;}
+.panel.dark .stat-card,.panel.charcoal .stat-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);}
+.panel.light .stat-card{background:rgba(13,13,13,.04);border:1px solid rgba(13,13,13,.08);}
+.stat-num{font-size:2.8rem;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--accent);margin-bottom:.3rem;}
+.stat-label{font-size:.72rem;line-height:1.5;opacity:.55;}
+.callout{border-left:2px solid var(--accent);padding-left:1.25rem;margin:1.5rem 0;}
+.callout p{font-size:1.05rem;font-style:italic;font-weight:300;line-height:1.65;opacity:.8;}
+.p-cta{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:inherit;margin-top:1rem;opacity:.5;transition:opacity .2s;}
+.p-cta:hover{opacity:1;}
+.p-cta::after{content:'→';}
+.img-caption{position:absolute;bottom:1.25rem;left:1.5rem;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);background:rgba(0,0,0,.4);padding:.3rem .6rem;}
+.panel.light .img-caption{color:rgba(0,0,0,.5);background:rgba(255,255,255,.7);}
+.progress{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.75rem;z-index:200;}
+.progress-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,width .3s;}
+.progress-dot.active{width:20px;border-radius:2px;background:var(--white);}
+nav.light ~ .progress .progress-dot{background:rgba(13,13,13,.2);}
+nav.light ~ .progress .progress-dot.active{background:var(--black);}
+.panel-counter{position:fixed;bottom:2rem;right:2.5rem;z-index:200;font-size:.6rem;letter-spacing:.12em;opacity:.3;color:var(--white);transition:color .4s;}
+.panel-counter.light{color:var(--black);}
+.key-hint{position:fixed;bottom:2rem;left:2.5rem;z-index:200;font-size:.58rem;letter-spacing:.1em;opacity:.25;color:var(--white);display:flex;align-items:center;gap:.4rem;transition:color .4s,opacity .4s;}
+.key-hint.light{color:var(--black);}
+.key{border:1px solid currentColor;padding:.1rem .3rem;border-radius:2px;font-size:.6rem;}
+
+/* platform grid */
+.platform-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;height:100%;gap:1px;background:rgba(255,255,255,.08);}
+.platform-cell{overflow:hidden;position:relative;}
+.platform-cell img{width:100%;height:100%;object-fit:cover;display:block;}
+.platform-cell-label{position:absolute;bottom:.5rem;left:.75rem;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);background:rgba(0,0,0,.5);padding:.2rem .5rem;}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<nav id="nav">
+  <a class="nav-logo" href="/ides1gn2026/">Lucy Nam</a>
+  <span class="nav-center">Hankook TV</span>
+  <a class="nav-back" href="/ides1gn2026/">← All Work</a>
+</nav>
+<div class="h-scroll" id="scroll">
+
+  <!-- 01 Intro -->
+  <div class="panel dark" data-theme="dark">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">01 / 05 &nbsp; Multi-Platform Design</p>
+        <h1 class="p-title">Hankook<br><em>TV</em></h1>
+        <div class="p-meta-grid">
+          <div><p class="p-meta-label">Client</p><p class="p-meta-val">Hankook TV</p></div>
+          <div><p class="p-meta-label">Role</p><p class="p-meta-val">Lead Product Designer</p></div>
+          <div><p class="p-meta-label">Year</p><p class="p-meta-val">2022</p></div>
+          <div><p class="p-meta-label">Platforms</p><p class="p-meta-val">Web · iOS · Android</p></div>
+        </div>
+        <div class="p-tags">
+          <span class="p-tag">OTT Platform</span><span class="p-tag">Multi-Platform</span>
+          <span class="p-tag">Consumer</span><span class="p-tag">Content Strategy</span>
+        </div>
+        <p class="p-body">Led product design for an OTT streaming service delivering Korean TV shows and movies to Korean-American audiences across web and mobile.</p>
+      </div>
+    </div>
+    <div class="p-right">
+      <img src="/hankook-01.webp" alt="Hankook TV">
+      <span class="img-caption">Hankook TV — Web Homepage</span>
+    </div>
+  </div>
+
+  <!-- 02 Problem -->
+  <div class="panel light flip" data-theme="light">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">02 / 05 &nbsp; The Problem</p>
+        <h2 class="p-title">Korean content,<br>American <em>habits.</em></h2>
+        <p class="p-body">Korean-American viewers split their time between Korean and American streaming platforms. Hankook TV was losing users who couldn't quickly find the Korean content they wanted among a mix of unfamiliar titles.</p>
+        <p class="p-body"><strong>Content discovery was broken.</strong> No editorial curation, no personalization, no visual hierarchy that communicated what was worth watching.</p>
+        <div class="callout">
+          <p>"Users opened the app, saw a wall of thumbnails, and left within 30 seconds."</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-right">
+      <img src="/hankooktv-mo.webp" alt="Hankook TV Mobile" style="object-position:top;">
+      <span class="img-caption">Mobile — before redesign</span>
+    </div>
+  </div>
+
+  <!-- 03 Solution Web -->
+  <div class="panel charcoal" data-theme="dark">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">03 / 05 &nbsp; Web Experience</p>
+        <h2 class="p-title">Editorial <em>curation</em><br>over algorithm.</h2>
+        <p class="p-body">Redesigned the homepage around curated editorial shelves — trending in Korea, new releases, genre collections — rather than a flat content grid. Each shelf has a strong visual identity.</p>
+        <p class="p-body"><strong>Hero carousel</strong> replaced with a single featured show that changes weekly. Users reported it felt more like a recommendation from a friend than an algorithm.</p>
+      </div>
+    </div>
+    <div class="p-right">
+      <img src="/hankooktv02.webp" alt="Hankook TV Redesign">
+      <span class="img-caption">Web — redesigned content homepage</span>
+    </div>
+  </div>
+
+  <!-- 04 Multi-platform -->
+  <div class="panel dark flip" data-theme="dark">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">04 / 05 &nbsp; Multi-Platform</p>
+        <h2 class="p-title">One system,<br>every <em>screen.</em></h2>
+        <p class="p-body">The same design language — type scale, color system, component library — scaled across web, iOS, and Android. Each platform used native patterns while keeping the visual identity consistent.</p>
+        <p class="p-body"><strong>Mobile-first</strong> approach: core user journeys (discover → watch → continue) designed for thumb reach first, then adapted to larger screens.</p>
+      </div>
+    </div>
+    <div class="p-right">
+      <div class="platform-grid">
+        <div class="platform-cell">
+          <img src="/hankook-01.webp" alt="Web">
+          <span class="platform-cell-label">Web</span>
+        </div>
+        <div class="platform-cell">
+          <img src="/hankooktv-mo.webp" alt="Mobile" style="object-position:top;">
+          <span class="platform-cell-label">iOS</span>
+        </div>
+        <div class="platform-cell" style="grid-column:span 2;">
+          <img src="/hankooktv02.webp" alt="Catalog">
+          <span class="platform-cell-label">Web — catalog</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 Outcome -->
+  <div class="panel light" data-theme="light">
+    <div class="p-left" style="justify-content:center;">
+      <div>
+        <p class="p-eyebrow">05 / 05 &nbsp; Outcome</p>
+        <h2 class="p-title">Discovery<br>that feels <em>human.</em></h2>
+        <p class="p-body">Editorial curation replaced algorithmic walls. Users found content faster and stayed longer. The visual system unified three platforms without losing platform-native feel.</p>
+        <a class="p-cta" href="/ides1gn2026/">Back to all work</a>
+      </div>
+    </div>
+    <div class="p-right">
+      <div class="p-right-content" style="background:var(--white);">
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Platforms — Web, iOS, Android — unified design system</div></div>
+        <div class="stat-card"><div class="stat-num">30s</div><div class="stat-label">Avg. time-to-first-play reduced significantly post-launch</div></div>
+        <div class="stat-card"><div class="stat-num">1</div><div class="stat-label">Featured hero replacing carousel — simpler, more effective</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="progress" id="progress">
+  <div class="progress-dot active" data-i="0"></div>
+  <div class="progress-dot" data-i="1"></div>
+  <div class="progress-dot" data-i="2"></div>
+  <div class="progress-dot" data-i="3"></div>
+  <div class="progress-dot" data-i="4"></div>
+</div>
+<div class="panel-counter" id="counter">01 / 05</div>
+<div class="key-hint" id="keyhint"><span class="key">←</span><span class="key">→</span> navigate</div>
+
+<script>
+  const scroll=document.getElementById('scroll'),dots=document.querySelectorAll('.progress-dot'),panels=document.querySelectorAll('.panel'),nav=document.getElementById('nav'),counter=document.getElementById('counter'),keyhint=document.getElementById('keyhint'),cursor=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});
+  function update(idx){const t=panels.length;dots.forEach((d,i)=>d.classList.toggle('active',i===idx));counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(t).padStart(2,'0');const light=panels[idx]?.dataset.theme==='light';nav.classList.toggle('light',light);counter.classList.toggle('light',light);keyhint.classList.toggle('light',light);document.body.classList.toggle('light-panel',light);}
+  scroll.addEventListener('scroll',()=>update(Math.round(scroll.scrollLeft/window.innerWidth)));
+  dots.forEach(d=>d.addEventListener('click',()=>scroll.scrollTo({left:parseInt(d.dataset.i)*window.innerWidth,behavior:'smooth'})));
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')scroll.scrollBy({left:window.innerWidth,behavior:'smooth'});if(e.key==='ArrowLeft')scroll.scrollBy({left:-window.innerWidth,behavior:'smooth'});});
+  scroll.addEventListener('scroll',()=>{keyhint.style.opacity='0';},{once:true});
+</script>
+</body>
+</html>

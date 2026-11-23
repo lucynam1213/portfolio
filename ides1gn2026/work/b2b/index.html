@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise B2B eCommerce Redesign — Lucy Nam</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0d0d0d;
+  --white: #f4f2ed;
+  --red: #d63028;
+  --gray: #888;
+  --border-dark: rgba(255,255,255,.1);
+  --border-light: rgba(13,13,13,.1);
+}
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+/* ── Cursor ── */
+#cursor {
+  position: fixed; width: 7px; height: 7px;
+  background: var(--red); border-radius: 50%;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .18s, height .18s, background .18s;
+}
+body.cursor-hover #cursor { width: 44px; height: 44px; background: rgba(255,255,255,.15); }
+body.light-panel.cursor-hover #cursor { background: rgba(13,13,13,.1); }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 2.5rem;
+  pointer-events: none;
+  color: var(--white);
+  transition: color .4s ease;
+}
+nav.light { color: var(--black); }
+
+.nav-logo {
+  font-size: .68rem; font-weight: 900; letter-spacing: .18em;
+  text-transform: uppercase; text-decoration: none; color: inherit;
+  pointer-events: all;
+}
+.nav-center {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .63rem; letter-spacing: .1em; text-transform: uppercase;
+  opacity: .4; pointer-events: all;
+  color: inherit;
+  transition: opacity .2s;
+}
+.nav-center:hover { opacity: .8; }
+.nav-back {
+  font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; color: inherit;
+  opacity: .45; pointer-events: all;
+  transition: opacity .2s;
+}
+.nav-back:hover { opacity: 1; }
+
+/* ── Horizontal scroll container ── */
+.h-scroll {
+  display: flex;
+  width: 100vw; height: 100vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+
+/* ── Panels ── */
+.panel {
+  flex: 0 0 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  transition: none;
+}
+
+/* dark panels */
+.panel.dark { background: var(--black); color: var(--white); }
+/* light panels */
+.panel.light { background: var(--white); color: var(--black); }
+
+/* flip: image left, text right */
+.panel.flip .p-left { order: 2; }
+.panel.flip .p-right { order: 1; }
+
+/* ── Panel halves ── */
+.p-left {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 2.5rem;
+  padding-top: 6rem;
+  position: relative;
+  z-index: 2;
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+.panel.light .p-left { border-right: 1px solid rgba(13,13,13,.08); }
+.panel.flip .p-left { border-right: none; border-left: 1px solid rgba(13,13,13,.08); }
+.panel.flip.dark .p-left { border-left: 1px solid rgba(255,255,255,.08); }
+
+.p-right {
+  position: relative;
+  overflow: hidden;
+}
+.p-right img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .8s cubic-bezier(.16,1,.3,1);
+}
+.panel:hover .p-right img { transform: scale(1.03); }
+
+/* stat block used in image position */
+.p-right-stats {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 2.5rem;
+  gap: 1rem;
+}
+
+/* ── Typography ── */
+.p-eyebrow {
+  font-size: .63rem; letter-spacing: .16em; text-transform: uppercase;
+  opacity: .35; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.p-eyebrow::after { content: ''; display: block; height: 1px; width: 2rem; background: currentColor; opacity: .4; }
+
+.p-title {
+  font-size: clamp(2rem, 4.5vw, 4rem);
+  font-weight: 900; line-height: .95; letter-spacing: -.04em;
+  margin-bottom: 1.5rem;
+}
+.p-title em { font-style: italic; font-weight: 300; color: var(--red); }
+
+.p-body {
+  font-size: .95rem; line-height: 1.8;
+  opacity: .6; max-width: 360px;
+  margin-bottom: 1.5rem;
+}
+.p-body:last-child { margin-bottom: 0; }
+.p-body strong { opacity: 1; font-weight: 600; }
+.panel.light .p-body strong { color: var(--black); }
+.panel.dark .p-body strong { color: var(--white); }
+
+.p-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 2rem; }
+.p-tag {
+  font-size: .6rem; letter-spacing: .08em; text-transform: uppercase;
+  border: 1px solid currentColor; padding: .28rem .65rem; opacity: .3;
+}
+
+.p-meta-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+.p-meta-item { }
+.p-meta-label { font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; opacity: .35; margin-bottom: .2rem; }
+.p-meta-val { font-size: .88rem; font-weight: 600; }
+
+/* stat cards */
+.stat-card {
+  padding: 1.5rem 2rem;
+  flex: 1;
+}
+.panel.dark .stat-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); }
+.panel.light .stat-card { background: rgba(13,13,13,.04); border: 1px solid rgba(13,13,13,.08); }
+.stat-num {
+  font-size: 2.8rem; font-weight: 900; letter-spacing: -.04em;
+  line-height: 1; color: var(--red); margin-bottom: .3rem;
+}
+.stat-label { font-size: .72rem; line-height: 1.5; opacity: .55; }
+
+/* callout block in left pane */
+.callout {
+  border-left: 2px solid var(--red);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+}
+.callout p { font-size: 1.05rem; font-style: italic; font-weight: 300; line-height: 1.65; opacity: .8; }
+
+/* CTA */
+.p-cta {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; color: inherit; margin-top: 1rem;
+  opacity: .5; transition: opacity .2s;
+}
+.p-cta:hover { opacity: 1; }
+.p-cta::after { content: '→'; }
+
+/* ── Progress indicator ── */
+.progress {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: .75rem; z-index: 200;
+}
+.progress-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255,255,255,.25); cursor: pointer;
+  transition: background .3s, transform .3s, width .3s;
+}
+.progress-dot.active {
+  width: 20px; border-radius: 2px;
+  background: var(--white);
+}
+nav.light ~ .progress .progress-dot { background: rgba(13,13,13,.2); }
+nav.light ~ .progress .progress-dot.active { background: var(--black); }
+
+/* ── Panel counter ── */
+.panel-counter {
+  position: fixed; bottom: 2rem; right: 2.5rem; z-index: 200;
+  font-size: .6rem; letter-spacing: .12em;
+  opacity: .3; color: var(--white);
+  font-variant-numeric: tabular-nums;
+  transition: color .4s;
+}
+.panel-counter.light { color: var(--black); }
+
+/* image caption */
+.img-caption {
+  position: absolute; bottom: 1.25rem; left: 1.5rem;
+  font-size: .6rem; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  background: rgba(0,0,0,.4); padding: .3rem .6rem;
+}
+.panel.light .img-caption { color: rgba(0,0,0,.5); background: rgba(255,255,255,.7); }
+
+/* ── Filmstrip ── */
+.filmstrip-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.filmstrip {
+  display: flex;
+  flex-direction: row;
+  width: 100%; height: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.filmstrip::-webkit-scrollbar { display: none; }
+.fs-slide {
+  flex: none;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  overflow: hidden;
+  position: relative;
+}
+.fs-slide img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .8s cubic-bezier(.16,1,.3,1);
+}
+.panel:hover .fs-slide img { transform: scale(1.03); }
+
+/* iframe slide */
+.fs-slide.iframe-slide {
+  background: #fafafa;
+  position: relative;
+}
+.fs-slide.iframe-slide iframe {
+  width: 100%; height: 100%;
+  border: none; display: block;
+}
+.panel:hover .fs-slide.iframe-slide img { transform: none; }
+
+/* scroll slide — tall images that need vertical scroll */
+.fs-slide.scroll-slide {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.fs-slide.scroll-slide img {
+  width: 100%;
+  height: auto;
+  min-height: unset;
+  object-fit: unset;
+  transition: none;
+}
+.panel:hover .fs-slide.scroll-slide img { transform: none; }
+.fs-caption {
+  position: absolute; bottom: 1.25rem; left: 1.5rem;
+  font-size: .6rem; letter-spacing: .08em; text-transform: uppercase;
+  color: rgba(255,255,255,.4); background: rgba(0,0,0,.4); padding: .3rem .6rem;
+}
+.panel.light .fs-caption { color: rgba(0,0,0,.5); background: rgba(255,255,255,.7); }
+.fs-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(13,13,13,.55); color: rgba(255,255,255,.9);
+  border: none; width: 38px; height: 38px;
+  font-size: 1.1rem; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: none; z-index: 10;
+  opacity: 0; transition: opacity .2s, background .2s;
+  backdrop-filter: blur(4px);
+}
+.panel.light .fs-btn { background: rgba(244,242,237,.8); color: rgba(13,13,13,.8); }
+.filmstrip-wrap:hover .fs-btn { opacity: 1; }
+.fs-btn:hover { background: rgba(13,13,13,.8) !important; }
+.panel.light .fs-btn:hover { background: rgba(13,13,13,.12) !important; }
+.fs-prev { left: 1rem; }
+.fs-next { right: 1rem; }
+.fs-counter {
+  position: absolute; bottom: 1.25rem; right: 1.5rem;
+  font-size: .58rem; letter-spacing: .1em; font-variant-numeric: tabular-nums;
+  color: rgba(255,255,255,.4); background: rgba(0,0,0,.4);
+  padding: .28rem .6rem;
+}
+.panel.light .fs-counter { color: rgba(13,13,13,.4); background: rgba(255,255,255,.7); }
+.fs-dots {
+  position: absolute; bottom: 1.3rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: .5rem; align-items: center; z-index: 5;
+}
+.fs-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(255,255,255,.3);
+  transition: width .25s, background .25s;
+}
+.panel.light .fs-dot { background: rgba(13,13,13,.2); }
+.fs-dot.active { width: 16px; border-radius: 2px; background: rgba(255,255,255,.85); }
+.panel.light .fs-dot.active { background: rgba(13,13,13,.7); }
+
+/* keyboard hint */
+.key-hint {
+  position: fixed; bottom: 2rem; left: 2.5rem; z-index: 200;
+  font-size: .58rem; letter-spacing: .1em; opacity: .25;
+  color: var(--white); display: flex; align-items: center; gap: .4rem;
+  transition: color .4s;
+}
+.key-hint.light { color: var(--black); }
+.key { border: 1px solid currentColor; padding: .1rem .3rem; border-radius: 2px; font-size: .6rem; }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a class="nav-logo" href="/ides1gn2026/">Lucy Nam</a>
+  <span class="nav-center">Enterprise B2B Redesign</span>
+  <a class="nav-back" href="/ides1gn2026/">← All Work</a>
+</nav>
+
+<!-- Horizontal scroll -->
+<div class="h-scroll" id="scroll">
+
+  <!-- 00 · Intro -->
+  <div class="panel dark" data-theme="dark">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">01 / 03 &nbsp; Product Design</p>
+        <h1 class="p-title">Enterprise<br>B2B e<em>Commerce</em><br>Redesign</h1>
+        <div class="p-meta-grid">
+          <div class="p-meta-item">
+            <p class="p-meta-label">Company</p>
+            <p class="p-meta-val">NHN Global</p>
+          </div>
+          <div class="p-meta-item">
+            <p class="p-meta-label">Role</p>
+            <p class="p-meta-val">Lead Product Designer</p>
+          </div>
+          <div class="p-meta-item">
+            <p class="p-meta-label">Year</p>
+            <p class="p-meta-val">2025</p>
+          </div>
+          <div class="p-meta-item">
+            <p class="p-meta-label">Platform</p>
+            <p class="p-meta-val">Web · Mobile</p>
+          </div>
+        </div>
+        <div class="p-tags">
+          <span class="p-tag">Product Design</span>
+          <span class="p-tag">Design System</span>
+          <span class="p-tag">B2B</span>
+          <span class="p-tag">E-Commerce</span>
+        </div>
+        <p class="p-body">Led UI and design system evolution for the largest B2B wholesale fashion marketplace in the US. Redesigned core buyer and vendor flows, then built the system to hold them together.</p>
+      </div>
+    </div>
+    <div class="p-right">
+      <div class="filmstrip-wrap">
+        <div class="filmstrip" id="fs0">
+          <div class="fs-slide scroll-slide">
+            <img src="/b2b-final.png" alt="Buyer dashboard">
+            <span class="fs-caption">Buyer dashboard — brand-first redesign</span>
+          </div>
+          <div class="fs-slide iframe-slide">
+            <iframe src="/fg-tokens.html#colors" title="FashionGo Design Tokens — Colors"></iframe>
+            <span class="fs-caption">Design System — Color Tokens</span>
+          </div>
+          <div class="fs-slide iframe-slide">
+            <iframe src="/fg-tokens.html#semantic" title="FashionGo Design Tokens — Semantic"></iframe>
+            <span class="fs-caption">Design System — Semantic Tokens</span>
+          </div>
+          <div class="fs-slide iframe-slide">
+            <iframe src="/fg-tokens.html#components" title="FashionGo Design Tokens — Components"></iframe>
+            <span class="fs-caption">Design System — Components</span>
+          </div>
+        </div>
+        <button class="fs-btn fs-prev" onclick="fsNav('fs0',-1)" aria-label="Previous">‹</button>
+        <button class="fs-btn fs-next" onclick="fsNav('fs0', 1)" aria-label="Next">›</button>
+        <div class="fs-dots" id="fs0-dots">
+          <div class="fs-dot active"></div>
+          <div class="fs-dot"></div>
+          <div class="fs-dot"></div>
+          <div class="fs-dot"></div>
+          <div class="fs-dot"></div>
+        </div>
+        <div class="fs-counter" id="fs0-counter">1 / 5</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 · Problem -->
+  <div class="panel light flip" data-theme="light">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">02 / 03 &nbsp; The Problem</p>
+        <h2 class="p-title">Ten years of<br>growth, zero<br><em>coherence.</em></h2>
+        <p class="p-body">FashionGo had grown organically for a decade. Different teams built different pages with different patterns — buyers and vendors faced a fragmented, inconsistent experience.</p>
+        <p class="p-body">The challenge: <strong>bring coherence without breaking what 150,000 buyers depend on every day.</strong></p>
+        <div class="callout">
+          <p>"We had a product that worked — but felt like five different products wearing the same logo."</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-right">
+      <div class="scroll-img-wrap" style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;">
+        <img src="/b2b-plan.webp" alt="Audit and planning" style="width:100%;height:auto;display:block;">
+      </div>
+      <span class="img-caption">UI audit — 200+ screens mapped before a single new pixel was drawn</span>
+    </div>
+  </div>
+
+  <!-- 03 · Solution -->
+  <div class="panel light flip" data-theme="light">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">03 / 03 &nbsp; Solution</p>
+        <h2 class="p-title">Brand-first.<br>Not <em>category-</em><br>first.</h2>
+        <p class="p-body">The biggest insight from research: wholesale buyers shop by brand loyalty, not by category. The old platform forced a category-first mental model.</p>
+        <p class="p-body">The redesign flipped this — <strong>brand storefronts as the primary unit</strong>, with persistent order context so buyers never lose their place mid-session.</p>
+        <p class="p-body">Checkout steps reduced from 7 to 3.</p>
+      </div>
+    </div>
+    <div class="p-right">
+      <div class="scroll-img-wrap" style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;">
+        <img src="/b2b-hero.webp" alt="Homepage redesign" style="width:100%;height:auto;display:block;">
+      </div>
+      <span class="img-caption">After — new navigation hierarchy</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Progress dots -->
+<div class="progress" id="progress">
+  <div class="progress-dot active" data-i="0"></div>
+  <div class="progress-dot" data-i="1"></div>
+  <div class="progress-dot" data-i="2"></div>
+</div>
+
+<div class="panel-counter" id="counter">01 / 03</div>
+<div class="key-hint" id="keyhint">
+  <span class="key">←</span><span class="key">→</span> navigate
+</div>
+
+<script>
+  // ── Filmstrip logic ──
+  function fsNav(id, dir) {
+    const fs = document.getElementById(id);
+    fs.scrollBy({ left: dir * fs.offsetWidth, behavior: 'smooth' });
+  }
+
+  function initFilmstrip(id) {
+    const fs = document.getElementById(id);
+    if (!fs) return;
+    const slides = fs.querySelectorAll('.fs-slide');
+    const dots = document.querySelectorAll('#' + id + '-dots .fs-dot');
+    const counter = document.getElementById(id + '-counter');
+    const total = slides.length;
+
+    fs.addEventListener('scroll', () => {
+      const idx = Math.round(fs.scrollLeft / fs.offsetWidth);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      if (counter) counter.textContent = (idx + 1) + ' / ' + total;
+    });
+
+    // drag to scroll (skip on .scroll slides — they handle vertical scroll)
+    let isDragging = false, startX = 0, startScroll = 0;
+    fs.addEventListener('mousedown', e => {
+      if (e.target.closest('.fs-slide.iframe-slide') || e.target.closest('.fs-slide.scroll-slide')) return;
+      isDragging = true; startX = e.pageX; startScroll = fs.scrollLeft; fs.style.cursor = 'grabbing'; e.preventDefault();
+    });
+    document.addEventListener('mouseup', () => { isDragging = false; fs.style.cursor = ''; });
+    document.addEventListener('mousemove', e => { if (!isDragging) return; fs.scrollLeft = startScroll - (e.pageX - startX); });
+  }
+
+  ['fs0'].forEach(initFilmstrip);
+
+  const scroll = document.getElementById('scroll');
+  const dots = document.querySelectorAll('.progress-dot');
+  const panels = document.querySelectorAll('.panel');
+  const nav = document.getElementById('nav');
+  const counter = document.getElementById('counter');
+  const keyhint = document.getElementById('keyhint');
+  const cursor = document.getElementById('cursor');
+
+  // Cursor
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  // Panel tracking
+  function updatePanel(idx) {
+    const total = panels.length;
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    counter.textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+
+    const theme = panels[idx]?.dataset.theme || 'dark';
+    const isLight = theme === 'light';
+
+    nav.classList.toggle('light', isLight);
+    counter.classList.toggle('light', isLight);
+    keyhint.classList.toggle('light', isLight);
+    document.body.classList.toggle('light-panel', isLight);
+  }
+
+  scroll.addEventListener('scroll', () => {
+    const idx = Math.round(scroll.scrollLeft / window.innerWidth);
+    updatePanel(idx);
+  });
+
+  // Dot click
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const i = parseInt(dot.dataset.i);
+      scroll.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' });
+    });
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') scroll.scrollBy({ left: window.innerWidth, behavior: 'smooth' });
+    if (e.key === 'ArrowLeft')  scroll.scrollBy({ left: -window.innerWidth, behavior: 'smooth' });
+  });
+
+  // Hide key hint after first interaction
+  scroll.addEventListener('scroll', () => {
+    keyhint.style.opacity = '0';
+  }, { once: true });
+</script>
+</body>
+</html>

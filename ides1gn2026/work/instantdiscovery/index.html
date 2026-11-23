@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instant Discovery — Lucy Nam</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#0d0d0d;--white:#f4f2ed;--red:#d63028;
+  --p:#5b5bd6;--p-light:#ededff;--p-mid:#8b8bef;--p-dark:#3d3d9e;
+  --bg-page:#f5f4f8;
+}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;cursor:none;}
+#cursor{position:fixed;width:7px;height:7px;background:var(--p);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s;}
+body.cursor-hover #cursor{width:44px;height:44px;background:rgba(91,91,214,.18);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;pointer-events:none;color:var(--white);}
+.nav-logo{font-size:.68rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:inherit;pointer-events:all;}
+.nav-center{position:absolute;left:50%;transform:translateX(-50%);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;opacity:.4;color:inherit;}
+.nav-back{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:inherit;opacity:.45;pointer-events:all;transition:opacity .2s;}
+.nav-back:hover{opacity:1;}
+
+.h-scroll{display:flex;width:100vw;height:100vh;overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.h-scroll::-webkit-scrollbar{display:none;}
+.panel{flex:0 0 100vw;height:100vh;scroll-snap-align:start;display:grid;grid-template-columns:1fr 1fr;position:relative;background:var(--black);color:var(--white);}
+
+/* LEFT */
+.p-left{display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;padding-top:6rem;border-right:1px solid rgba(255,255,255,.08);}
+.p-eyebrow{font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;opacity:.35;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;}
+.p-eyebrow::after{content:'';display:block;height:1px;width:2rem;background:currentColor;opacity:.4;}
+.p-title{font-size:clamp(2rem,4.5vw,4rem);font-weight:900;line-height:.95;letter-spacing:-.04em;margin-bottom:1.5rem;}
+.p-title em{font-style:italic;font-weight:300;color:var(--p-mid);}
+.p-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem;}
+.p-meta-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;opacity:.35;margin-bottom:.2rem;}
+.p-meta-val{font-size:.88rem;font-weight:600;}
+.p-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem;}
+.p-tag{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid currentColor;padding:.28rem .65rem;opacity:.3;}
+.p-body-intro{font-size:.95rem;line-height:1.8;opacity:.6;max-width:360px;}
+
+/* RIGHT — scrollable content page */
+.p-right{position:relative;overflow:hidden;}
+.page-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;background:var(--bg-page);color:#111;}
+.page-scroll::-webkit-scrollbar{width:3px;}
+.page-scroll::-webkit-scrollbar-thumb{background:rgba(91,91,214,.2);border-radius:2px;}
+
+/* PAGE SECTIONS */
+.pg-hero{padding:2.5rem 2rem 2rem;background:#fff;border-bottom:1px solid rgba(0,0,0,.07);}
+.pg-badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;background:rgba(91,91,214,.1);color:var(--p);padding:.3rem .7rem;border-radius:999px;margin-bottom:1rem;}
+.pg-badge::before{content:'●';font-size:.45rem;}
+.pg-h1{font-size:1.8rem;font-weight:900;line-height:1.05;letter-spacing:-.04em;margin-bottom:.6rem;}
+.pg-h1 span{color:var(--p);}
+.pg-desc{font-size:.82rem;line-height:1.7;color:#555;margin-bottom:1.25rem;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;}
+.kpi{background:var(--p-light);padding:.6rem .75rem;}
+.kpi-val{font-size:.85rem;font-weight:800;color:var(--p-dark);line-height:1;}
+.kpi-lbl{font-size:.55rem;text-transform:uppercase;letter-spacing:.07em;color:#888;margin-top:.15rem;}
+
+.pg-section{padding:2rem 2rem;border-bottom:1px solid rgba(0,0,0,.06);}
+.pg-label{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:#aaa;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem;}
+.pg-label::after{content:'';flex:1;height:1px;background:#ddd;}
+.pg-h2{font-size:1.35rem;font-weight:900;line-height:1.1;letter-spacing:-.03em;margin-bottom:.7rem;}
+.pg-h2 em{font-style:normal;color:var(--p);}
+.pg-p{font-size:.8rem;line-height:1.75;color:#555;margin-bottom:.5rem;}
+.pg-p strong{color:#111;font-weight:700;}
+
+/* stats */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0;}
+.stat-box{background:#fff;border:1px solid #e8e8f0;padding:.85rem .75rem;}
+.stat-box .n{font-size:1.5rem;font-weight:900;color:var(--p);letter-spacing:-.04em;line-height:1;}
+.stat-box .l{font-size:.62rem;line-height:1.4;color:#888;margin-top:.25rem;}
+
+/* goal grid */
+.goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.75rem 0;}
+.goal-card{background:#fff;border:1px solid #e8e8f0;padding:.85rem 1rem;}
+.goal-card-lbl{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:.5rem;}
+.goal-card ul{list-style:none;display:flex;flex-direction:column;gap:.3rem;}
+.goal-card li{font-size:.73rem;line-height:1.4;color:#555;padding-left:.65rem;position:relative;}
+.goal-card li::before{content:'—';position:absolute;left:0;color:var(--p-mid);}
+
+/* ---- PHONE MOCKUP ---- */
+.phone-wrap{display:flex;justify-content:center;margin:1.25rem 0;}
+.phone{width:160px;background:#e8e7f5;border-radius:28px;border:6px solid #c8c7e0;box-shadow:0 12px 40px rgba(91,91,214,.18);overflow:hidden;position:relative;}
+.phone-notch{width:48px;height:12px;background:#c8c7e0;border-radius:0 0 10px 10px;margin:0 auto;}
+.phone-screen{background:#f0efff;padding:.5rem .4rem .4rem;}
+.phone-bar{display:flex;justify-content:space-between;align-items:center;padding:.2rem .3rem .4rem;}
+.phone-title{font-size:.7rem;font-weight:800;color:#111;}
+.phone-icons{display:flex;gap:.2rem;}
+.phone-icon-dot{width:8px;height:8px;border-radius:50%;background:#c8c7e0;}
+.phone-search{background:#fff;border-radius:8px;padding:.3rem .5rem;font-size:.55rem;color:#bbb;margin-bottom:.4rem;border:1px solid #e0dff0;}
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;}
+.product-card{background:#dddaf0;border-radius:10px;padding:.6rem .4rem;display:flex;flex-direction:column;align-items:center;gap:.2rem;position:relative;}
+.product-card.selected{border:2px solid var(--p);}
+.product-emoji{font-size:1.1rem;}
+.product-price{font-size:.5rem;color:#555;font-weight:600;}
+
+/* peek overlay */
+.peek-overlay{background:#fff;border-radius:16px 16px 0 0;padding:.7rem .6rem;margin-top:.35rem;box-shadow:0 -4px 20px rgba(0,0,0,.12);}
+.peek-img{background:#e8e7f5;border-radius:10px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.4rem;}
+.peek-name{font-size:.65rem;font-weight:700;color:#111;}
+.peek-price{font-size:.65rem;color:var(--p);font-weight:700;margin-bottom:.35rem;}
+.size-row{display:flex;gap:.2rem;margin-bottom:.3rem;}
+.size-btn{padding:.15rem .3rem;border-radius:5px;font-size:.5rem;font-weight:600;border:1px solid #ddd;color:#555;}
+.size-btn.sel{border-color:var(--p);color:var(--p);}
+.size-btn.oos{color:#ccc;border-color:#eee;text-decoration:line-through;}
+.color-row{display:flex;gap:.25rem;margin-bottom:.35rem;}
+.color-dot{width:10px;height:10px;border-radius:50%;}
+.swipe-hint{text-align:center;font-size:.5rem;color:#aaa;padding-top:.2rem;}
+
+/* bottom price bar */
+.bottom-bar{display:flex;justify-content:space-between;padding:.35rem .4rem 0;border-top:1px solid #eee;}
+.bottom-price{font-size:.55rem;color:#555;font-weight:600;}
+
+/* ---- INTERACTION SECTION ---- */
+.interaction-layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;align-items:start;}
+.i-phone-col{display:flex;justify-content:center;}
+.i-steps-col{display:flex;flex-direction:column;gap:.5rem;}
+.i-step{display:flex;gap:.6rem;align-items:flex-start;}
+.i-num{width:22px;height:22px;background:var(--p-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;color:var(--p);flex-shrink:0;}
+.i-body .i-title{font-size:.78rem;font-weight:700;color:#111;margin-bottom:.15rem;}
+.i-body .i-desc{font-size:.7rem;line-height:1.4;color:#666;}
+.i-body .i-spec{font-size:.58rem;color:var(--p-mid);font-family:monospace;margin-top:.2rem;}
+
+/* add to bag button on phone */
+.add-btn{background:var(--p);color:#fff;border-radius:10px;padding:.3rem .5rem;font-size:.55rem;font-weight:700;text-align:center;margin-top:.25rem;}
+
+/* ---- FOUR SCREENS ---- */
+.four-screens{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin:1rem 0;}
+.screen-phone{background:#fff;border-radius:12px;border:1px solid #e0dff0;overflow:hidden;padding-bottom:.4rem;}
+.screen-label{font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;color:#aaa;padding:.4rem .5rem .2rem;}
+.screen-body{background:#f0efff;min-height:100px;padding:.4rem .4rem .2rem;}
+.screen-caption{font-size:.6rem;font-weight:700;color:#333;padding:.3rem .5rem 0;}
+.screen-sub{font-size:.52rem;color:#aaa;padding:0 .5rem;}
+
+/* feed screen mockup */
+.feed-items{display:flex;flex-direction:column;gap:.2rem;}
+.feed-item{display:flex;gap:.3rem;align-items:center;background:#fff;border-radius:5px;padding:.25rem;}
+.feed-thumb{width:16px;height:16px;background:#dddaf0;border-radius:3px;flex-shrink:0;}
+.feed-lines{flex:1;}
+.feed-line{height:4px;background:#e8e7f5;border-radius:2px;margin-bottom:2px;}
+.feed-line.short{width:60%;}
+
+/* quick shop screen */
+.qs-img{background:#e8e7f5;border-radius:8px;height:52px;margin-bottom:.3rem;}
+.qs-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.2rem;padding:0 .2rem;}
+.qs-name{font-size:.55rem;font-weight:700;color:#111;}
+.qs-price{font-size:.55rem;color:#888;}
+.qs-add{background:var(--p);color:#fff;border-radius:6px;padding:.2rem .4rem;font-size:.5rem;font-weight:700;text-align:center;margin:0 .2rem;}
+
+/* confirmation screen */
+.confirm-body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90px;gap:.35rem;}
+.confirm-circle{width:30px;height:30px;border-radius:50%;border:2px solid var(--p);display:flex;align-items:center;justify-content:center;color:var(--p);font-size:.9rem;}
+.confirm-text{font-size:.6rem;font-weight:600;color:#333;}
+
+/* iteration */
+.iter-cards{display:flex;flex-direction:column;gap:.4rem;margin:.75rem 0;}
+.iter-card{background:#fff;border:1px solid #e8e8f0;padding:.85rem 1rem;}
+.iter-card.final{border-color:var(--p);background:rgba(91,91,214,.04);}
+.iter-v{font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:.2rem;}
+.iter-t{font-size:.82rem;font-weight:700;color:#111;margin-bottom:.2rem;}
+.iter-d{font-size:.72rem;line-height:1.4;color:#666;}
+.iter-badge{display:inline-block;margin-top:.35rem;font-size:.55rem;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .5rem;background:#f0f0f0;color:#888;}
+.iter-card.final .iter-badge{background:var(--p);color:#fff;}
+
+/* impact */
+.impact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.75rem 0;}
+.impact-box{background:#fff;border:1px solid #e8e8f0;padding:1rem .75rem;text-align:center;}
+.impact-num{font-size:1.8rem;font-weight:900;color:var(--p);letter-spacing:-.04em;line-height:1;}
+.impact-lbl{font-size:.62rem;line-height:1.3;color:#666;margin-top:.25rem;}
+.impact-sub{font-size:.55rem;color:#aaa;margin-top:.1rem;}
+
+/* role */
+.role-list{margin:.5rem 0;display:flex;flex-direction:column;gap:.3rem;}
+.role-item{font-size:.78rem;color:#555;padding-left:.7rem;position:relative;}
+.role-item::before{content:'·';position:absolute;left:0;color:var(--p);}
+
+/* footer */
+.progress{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.75rem;z-index:200;}
+.progress-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.25);}
+.progress-dot.active{width:20px;border-radius:2px;background:#fff;}
+.panel-counter{position:fixed;bottom:2rem;right:2.5rem;z-index:200;font-size:.6rem;letter-spacing:.12em;opacity:.3;color:#fff;}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<nav>
+  <a class="nav-logo" href="/ides1gn2026/">Lucy Nam</a>
+  <span class="nav-center">Instant Discovery</span>
+  <a class="nav-back" href="/ides1gn2026/">← All Work</a>
+</nav>
+<div class="h-scroll">
+<div class="panel">
+
+  <!-- LEFT: intro -->
+  <div class="p-left">
+    <div>
+      <p class="p-eyebrow">01 / 01 &nbsp; Mobile · E-Commerce</p>
+      <h1 class="p-title">Instant<br><em>Discovery</em><br>Shopping</h1>
+      <div class="p-meta-grid">
+        <div><p class="p-meta-label">Type</p><p class="p-meta-val">Mobile Concept</p></div>
+        <div><p class="p-meta-label">Role</p><p class="p-meta-val">Product Designer</p></div>
+        <div><p class="p-meta-label">Year</p><p class="p-meta-val">2026</p></div>
+        <div><p class="p-meta-label">Platform</p><p class="p-meta-val">iOS</p></div>
+      </div>
+      <div class="p-tags">
+        <span class="p-tag">Mobile</span><span class="p-tag">E-Commerce</span>
+        <span class="p-tag">Gesture Design</span><span class="p-tag">Consumer</span>
+      </div>
+      <p class="p-body-intro">A gesture-first mobile shopping experience that eliminates the friction between browsing and buying — without ever leaving the feed.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT: full case study page -->
+  <div class="p-right">
+  <div class="page-scroll">
+
+    <!-- Hero -->
+    <div class="pg-hero">
+      <div class="pg-badge">UX Case Study · E-Commerce</div>
+      <div class="pg-h1">Instant <span>Discovery</span><br>Shopping Experience</div>
+      <p class="pg-desc">A gesture-first mobile shopping experience that eliminates the friction between browsing and buying — without ever leaving the feed.</p>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-val">4 Weeks</div><div class="kpi-lbl">Timeline</div></div>
+        <div class="kpi"><div class="kpi-val">Product Design</div><div class="kpi-lbl">Role</div></div>
+        <div class="kpi"><div class="kpi-val">Mobile iOS</div><div class="kpi-lbl">Platform</div></div>
+        <div class="kpi"><div class="kpi-val">E-Commerce</div><div class="kpi-lbl">Domain</div></div>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <div class="pg-section">
+      <div class="pg-label">Overview</div>
+      <div class="pg-h2">A faster path from browse to <em>buy.</em></div>
+      <p class="pg-p">Mobile shoppers abandon carts not because they're uninterested — but because checking availability requires too many taps. This project explored a gesture-native interaction model to close that gap.</p>
+      <p class="pg-p"><strong>Role:</strong> End-to-end product design · <strong>Tools:</strong> Figma · Protopie · Maze · iOS HIG · <strong>Deliverables:</strong> 3 iterations · High-fi prototype · Usability findings</p>
+    </div>
+
+    <!-- The Problem -->
+    <div class="pg-section">
+      <div class="pg-label">The Problem</div>
+      <div class="pg-h2">Shopping feels like work,<br>not <em>discovery.</em></div>
+      <p class="pg-p">Checking whether a product is available in your size means 5+ taps and 18 seconds lost. The current tap-to-detail model forces commitment too early.</p>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="n">67%</div><div class="l">abandon product pages before selecting a variant</div></div>
+        <div class="stat-box"><div class="n">5+</div><div class="l">taps to check a single product's availability</div></div>
+        <div class="stat-box"><div class="n">18s</div><div class="l">average time to evaluate one product variant</div></div>
+      </div>
+    </div>
+
+    <!-- Goal -->
+    <div class="pg-section">
+      <div class="pg-label">Goal & Context</div>
+      <div class="pg-h2">Design for the browser,<br>not the <em>buyer.</em></div>
+      <p class="pg-p">Focus on the discovery moment — when users are still deciding whether a product is worth their attention.</p>
+      <div class="goal-grid">
+        <div class="goal-card">
+          <div class="goal-card-lbl">🎯 Design Goal</div>
+          <ul>
+            <li>Evaluate size & color without leaving the feed</li>
+            <li>Use gestures familiar from social apps</li>
+            <li>Two gestures from browse to bag</li>
+            <li>Preserve scroll position throughout</li>
+          </ul>
+        </div>
+        <div class="goal-card">
+          <div class="goal-card-lbl">👤 User & Context</div>
+          <ul>
+            <li>Mobile-first shoppers aged 18–34</li>
+            <li>High TikTok / Instagram usage</li>
+            <li>Compare multiple products before deciding</li>
+            <li>Abandon on size/color check, not price</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Concept + phone mockup -->
+    <div class="pg-section">
+      <div class="pg-label">Concept</div>
+      <div class="pg-h2">Peek. Swipe. Shop.<br>Never leave the <em>feed.</em></div>
+      <p class="pg-p">A three-gesture system that surfaces product info contextually — triggered by intent, dismissed without disruption.</p>
+
+      <!-- Phone mockup: feed + peek overlay -->
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-bar">
+              <span class="phone-title">Shop</span>
+              <div class="phone-icons">
+                <div class="phone-icon-dot"></div>
+                <div class="phone-icon-dot"></div>
+              </div>
+            </div>
+            <div class="phone-search">Search products...</div>
+            <div class="product-grid">
+              <div class="product-card selected">
+                <div class="product-emoji">👕</div>
+                <div class="product-price">$49</div>
+              </div>
+              <div class="product-card">
+                <div class="product-emoji">🧥</div>
+                <div class="product-price">$89</div>
+              </div>
+            </div>
+            <!-- peek overlay -->
+            <div class="peek-overlay">
+              <div class="peek-img">👕</div>
+              <div class="peek-name">Oversized Tee</div>
+              <div class="peek-price">$49.00</div>
+              <div class="size-row">
+                <div class="size-btn">XS</div>
+                <div class="size-btn">S</div>
+                <div class="size-btn sel">M</div>
+                <div class="size-btn">L</div>
+                <div class="size-btn oos">XL</div>
+              </div>
+              <div class="color-row">
+                <div class="color-dot" style="background:#7c6fd4;"></div>
+                <div class="color-dot" style="background:#5b5bd6;"></div>
+                <div class="color-dot" style="background:#2a2a4a;"></div>
+                <div class="color-dot" style="background:#1a1a2a;"></div>
+              </div>
+              <div class="swipe-hint">Swipe up to shop ↑</div>
+            </div>
+            <div class="bottom-bar">
+              <div class="bottom-price">$65</div>
+              <div class="bottom-price">$35</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="pg-p" style="margin-top:.5rem;"><strong>Instant Peek</strong> — Long-press 300ms → floating overlay (size, color, price). <strong>Swipe to Explore</strong> — horizontal swipe cycles variants with haptic feedback. <strong>Quick Shop</strong> — swipe up 80px → purchase modal, one tap to bag.</p>
+    </div>
+
+    <!-- Interaction Design -->
+    <div class="pg-section">
+      <div class="pg-label">Interaction Design</div>
+      <div class="pg-h2">Gestures users already know,<br>applied where they've never <em>been.</em></div>
+      <p class="pg-p">Every gesture was mapped to an existing mental model from social apps — long-press for context, swipe to browse, pull-up to act.</p>
+
+      <div class="interaction-layout">
+        <div class="i-phone-col">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="product-grid" style="margin-bottom:.35rem;">
+                <div class="product-card" style="border:2px solid var(--p);">
+                  <div class="product-emoji">👕</div>
+                  <div class="color-dot" style="background:var(--p);border-radius:50%;width:8px;height:8px;margin:0 auto;"></div>
+                </div>
+                <div class="product-card"></div>
+              </div>
+              <div class="peek-overlay">
+                <div class="peek-img">👕</div>
+                <div class="peek-name">Oversized Tee</div>
+                <div class="peek-price">$49</div>
+                <div class="color-row">
+                  <div class="color-dot" style="background:#7c6fd4;"></div>
+                  <div class="color-dot" style="background:#5b5bd6;"></div>
+                  <div class="color-dot" style="background:#2a2a4a;"></div>
+                  <div class="color-dot" style="background:#1a1a2a;"></div>
+                </div>
+                <div class="add-btn">Add to Bag — $49.00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="i-steps-col">
+          <div class="i-step">
+            <div class="i-num">1</div>
+            <div class="i-body">
+              <div class="i-title">Long Press to Peek</div>
+              <div class="i-desc">300ms hold reveals a floating overlay with size availability and color options. Background dims. Feed stays in place.</div>
+              <div class="i-spec">300ms threshold · spring animation · haptic trigger</div>
+            </div>
+          </div>
+          <div class="i-step">
+            <div class="i-num">2</div>
+            <div class="i-body">
+              <div class="i-title">Swipe to Browse Variants</div>
+              <div class="i-desc">Horizontal swipe cycles through colors. Velocity-sensitive. Each step triggers a haptic tap.</div>
+              <div class="i-spec">180ms crossfade · haptic on each step</div>
+            </div>
+          </div>
+          <div class="i-step">
+            <div class="i-num">3</div>
+            <div class="i-body">
+              <div class="i-title">Pull Up to Purchase</div>
+              <div class="i-desc">Swipe up 80px opens Quick Shop modal, pre-filled with the selected variant. Single tap to add to bag.</div>
+              <div class="i-spec">250ms spring physics · overshoot · 80px threshold</div>
+            </div>
+          </div>
+          <div class="i-step">
+            <div class="i-num">4</div>
+            <div class="i-body">
+              <div class="i-title">Confirm & Return</div>
+              <div class="i-desc">Checkmark animation confirms the add. Auto-dismisses after 1.2s. Scroll position restored exactly.</div>
+              <div class="i-spec">1.2s auto-dismiss · position lock · morph animation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Four Screens -->
+    <div class="pg-section">
+      <div class="pg-label">Final Design</div>
+      <div class="pg-h2">Four screens.<br>One seamless <em>flow.</em></div>
+      <p class="pg-p">Each screen serves one moment in the gesture sequence — browse, evaluate, select, confirm.</p>
+      <div class="four-screens">
+        <!-- Feed -->
+        <div class="screen-phone">
+          <div class="screen-label">Feed</div>
+          <div class="screen-body">
+            <div class="feed-items">
+              <div class="feed-item"><div class="feed-thumb" style="background:#dddaf0;"></div><div class="feed-lines"><div class="feed-line"></div><div class="feed-line short"></div></div></div>
+              <div class="feed-item"><div class="feed-thumb" style="background:#d0dcf0;"></div><div class="feed-lines"><div class="feed-line"></div><div class="feed-line short"></div></div></div>
+              <div class="feed-item"><div class="feed-thumb" style="background:#f0d8da;"></div><div class="feed-lines"><div class="feed-line"></div><div class="feed-line short"></div></div></div>
+              <div class="feed-item"><div class="feed-thumb" style="background:#dde8f0;"></div><div class="feed-lines"><div class="feed-line"></div><div class="feed-line short"></div></div></div>
+            </div>
+          </div>
+          <div class="screen-caption">Browse</div>
+        </div>
+        <!-- Peek Overlay -->
+        <div class="screen-phone">
+          <div class="screen-label">Peek Overlay</div>
+          <div class="screen-body" style="padding:.3rem .3rem 0;">
+            <div style="background:#e8e7f5;border-radius:6px;height:36px;"></div>
+            <div style="background:#fff;border-radius:8px 8px 0 0;margin-top:.25rem;padding:.35rem .3rem;">
+              <div style="background:#e8e7f5;border-radius:5px;height:28px;margin-bottom:.25rem;"></div>
+              <div style="font-size:.5rem;font-weight:700;color:#111;">Oversized Tee</div>
+              <div style="font-size:.5rem;color:var(--p);font-weight:700;margin-bottom:.2rem;">$49.00</div>
+              <div style="display:flex;gap:.15rem;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#7c6fd4;"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#5b5bd6;"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#2a2a4a;"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#1a1a2a;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="screen-caption">Preview</div>
+        </div>
+        <!-- Quick Shop -->
+        <div class="screen-phone">
+          <div class="screen-label">Quick Shop</div>
+          <div class="screen-body" style="padding:.3rem .3rem 0;">
+            <div style="background:#e8e7f5;border-radius:6px;height:40px;margin-bottom:.25rem;"></div>
+            <div style="background:#fff;border-radius:5px;padding:.3rem;display:flex;gap:.3rem;align-items:center;margin-bottom:.2rem;">
+              <div style="width:18px;height:18px;border-radius:3px;background:#e8e7f5;flex-shrink:0;"></div>
+              <div>
+                <div style="font-size:.48rem;font-weight:700;color:#111;">Oversized Tee</div>
+                <div style="font-size:.45rem;color:#888;">Violet · M</div>
+              </div>
+            </div>
+            <div class="qs-add">Add to Bag — $49</div>
+          </div>
+          <div class="screen-caption">Purchase</div>
+        </div>
+        <!-- Confirmation -->
+        <div class="screen-phone">
+          <div class="screen-label">Confirmation</div>
+          <div class="screen-body">
+            <div class="confirm-body">
+              <div class="confirm-circle">✓</div>
+              <div class="confirm-text">Added to Bag</div>
+            </div>
+          </div>
+          <div class="screen-caption">Confirm</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Iteration -->
+    <div class="pg-section">
+      <div class="pg-label">Iteration Process</div>
+      <div class="pg-h2">Three versions.<br>Each one <em>earned.</em></div>
+      <p class="pg-p">Every iteration responded to real usability findings — not assumptions.</p>
+      <div class="iter-cards">
+        <div class="iter-card">
+          <div class="iter-v">Version 1</div>
+          <div class="iter-t">Tap to Expand</div>
+          <div class="iter-d">Inline card expansion pushed the feed layout down. Users lost scroll position. 40% accidental trigger rate.</div>
+          <div class="iter-badge">Disrupted flow</div>
+        </div>
+        <div class="iter-card">
+          <div class="iter-v">Version 2</div>
+          <div class="iter-t">Overlay + Tabs</div>
+          <div class="iter-d">Fixed layout disruption, but tabbed navigation added cognitive overhead — users expected to swipe, not tap tabs.</div>
+          <div class="iter-badge">Too much friction</div>
+        </div>
+        <div class="iter-card final">
+          <div class="iter-v">Version 3 — Final</div>
+          <div class="iter-t">Gesture-Driven</div>
+          <div class="iter-d">Long-press, swipe, pull-up. Single unified view. Users: "feels like TikTok for shopping." SUS: 84.</div>
+          <div class="iter-badge">Shipped</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact -->
+    <div class="pg-section">
+      <div class="pg-label">Impact</div>
+      <div class="pg-h2">Faster discovery.<br>Higher <em>conversion.</em></div>
+      <p class="pg-p">Tested with 18 participants via Maze, measured against the baseline tap-to-detail flow.</p>
+      <div class="impact-grid">
+        <div class="impact-box"><div class="impact-num">3s</div><div class="impact-lbl">Time to Evaluate</div><div class="impact-sub">Down from 18 seconds</div></div>
+        <div class="impact-box"><div class="impact-num">92%</div><div class="impact-lbl">Task Success Rate</div><div class="impact-sub">Find and add specific variant</div></div>
+        <div class="impact-box"><div class="impact-num">84</div><div class="impact-lbl">SUS Score</div><div class="impact-sub">Above industry avg of 68</div></div>
+      </div>
+    </div>
+
+    <!-- My Role -->
+    <div class="pg-section" style="border-bottom:none;">
+      <div class="pg-label">My Role</div>
+      <div class="pg-h2">End-to-end product <em>design.</em></div>
+      <div class="role-list">
+        <div class="role-item">Interaction model definition</div>
+        <div class="role-item">User flows & mobile UI</div>
+        <div class="role-item">High-fi interactive prototyping</div>
+        <div class="role-item">Usability testing & iteration</div>
+      </div>
+    </div>
+
+  </div><!-- page-scroll -->
+  </div><!-- p-right -->
+
+</div><!-- panel -->
+</div><!-- h-scroll -->
+
+<div class="progress"><div class="progress-dot active"></div></div>
+<div class="panel-counter">01 / 01</div>
+<script>
+  const cursor=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});
+</script>
+</body>
+</html>

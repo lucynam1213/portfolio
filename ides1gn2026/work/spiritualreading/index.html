@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpiritualReading — Lucy Nam</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--black:#0d0d0d;--white:#f4f2ed;--gray:#888;--accent:#7c3aed;--accent-light:#ede9fe;--accent-dark:#5b21b6;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;cursor:none;}
+#cursor{position:fixed;width:7px;height:7px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s;}
+body.cursor-hover #cursor{width:44px;height:44px;background:rgba(124,58,237,.15);}
+body.light-panel.cursor-hover #cursor{background:rgba(124,58,237,.12);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;pointer-events:none;color:var(--white);transition:color .4s;}
+nav.light{color:var(--black);}
+.nav-logo{font-size:.68rem;font-weight:900;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:inherit;pointer-events:all;}
+.nav-center{position:absolute;left:50%;transform:translateX(-50%);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;opacity:.4;pointer-events:all;color:inherit;}
+.nav-back{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:inherit;opacity:.45;pointer-events:all;transition:opacity .2s;}
+.nav-back:hover{opacity:1;}
+.h-scroll{display:flex;width:100vw;height:100vh;overflow-x:scroll;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.h-scroll::-webkit-scrollbar{display:none;}
+.panel{flex:0 0 100vw;height:100vh;scroll-snap-align:start;display:grid;grid-template-columns:1fr 1fr;position:relative;}
+.panel.dark{background:var(--black);color:var(--white);}
+.panel.light{background:var(--white);color:var(--black);}
+.p-left{display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem;padding-top:6rem;position:relative;z-index:2;border-right:1px solid rgba(255,255,255,.08);}
+.panel.light .p-left{border-right:1px solid rgba(13,13,13,.08);}
+.p-right{position:relative;overflow:hidden;}
+.page-scroll{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:5rem 2.5rem 3rem;}
+.p-eyebrow{font-size:.63rem;letter-spacing:.16em;text-transform:uppercase;opacity:.35;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;}
+.p-eyebrow::after{content:'';display:block;height:1px;width:2rem;background:currentColor;opacity:.4;}
+.p-title{font-size:clamp(2rem,4.5vw,4rem);font-weight:900;line-height:.95;letter-spacing:-.04em;margin-bottom:1.5rem;}
+.p-title em{font-style:italic;font-weight:300;color:var(--accent);}
+.p-body{font-size:.9rem;line-height:1.8;opacity:.6;max-width:360px;margin-bottom:.75rem;}
+.p-body strong{opacity:1;font-weight:600;color:var(--white);}
+.p-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem;}
+.p-tag{font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid currentColor;padding:.28rem .65rem;opacity:.3;}
+.p-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem;}
+.p-meta-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;opacity:.35;margin-bottom:.2rem;}
+.p-meta-val{font-size:.88rem;font-weight:600;}
+.p-cta{display:inline-flex;align-items:center;gap:.6rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:inherit;margin-top:1rem;opacity:.5;transition:opacity .2s;}
+.p-cta:hover{opacity:1;}
+.p-cta::after{content:'→';}
+.progress{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.75rem;z-index:200;}
+.progress-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,width .3s;}
+.progress-dot.active{width:20px;border-radius:2px;background:var(--white);}
+.panel-counter{position:fixed;bottom:2rem;right:2.5rem;z-index:200;font-size:.6rem;letter-spacing:.12em;opacity:.3;color:var(--white);transition:color .4s;}
+.key-hint{position:fixed;bottom:2rem;left:2.5rem;z-index:200;font-size:.58rem;letter-spacing:.1em;opacity:.25;color:var(--white);display:flex;align-items:center;gap:.4rem;}
+.key{border:1px solid currentColor;padding:.1rem .3rem;border-radius:2px;font-size:.6rem;}
+
+/* live button */
+.live-btn{display:inline-flex;align-items:center;gap:.4rem;font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:#fff;background:var(--accent);padding:.45rem .9rem;margin-top:1.25rem;}
+.live-btn:hover{background:var(--accent-dark);}
+.live-btn::after{content:'↗';}
+
+/* tech chips */
+.tech-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1rem;}
+.tech-chip{font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.25rem .6rem;background:rgba(124,58,237,.15);color:var(--accent-dark);}
+
+/* right panel */
+.cs-label{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:.4rem;}
+.cs-h2{font-size:1rem;font-weight:900;letter-spacing:-.025em;margin-bottom:.5rem;color:var(--black);}
+.cs-body{font-size:.83rem;line-height:1.72;color:rgba(13,13,13,.62);margin-bottom:.5rem;}
+.cs-section{margin-bottom:1.75rem;padding-bottom:1.75rem;border-bottom:1px solid rgba(13,13,13,.08);}
+.cs-section:last-child{border-bottom:none;margin-bottom:0;}
+
+/* feature cards */
+.feature-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;margin-top:.5rem;}
+.feature-text{flex:1;}
+.feature-num{font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:.35rem;}
+.feature-title{font-size:.92rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem;color:var(--black);}
+.feature-body{font-size:.8rem;line-height:1.65;color:rgba(13,13,13,.6);}
+
+/* mockup ebook */
+.mockup-reader{background:#faf7f0;border:1px solid rgba(13,13,13,.12);padding:1.25rem;text-align:center;}
+.reader-title{font-size:.9rem;font-weight:700;line-height:1.5;color:#2d1a4a;margin-bottom:.5rem;}
+.reader-hr{height:1px;background:rgba(13,13,13,.1);margin:.6rem 0;}
+.reader-line{height:5px;background:rgba(13,13,13,.07);border-radius:3px;margin:.28rem 0;}
+.reader-nav{display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;}
+.reader-nav span{font-size:.68rem;color:rgba(13,13,13,.4);}
+.reader-page{font-size:.62rem;color:rgba(13,13,13,.5);}
+.reader-btns{display:flex;justify-content:center;gap:.4rem;margin-top:.6rem;}
+.reader-btn{font-size:.62rem;padding:.22rem .5rem;border:1px solid rgba(13,13,13,.2);color:rgba(13,13,13,.5);background:#fff;}
+.reader-play{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+/* mockup tts */
+.mockup-tts{background:#1a0a2e;padding:1.25rem;text-align:center;}
+.tts-play-wrap{width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem;font-size:1.1rem;color:#fff;}
+.tts-wave{display:flex;align-items:center;justify-content:center;gap:3px;margin-bottom:.75rem;}
+.tts-bar{width:3px;background:#a78bfa;border-radius:2px;}
+.tts-model{font-size:.62rem;font-family:monospace;color:#a78bfa;background:rgba(124,58,237,.2);padding:.25rem .6rem;display:inline-block;margin-bottom:.4rem;}
+.tts-fallback{font-size:.6rem;color:rgba(255,255,255,.3);}
+
+/* mockup terminal */
+.mockup-terminal{background:#1a0a2e;padding:1.25rem;}
+.terminal-dots{display:flex;gap:.35rem;margin-bottom:.75rem;}
+.terminal-dot{width:7px;height:7px;border-radius:50%;}
+.terminal-line{font-size:.72rem;font-family:monospace;line-height:1.9;}
+.terminal-line.dim{color:rgba(167,139,250,.4);}
+.terminal-line.bright{color:#a78bfa;}
+.terminal-line.success{color:#34d399;}
+
+/* highlights */
+.highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.hl-card{padding:1rem;background:var(--accent-light);}
+.hl-num{font-size:1.6rem;font-weight:900;color:var(--accent);line-height:1;letter-spacing:-.03em;}
+.hl-lbl{font-size:.65rem;color:var(--accent-dark);opacity:.8;margin-top:.2rem;line-height:1.3;}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<nav id="nav">
+  <a class="nav-logo" href="/ides1gn2026/">Lucy Nam</a>
+  <span class="nav-center">SpiritualReading</span>
+  <a class="nav-back" href="/ides1gn2026/">← All Work</a>
+</nav>
+<div class="h-scroll" id="scroll">
+
+  <!-- 01 Intro (dark left, content right) -->
+  <div class="panel dark" data-theme="dark">
+    <div class="p-left">
+      <div>
+        <p class="p-eyebrow">01 / 01 &nbsp; Personal Project</p>
+        <h1 class="p-title">Spiritual<br><em>Reading</em></h1>
+        <div class="p-meta-grid">
+          <div><p class="p-meta-label">Role</p><p class="p-meta-val">Solo Builder &amp; Designer</p></div>
+          <div><p class="p-meta-label">Type</p><p class="p-meta-val">Personal Project</p></div>
+          <div><p class="p-meta-label">Year</p><p class="p-meta-val">2026</p></div>
+          <div><p class="p-meta-label">Team</p><p class="p-meta-val">Solo (AI-assisted)</p></div>
+        </div>
+        <div class="p-tags">
+          <span class="p-tag">AI Voice (ElevenLabs)</span><span class="p-tag">E-Book Reader</span>
+          <span class="p-tag">Korean</span><span class="p-tag">Vibe Coding</span>
+        </div>
+        <p class="p-body">마음에서 들려오는 사랑의 소리 — a Korean-language e-book reader with AI voice narration, based on Henri Nouwen's <em>The Inner Voice of Love: A Journey through Anguish to Freedom</em>.</p>
+        <a class="live-btn" href="https://lucynam1213.github.io/SpiritualReading/" target="_blank">View Live Project</a>
+      </div>
+    </div>
+    <div class="p-right" style="background:#f8f6ff;">
+      <div class="page-scroll">
+
+        <!-- The Challenge -->
+        <div class="cs-section">
+          <div class="cs-label">The Challenge</div>
+          <div class="cs-body">SpiritualReading is a personal project built to give a Korean-language spiritual reading collection a calm, book-like home on the web. The text is 마음에서 들려오는 사랑의 소리 (translated by 한정아), the Korean edition of Henri Nouwen's <em>The Inner Voice of Love</em>. The goal was to design a reading experience that felt as comfortable as a printed page, and to add a natural-sounding voice narration option so the text could be listened to as easily as it could be read.</div>
+          <div class="tech-chips">
+            <span class="tech-chip">HTML / CSS / JavaScript</span>
+            <span class="tech-chip">ElevenLabs API</span>
+            <span class="tech-chip">Web Speech API</span>
+            <span class="tech-chip">GitHub Pages</span>
+            <span class="tech-chip">AI-Assisted "Vibe Coding"</span>
+          </div>
+        </div>
+
+        <!-- Feature 01 -->
+        <div class="cs-section">
+          <div class="feature-row">
+            <div class="feature-text">
+              <div class="feature-num">01</div>
+              <div class="feature-title">A Paginated Reading Experience</div>
+              <div class="feature-body">Built a 43-page paginated reader with a warm, paper-like background and serif Korean typography, so long-form devotional reading feels closer to a physical book than a webpage. Readers can adjust the font size and move between chapters with simple page navigation.</div>
+            </div>
+            <div class="mockup-reader">
+              <div class="reader-title">마음에서 들려오는<br>사랑의 소리</div>
+              <div class="reader-hr"></div>
+              <div class="reader-line"></div>
+              <div class="reader-line" style="width:85%"></div>
+              <div class="reader-line"></div>
+              <div class="reader-line" style="width:70%"></div>
+              <div class="reader-line"></div>
+              <div class="reader-nav">
+                <span>←</span>
+                <span class="reader-page">12 / 43</span>
+                <span>→</span>
+              </div>
+              <div class="reader-btns">
+                <span class="reader-btn">A−</span>
+                <span class="reader-btn">A+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 02 -->
+        <div class="cs-section">
+          <div class="feature-row">
+            <div class="feature-text">
+              <div class="feature-num">02</div>
+              <div class="feature-title">AI Voice Narration with ElevenLabs</div>
+              <div class="feature-body">Built a dual-engine text-to-speech system: the primary engine calls ElevenLabs' <code style="font-size:.75rem;background:var(--accent-light);padding:.1rem .3rem;color:var(--accent-dark);">eleven_multilingual_v2</code> model to generate natural-sounding Korean narration, with each chapter's audio pre-generated and cached so playback starts instantly. A browser-based Web Speech API engine runs as an automatic fallback whenever the API path isn't available.</div>
+            </div>
+            <div class="mockup-tts">
+              <div class="tts-play-wrap">▶</div>
+              <div class="tts-wave">
+                <div class="tts-bar" style="height:8px;"></div>
+                <div class="tts-bar" style="height:18px;"></div>
+                <div class="tts-bar" style="height:12px;"></div>
+                <div class="tts-bar" style="height:24px;"></div>
+                <div class="tts-bar" style="height:16px;"></div>
+                <div class="tts-bar" style="height:20px;"></div>
+                <div class="tts-bar" style="height:10px;"></div>
+                <div class="tts-bar" style="height:14px;"></div>
+              </div>
+              <div class="tts-model">eleven_multilingual_v2</div><br>
+              <div class="tts-fallback">↳ Web Speech API fallback</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature 03 -->
+        <div class="cs-section">
+          <div class="feature-row">
+            <div class="feature-text">
+              <div class="feature-num">03</div>
+              <div class="feature-title">Built Through AI-Assisted "Vibe Coding"</div>
+              <div class="feature-body">The reader's pagination, chapter navigation, UI, and the ElevenLabs/Web Speech integration were all built through an AI-assisted "vibe coding" workflow — iterating with an AI coding assistant in natural language rather than hand-writing every line. It was a hands-on way to explore how far that workflow could go for a real, working app, end to end.</div>
+            </div>
+            <div class="mockup-terminal">
+              <div class="terminal-dots">
+                <div class="terminal-dot" style="background:#ff5f57;"></div>
+                <div class="terminal-dot" style="background:#febc2e;"></div>
+                <div class="terminal-dot" style="background:#28c840;"></div>
+              </div>
+              <div class="terminal-line dim">$ build</div>
+              <div class="terminal-line bright">→ spiritualreading</div>
+              <div class="terminal-line bright">→ elevenlabs tts</div>
+              <div class="terminal-line bright">→ web speech fallback</div>
+              <div class="terminal-line success">✓ deployed</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Highlights -->
+        <div class="cs-section">
+          <div class="cs-label">Highlights</div>
+          <div class="highlights-grid">
+            <div class="hl-card"><div class="hl-num">43</div><div class="hl-lbl">Pages, fully paginated</div></div>
+            <div class="hl-card"><div class="hl-num">2</div><div class="hl-lbl">TTS engines — ElevenLabs + browser fallback</div></div>
+            <div class="hl-card"><div class="hl-num">Adj.</div><div class="hl-lbl">Font size for reading comfort</div></div>
+            <div class="hl-card"><div class="hl-num">Solo+AI</div><div class="hl-lbl">Designed and built via vibe coding</div></div>
+          </div>
+        </div>
+
+        <div style="font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(13,13,13,.25);text-align:center;">SPIRITUALREADING · PERSONAL PROJECT · 2026</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="progress" id="progress">
+  <div class="progress-dot active" data-i="0"></div>
+</div>
+<div class="panel-counter" id="counter">01 / 01</div>
+<div class="key-hint" id="keyhint"><span class="key">←</span><span class="key">→</span> navigate</div>
+<script>
+  const scroll=document.getElementById('scroll'),dots=document.querySelectorAll('.progress-dot'),panels=document.querySelectorAll('.panel'),nav=document.getElementById('nav'),counter=document.getElementById('counter'),keyhint=document.getElementById('keyhint'),cursor=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));});
+  function update(idx){const t=panels.length;dots.forEach((d,i)=>d.classList.toggle('active',i===idx));counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(t).padStart(2,'0');const light=panels[idx]?.dataset.theme==='light';nav.classList.toggle('light',light);counter.classList.toggle('light',light);keyhint.classList.toggle('light',light);document.body.classList.toggle('light-panel',light);}
+  scroll.addEventListener('scroll',()=>update(Math.round(scroll.scrollLeft/window.innerWidth)));
+  dots.forEach(d=>d.addEventListener('click',()=>scroll.scrollTo({left:parseInt(d.dataset.i)*window.innerWidth,behavior:'smooth'})));
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')scroll.scrollBy({left:window.innerWidth,behavior:'smooth'});if(e.key==='ArrowLeft')scroll.scrollBy({left:-window.innerWidth,behavior:'smooth'});});
+  scroll.addEventListener('scroll',()=>{keyhint.style.opacity='0';},{once:true});
+</script>
+</body>
+</html>
