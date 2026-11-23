@@ -1,0 +1,12 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/work/instantdiscovery"
+  to = "/instantdiscovery.html"
+  status = 301
+
+[[redirects]]
+  from = "/work/fitbridge"
+  to = "/fitbridge-slides.html"
+  status = 301
